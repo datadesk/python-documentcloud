@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 import unittest
+from documentcloud import Document
 from documentcloud import documentcloud
 
 
@@ -10,7 +11,7 @@ class BaseTest(unittest.TestCase):
         self.test_id = '71072-oir-final-report'
 
 
-class SearchTest(BaseTest):
+class DocumentSearchTest(BaseTest):
 
     def test_search(self):
         """
@@ -24,7 +25,18 @@ class SearchTest(BaseTest):
         Test a search that will return more than a single page of results.
         """
         obj_list = documentcloud.documents.search("johnson")
-        self.assertEqual(len(obj_list) > 1000, True)
+        self.assertTrue(len(obj_list) > 1000)
+
+
+class DocumentGetTest(BaseTest):
+
+    def test_get(self):
+        """
+        Test a get request for a particular document.
+        """
+        obj = documentcloud.documents.get(self.test_id)
+        self.assertEqual(type(obj), Document)
+
 
 if __name__ == '__main__':
     unittest.main()
