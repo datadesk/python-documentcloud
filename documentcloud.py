@@ -44,16 +44,6 @@ class Document(BaseAPIObject):
         self.__dict__ = d
         self.resources = Resource(d.get("resources"))
     
-    def get_pdf_url(self):
-        return self.resources.pdf
-    pdf_url = property(get_pdf_url)
-    
-    def get_pdf(self):
-        req = urllib2.Request(self.pdf_url)
-        response = urllib2.urlopen(req)
-        return response.read()
-    pdf = property(get_pdf)
-    
     def get_full_text_url(self):
         return self.resources.text
     full_text_url = property(get_full_text_url)
@@ -63,6 +53,20 @@ class Document(BaseAPIObject):
         response = urllib2.urlopen(req)
         return response.read()
     full_text = property(get_full_text)
+    
+    #
+    # Images
+    #
+    
+    def get_pdf_url(self):
+        return self.resources.pdf
+    pdf_url = property(get_pdf_url)
+    
+    def get_pdf(self):
+        req = urllib2.Request(self.pdf_url)
+        response = urllib2.urlopen(req)
+        return response.read()
+    pdf = property(get_pdf)
     
     def get_small_image_url(self, page=1):
         template = self.resources.page.get('image')
@@ -93,7 +97,27 @@ class Document(BaseAPIObject):
     def get_large_image_url_list(self):
         return [self.get_large_image_url(i) for i in range(1, self.pages +1)]
     large_image_url_list = property(get_large_image_url_list)
-
+    
+    def get_small_image(self, page=1):
+        url = self.get_small_image_url(page=page)
+        req = urllib2.Request(url)
+        response = urllib2.urlopen(req)
+        return response.read()
+    small_image = property(get_small_image)
+    
+    def get_thumbnail_image(self, page=1):
+        url = self.get_thumbnail_image_url(page=page)
+        req = urllib2.Request(url)
+        response = urllib2.urlopen(req)
+        return response.read()
+    thumbnail_image = property(get_thumbnail_image)
+    
+    def get_large_image(self, page=1):
+        url = self.get_large_image_url(page=page)
+        req = urllib2.Request(url)
+        response = urllib2.urlopen(req)
+        return response.read()
+    large_image = property(get_large_image)
 
 
 class Project(BaseAPIObject):
@@ -185,7 +209,7 @@ if __name__ == '__main__':
     obj = document_list[0]
     pprint(obj.__dict__)
     pprint(obj.resources.__dict__)
-    print obj.large_image_url_list
+    print obj.small_image
 
 
 
