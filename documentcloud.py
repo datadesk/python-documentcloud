@@ -43,12 +43,26 @@ class Document(BaseAPIObject):
     def __init__(self, d):
         self.__dict__ = d
         self.resources = Resource(d.get("resources"))
-
+    
+    def get_pdf_url(self):
+        return self.resources.pdf
+    pdf_url = property(get_pdf_url)
+    
     def get_pdf(self):
-        req = urllib2.Request(self.resources.pdf)
+        req = urllib2.Request(self.pdf_url)
         response = urllib2.urlopen(req)
         return response.read()
     pdf = property(get_pdf)
+    
+    def get_text_url(self):
+        return self.resources.text
+    text_url = property(get_text_url)
+    
+    def get_text(self):
+        req = urllib2.Request(self.text_url)
+        response = urllib2.urlopen(req)
+        return response.read()
+    text = property(get_text)
 
 
 class Project(BaseAPIObject):
@@ -139,6 +153,8 @@ if __name__ == '__main__':
     document_list = documentcloud.documents.search('ruben salazar')
     obj = document_list[0]
     pprint(obj.__dict__)
+    pprint(obj.resources.__dict__)
+    print obj.text
 
 
 
