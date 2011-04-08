@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 import unittest
 from documentcloud import documentcloud
-from documentcloud import Annotation, Document
+from documentcloud import Annotation, Document, Section
 
 
 class BaseTest(unittest.TestCase):
@@ -57,6 +57,13 @@ class DocumentSearchTest(BaseTest):
         """
         obj = documentcloud.documents.search(self.test_search)[0]
         self.assertEqual(type(obj.annotations[0]), Annotation)
+    
+    def sections(self):
+        """
+        Test whether sections exist.
+        """
+        obj = documentcloud.documents.get(self.test_id)
+        self.assertEqual(type(obj.sections[0]), Section)
 
 
 class DocumentGetTest(BaseTest):
@@ -97,6 +104,13 @@ class DocumentGetTest(BaseTest):
         """
         obj = documentcloud.documents.get(self.test_id)
         self.assertEqual(type(obj.annotations[0]), Annotation)
+    
+    def sections(self):
+        """
+        Test whether sections exist.
+        """
+        obj = documentcloud.documents.get(self.test_id)
+        self.assertEqual(type(obj.sections[0]), Section)
 
 
 if __name__ == '__main__':
