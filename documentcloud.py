@@ -11,7 +11,8 @@ Further documentation:
 
 """
 import urllib, urllib2
-import datetime
+from datetime import datetime
+from dateutil.parser import parse as dateparser
 try:
     import json
 except ImportError:
@@ -43,6 +44,8 @@ class Document(BaseAPIObject):
     def __init__(self, d):
         self.__dict__ = d
         self.resources = Resource(d.get("resources"))
+        self.created_at = dateparser(d.get("created_at"))
+        self.updated_at = dateparser(d.get("updated_at"))
     
     #
     # Text
@@ -280,8 +283,8 @@ if __name__ == '__main__':
     document_list = documentcloud.documents.search('ruben salazar')
     obj = document_list[0]
     pprint(obj.__dict__)
-    pprint(obj.resources.__dict__)
-    print obj.get_page_text(1)
+    #pprint(obj.resources.__dict__)
+    #print obj.get_page_text(1)
 
 
 
