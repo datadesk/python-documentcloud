@@ -63,6 +63,24 @@ class Document(BaseAPIObject):
         response = urllib2.urlopen(req)
         return response.read()
     full_text = property(get_full_text)
+    
+    def get_small_image_url(self, page=1):
+        template = self.resources.page.get('image')
+        url = template.replace("{page}", str(page)).replace("{size}", "small")
+        return url
+    small_image_url = property(get_small_image_url)
+    
+    def get_thumbnail_image_url(self, page=1):
+        template = self.resources.page.get('image')
+        url = template.replace("{page}", str(page)).replace("{size}", "thumbnail")
+        return url
+    small_thumbnail_url = property(get_small_thumbnail_url)
+    
+    def get_large_image_url(self, page=1):
+        template = self.resources.page.get('image')
+        url = template.replace("{page}", str(page)).replace("{size}", "large")
+        return url
+    small_large_url = property(get_small_large_url)
 
 
 class Project(BaseAPIObject):
@@ -154,7 +172,7 @@ if __name__ == '__main__':
     obj = document_list[0]
     pprint(obj.__dict__)
     pprint(obj.resources.__dict__)
-    print obj.text
+    print obj.small_image_url
 
 
 
