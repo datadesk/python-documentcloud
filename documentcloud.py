@@ -75,6 +75,30 @@ class Document(BaseAPIObject):
             return obj.contributor_organization
     contributor_organization = property(get_contributor_organization)
     
+    def get_annotations(self):
+        """
+        Fetch the annotations field if it does not exist.
+        """
+        try:
+            return self.__dict__[u'annotations']
+        except KeyError:
+            obj = documentcloud.documents.get(id=self.id)
+            self.__dict__[u'annotations'] = obj.annotations
+            return obj.annotations
+    annotations = property(get_annotations)
+    
+    def get_sections(self):
+        """
+        Fetch the sections field if it does not exist.
+        """
+        try:
+            return self.__dict__[u'sections']
+        except KeyError:
+            obj = documentcloud.documents.get(id=self.id)
+            self.__dict__[u'sections'] = obj.sections
+            return obj.sections
+    sections = property(get_sections)
+    
     #
     # Text
     #
