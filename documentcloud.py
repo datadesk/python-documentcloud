@@ -264,7 +264,7 @@ class documentcloud(object):
             Example usage:
             
                 >> documentcloud.documents.search('salazar')
-                
+            
             """
             page = 1
             document_list = []
@@ -276,16 +276,33 @@ class documentcloud(object):
                 else:
                     break
             return [Document(d) for d in document_list]
+        
+        @staticmethod
+        def get(id):
+            """
+            Retrieve a particular document using it's unique identifier.
+            
+            Example usage:
+            
+                >> documentcloud.documents.get(u'71072-oir-final-report')
+            
+            """
+            url = documentcloud.BASE_URL + 'documents/%s.json' % id
+            req = urllib2.Request(url)
+            response = urllib2.urlopen(req)
+            data = response.read()
+            return Document(json.loads(data).get("document"))
 
 
 if __name__ == '__main__':
     from pprint import pprint
-    document_list = documentcloud.documents.search('ruben salazar')
-    obj = document_list[0]
-    pprint(obj.__dict__)
+    #document_list = documentcloud.documents.search('ruben salazar')
+    #obj = document_list[0]
+    #pprint(obj.__dict__)
     #pprint(obj.resources.__dict__)
     #print obj.get_page_text(1)
-
+    obj = documentcloud.documents.get(u'71072-oir-final-report')
+    pprint(obj.__dict__)
 
 
 
