@@ -16,9 +16,15 @@ class SearchTest(BaseTest):
         """
         Test a search.
         """
-        obj_list = documentcloud.documents.search('ruben salazar')
+        obj_list = documentcloud.documents.search(self.test_search)
         self.assertEqual(type(obj_list), type([]))
-
+    
+    def test_multipage_search(self):
+        """
+        Test a search that will return more than a single page of results.
+        """
+        obj_list = documentcloud.documents.search("johnson")
+        self.assertEqual(len(obj_list) > 1000, True)
 
 if __name__ == '__main__':
     unittest.main()
