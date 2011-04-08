@@ -48,6 +48,34 @@ class Document(BaseAPIObject):
         self.updated_at = dateparser(d.get("updated_at"))
     
     #
+    # Lazy loaded attributes
+    #
+    
+    def get_contributor(self):
+        """
+        Fetch the contributor field if it does not exist.
+        """
+        try:
+            return self.__dict__[u'contributor']
+        except KeyError:
+            obj = documentcloud.documents.get(id=self.id)
+            self.__dict__[u'contributor'] = obj.contributor
+            return obj.contributor
+    contributor = property(get_contributor)
+    
+    def get_contributor_organization(self):
+        """
+        Fetch the contributor_organization field if it does not exist.
+        """
+        try:
+            return self.__dict__[u'contributor_organization']
+        except KeyError:
+            obj = documentcloud.documents.get(id=self.id)
+            self.__dict__[u'contributor_organization'] = obj.contributor_organization
+            return obj.contributor_organization
+    contributor_organization = property(get_contributor_organization)
+    
+    #
     # Text
     #
     
@@ -296,14 +324,17 @@ class documentcloud(object):
 
 if __name__ == '__main__':
     from pprint import pprint
-    #document_list = documentcloud.documents.search('ruben salazar')
-    #obj = document_list[0]
-    #pprint(obj.__dict__)
+    document_list = documentcloud.documents.search('ruben salazar')
+    obj = document_list[0]
+    pprint(obj.contributor)
+    pprint(obj.__dict__)
+    
+    print ""
     #pprint(obj.resources.__dict__)
     #print obj.get_page_text(1)
     obj = documentcloud.documents.get(u'71072-oir-final-report')
+    pprint(obj.contributor)
     pprint(obj.__dict__)
-
 
 
 
