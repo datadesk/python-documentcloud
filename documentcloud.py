@@ -44,6 +44,10 @@ class Document(BaseAPIObject):
         self.__dict__ = d
         self.resources = Resource(d.get("resources"))
     
+    #
+    # Text
+    #
+    
     def get_full_text_url(self):
         return self.resources.text
     full_text_url = property(get_full_text_url)
