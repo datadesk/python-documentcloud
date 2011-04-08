@@ -54,6 +54,17 @@ class Document(BaseAPIObject):
         return response.read()
     full_text = property(get_full_text)
     
+    def get_page_text_url(self, page):
+        template = self.resources.page.get('text')
+        url = template.replace("{page}", str(page))
+        return url
+    
+    def get_page_text(self, page):
+        url = self.get_page_text_url(page)
+        req = urllib2.Request(url)
+        response = urllib2.urlopen(req)
+        return response.read()
+    
     #
     # Images
     #
@@ -209,7 +220,7 @@ if __name__ == '__main__':
     obj = document_list[0]
     pprint(obj.__dict__)
     pprint(obj.resources.__dict__)
-    print obj.small_image
+    print obj.get_page_text(1)
 
 
 
