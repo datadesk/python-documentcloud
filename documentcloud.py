@@ -49,21 +49,33 @@ class Document(BaseAPIObject):
     #
     
     def get_full_text_url(self):
+        """
+        Returns the URL that contains the full text of the document.
+        """
         return self.resources.text
     full_text_url = property(get_full_text_url)
     
     def get_full_text(self):
+        """
+        Downloads and returns the full text of the document.
+        """
         req = urllib2.Request(self.full_text_url)
         response = urllib2.urlopen(req)
         return response.read()
     full_text = property(get_full_text)
     
     def get_page_text_url(self, page):
+        """
+        Returns the URL for the full text of a particular page in the document.
+        """
         template = self.resources.page.get('text')
         url = template.replace("{page}", str(page))
         return url
     
     def get_page_text(self, page):
+        """
+        Downloads and returns the full text of a particular page in the document.
+        """
         url = self.get_page_text_url(page)
         req = urllib2.Request(url)
         response = urllib2.urlopen(req)
@@ -74,46 +86,81 @@ class Document(BaseAPIObject):
     #
     
     def get_pdf_url(self):
+        """
+        Returns the URL that contains the full PDF of the document.
+        """
         return self.resources.pdf
     pdf_url = property(get_pdf_url)
     
     def get_pdf(self):
+        """
+        Downloads and returns the full PDF of the document.
+        """
         req = urllib2.Request(self.pdf_url)
         response = urllib2.urlopen(req)
         return response.read()
     pdf = property(get_pdf)
     
     def get_small_image_url(self, page=1):
+        """
+        Returns the URL for the small sized image of a single page.
+        
+        The page kwarg specifies which page to return. One is the default.
+        """
         template = self.resources.page.get('image')
         url = template.replace("{page}", str(page)).replace("{size}", "small")
         return url
     small_image_url = property(get_small_image_url)
     
     def get_thumbnail_image_url(self, page=1):
+        """
+        Returns the URL for the thumbnail sized image of a single page.
+        
+        The page kwarg specifies which page to return. One is the default.
+        """
         template = self.resources.page.get('image')
         url = template.replace("{page}", str(page)).replace("{size}", "thumbnail")
         return url
     thumbnail_image_url = property(get_thumbnail_image_url)
     
     def get_large_image_url(self, page=1):
+        """
+        Returns the URL for the large sized image of a single page.
+        
+        The page kwarg specifies which page to return. One is the default.
+        """
         template = self.resources.page.get('image')
         url = template.replace("{page}", str(page)).replace("{size}", "large")
         return url
     large_image_url = property(get_large_image_url)
     
     def get_small_image_url_list(self):
+        """
+        Returns a list of the URLs for the small sized image of every page.
+        """
         return [self.get_small_image_url(i) for i in range(1, self.pages +1)]
     small_image_url_list = property(get_small_image_url_list)
     
     def get_thumbnail_image_url_list(self):
+        """
+        Returns a list of the URLs for the thumbnail sized image of every page.
+        """
         return [self.get_thumbnail_image_url(i) for i in range(1, self.pages +1)]
     thumbnail_image_url_list = property(get_thumbnail_image_url_list)
     
     def get_large_image_url_list(self):
+        """
+        Returns a list of the URLs for the large sized image of every page.
+        """
         return [self.get_large_image_url(i) for i in range(1, self.pages +1)]
     large_image_url_list = property(get_large_image_url_list)
     
     def get_small_image(self, page=1):
+        """
+        Downloads and returns the small sized image of a single page.
+        
+        The page kwarg specifies which page to return. One is the default.
+        """
         url = self.get_small_image_url(page=page)
         req = urllib2.Request(url)
         response = urllib2.urlopen(req)
@@ -121,6 +168,11 @@ class Document(BaseAPIObject):
     small_image = property(get_small_image)
     
     def get_thumbnail_image(self, page=1):
+        """
+        Downloads and returns the thumbnail sized image of a single page.
+        
+        The page kwarg specifies which page to return. One is the default.
+        """
         url = self.get_thumbnail_image_url(page=page)
         req = urllib2.Request(url)
         response = urllib2.urlopen(req)
@@ -128,6 +180,11 @@ class Document(BaseAPIObject):
     thumbnail_image = property(get_thumbnail_image)
     
     def get_large_image(self, page=1):
+        """
+        Downloads and returns the large sized image of a single page.
+        
+        The page kwarg specifies which page to return. One is the default.
+        """
         url = self.get_large_image_url(page=page)
         req = urllib2.Request(url)
         response = urllib2.urlopen(req)
