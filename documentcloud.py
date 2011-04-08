@@ -40,7 +40,15 @@ class Document(BaseAPIObject):
     """
     A document returned by the API.
     """
-    pass
+    def __init__(self, d):
+        self.__dict__ = d
+        self.resources = Resource(d.get("resources"))
+
+    def get_pdf(self):
+        req = urllib2.Request(self.resources.pdf)
+        response = urllib2.urlopen(req)
+        return response.read()
+    pdf = property(get_pdf)
 
 
 class Project(BaseAPIObject):
@@ -48,6 +56,20 @@ class Project(BaseAPIObject):
     A project returned by the API.
     """
     pass
+
+
+class Resource(BaseAPIObject):
+    """
+    The resources associated with a Document. Hyperlinks and such.
+    """
+    def __repr__(self):
+        return '<%ss>' % self.__class__.__name__
+    
+    def __str__(self):
+        return self.__unicode__().encode("utf-8")
+    
+    def __unicode__(self):
+        return u''
 
 
 class documentcloud(object):
@@ -111,9 +133,12 @@ class documentcloud(object):
                     break
             return [Document(d) for d in document_list]
 
+
 if __name__ == '__main__':
+    from pprint import pprint
     document_list = documentcloud.documents.search('ruben salazar')
-    print len(document_list)
+    obj = document_list[0]
+    pprint(obj.__dict__)
 
 
 
