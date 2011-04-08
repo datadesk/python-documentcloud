@@ -94,11 +94,13 @@ class Document(BaseAPIObject):
         Fetch the sections field if it does not exist.
         """
         try:
-            return self.__dict__[u'sections']
+            obj_list = self.__dict__[u'sections']
+            return [Section(i) for i in obj_list]
         except KeyError:
             obj = documentcloud.documents.get(id=self.id)
-            self.__dict__[u'sections'] = obj.sections
-            return obj.sections
+            obj_list = [Section(i) for i in obj.__dict__['sections']]
+            self.__dict__[u'sections'] = obj_list
+            return obj_list
     sections = property(get_sections)
     
     #
@@ -256,6 +258,13 @@ class Project(BaseAPIObject):
     pass
 
 
+class Section(BaseAPIObject):
+    """
+    A section earmarked inside of a Document
+    """
+    pass
+
+
 class Annotation(BaseAPIObject):
     """
     An annotation earmarked inside of a Document.
@@ -393,15 +402,15 @@ class documentcloud(object):
 
 if __name__ == '__main__':
     from pprint import pprint
-    document_list = documentcloud.documents.search('Calpers special review')
-    obj = document_list[0]
+    #document_list = documentcloud.documents.search('Calpers special review')
+    #obj = document_list[0]
     #pprint(obj.contributor)
-    pprint(obj.__dict__)
-    pprint(obj.annotations)
+    #pprint(obj.__dict__)
+    #pprint(obj.annotations)
     #pprint(obj.resources.__dict__)
     #print obj.get_page_text(1)
-    #obj = documentcloud.documents.get(u'74103-report-of-the-calpers-special-review')
-    #pprint(obj.contributor)
+    obj = documentcloud.documents.get(u'74103-report-of-the-calpers-special-review')
+    pprint(obj.sections)
     #pprint(obj)
 
 
