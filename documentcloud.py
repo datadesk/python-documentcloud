@@ -54,15 +54,15 @@ class Document(BaseAPIObject):
         return response.read()
     pdf = property(get_pdf)
     
-    def get_text_url(self):
+    def get_full_text_url(self):
         return self.resources.text
-    text_url = property(get_text_url)
+    full_text_url = property(get_full_text_url)
     
-    def get_text(self):
-        req = urllib2.Request(self.text_url)
+    def get_full_text(self):
+        req = urllib2.Request(self.full_text_url)
         response = urllib2.urlopen(req)
         return response.read()
-    text = property(get_text)
+    full_text = property(get_full_text)
 
 
 class Project(BaseAPIObject):
