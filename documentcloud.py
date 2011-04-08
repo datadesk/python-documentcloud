@@ -74,13 +74,26 @@ class Document(BaseAPIObject):
         template = self.resources.page.get('image')
         url = template.replace("{page}", str(page)).replace("{size}", "thumbnail")
         return url
-    small_thumbnail_url = property(get_small_thumbnail_url)
+    thumbnail_image_url = property(get_thumbnail_image_url)
     
     def get_large_image_url(self, page=1):
         template = self.resources.page.get('image')
         url = template.replace("{page}", str(page)).replace("{size}", "large")
         return url
-    small_large_url = property(get_small_large_url)
+    large_image_url = property(get_large_image_url)
+    
+    def get_small_image_url_list(self):
+        return [self.get_small_image_url(i) for i in range(1, self.pages +1)]
+    small_image_url_list = property(get_small_image_url_list)
+    
+    def get_thumbnail_image_url_list(self):
+        return [self.get_thumbnail_image_url(i) for i in range(1, self.pages +1)]
+    thumbnail_image_url_list = property(get_thumbnail_image_url_list)
+    
+    def get_large_image_url_list(self):
+        return [self.get_large_image_url(i) for i in range(1, self.pages +1)]
+    large_image_url_list = property(get_large_image_url_list)
+
 
 
 class Project(BaseAPIObject):
@@ -172,7 +185,7 @@ if __name__ == '__main__':
     obj = document_list[0]
     pprint(obj.__dict__)
     pprint(obj.resources.__dict__)
-    print obj.small_image_url
+    print obj.large_image_url_list
 
 
 
