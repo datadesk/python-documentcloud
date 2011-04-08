@@ -26,6 +26,29 @@ class DocumentSearchTest(BaseTest):
 #        """
 #        obj_list = documentcloud.documents.search("johnson")
 #        self.assertTrue(len(obj_list) > 1000)
+    
+    def test_attrs(self):
+        """
+        Verify that all the Document attributes exist.
+        """
+        obj = documentcloud.documents.search(self.test_search)[0]
+        attr_list = [
+            'access',
+            'annotations',
+            'canonical_url',
+            'contributor',
+            'contributor_organization',
+            'created_at',
+            'description',
+            'id',
+            'pages',
+            'resources',
+            'sections',
+            'source',
+            'title',
+            'updated_at',
+        ]
+        [self.assertTrue(hasattr(obj, attr)) for attr in attr_list]
 
 
 class DocumentGetTest(BaseTest):
