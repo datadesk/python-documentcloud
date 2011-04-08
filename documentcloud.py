@@ -80,11 +80,13 @@ class Document(BaseAPIObject):
         Fetch the annotations field if it does not exist.
         """
         try:
-            return self.__dict__[u'annotations']
+            obj_list = self.__dict__[u'annotations']
+            return [Annotation(i) for i in obj_list]
         except KeyError:
             obj = documentcloud.documents.get(id=self.id)
-            self.__dict__[u'annotations'] = obj.annotations
-            return obj.annotations
+            obj_list = [Annotation(i) for i in obj.__dict__['annotations']]
+            self.__dict__[u'annotations'] = obj_list
+            return obj_list
     annotations = property(get_annotations)
     
     def get_sections(self):
@@ -254,6 +256,49 @@ class Project(BaseAPIObject):
     pass
 
 
+class Annotation(BaseAPIObject):
+    """
+    An annotation earmarked inside of a Document.
+    """
+    def __repr__(self):
+        return '<%s>' % self.__class__.__name__
+    
+    def __str__(self):
+        return self.__unicode__().encode("utf-8")
+    
+    def __unicode__(self):
+        return u''
+    
+    def get_location(self):
+        """
+        Return the location as a good
+        """
+        image_string =  self.__dict__['location']['image']
+        image_ints = map(int, image_string.split(","))
+        return Location(*image_ints)
+    location = property(get_location)
+
+
+class Location(object):
+    """
+    The location of a 
+    """
+    def __repr__(self):
+        return '<%s>' % self.__class__.__name__
+    
+    def __str__(self):
+        return self.__unicode__().encode("utf-8")
+    
+    def __unicode__(self):
+        return u''
+    
+    def __init__(self, top, right, bottom, left):
+        self.top = top
+        self.right = right
+        self.bottom = bottom
+        self.left = left
+
+
 class Resource(BaseAPIObject):
     """
     The resources associated with a Document. Hyperlinks and such.
@@ -348,17 +393,16 @@ class documentcloud(object):
 
 if __name__ == '__main__':
     from pprint import pprint
-    document_list = documentcloud.documents.search('ruben salazar')
+    document_list = documentcloud.documents.search('Calpers special review')
     obj = document_list[0]
-    pprint(obj.contributor)
+    #pprint(obj.contributor)
     pprint(obj.__dict__)
-    
-    print ""
+    pprint(obj.annotations)
     #pprint(obj.resources.__dict__)
     #print obj.get_page_text(1)
-    obj = documentcloud.documents.get(u'71072-oir-final-report')
-    pprint(obj.contributor)
-    pprint(obj.__dict__)
+    #obj = documentcloud.documents.get(u'74103-report-of-the-calpers-special-review')
+    #pprint(obj.contributor)
+    #pprint(obj)
 
 
 

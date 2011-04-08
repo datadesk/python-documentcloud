@@ -1,14 +1,14 @@
 #! /usr/bin/env python
 import unittest
-from documentcloud import Document
 from documentcloud import documentcloud
+from documentcloud import Annotation, Document
 
 
 class BaseTest(unittest.TestCase):
     
     def setUp(self):
-        self.test_search = 'Ruben Salazar'
-        self.test_id = '71072-oir-final-report'
+        self.test_search = 'Calpers special review'
+        self.test_id = '74103-report-of-the-calpers-special-review'
 
 
 class DocumentSearchTest(BaseTest):
@@ -31,6 +31,7 @@ class DocumentSearchTest(BaseTest):
         """
         Verify that all the Document attributes exist.
         """
+        from pprint import pprint
         obj = documentcloud.documents.search(self.test_search)[0]
         attr_list = [
             'access',
@@ -49,6 +50,13 @@ class DocumentSearchTest(BaseTest):
             'updated_at',
         ]
         [self.assertTrue(hasattr(obj, attr)) for attr in attr_list]
+
+    def annotations(self):
+        """
+        Test whether annotations exist.
+        """
+        obj = documentcloud.documents.search(self.test_search)[0]
+        self.assertEqual(type(obj.annotations[0]), Annotation)
 
 
 class DocumentGetTest(BaseTest):
@@ -82,6 +90,13 @@ class DocumentGetTest(BaseTest):
             'updated_at',
         ]
         [self.assertTrue(hasattr(obj, attr)) for attr in attr_list]
+    
+    def annotations(self):
+        """
+        Test whether annotations exist.
+        """
+        obj = documentcloud.documents.get(self.test_id)
+        self.assertEqual(type(obj.annotations[0]), Annotation)
 
 
 if __name__ == '__main__':
