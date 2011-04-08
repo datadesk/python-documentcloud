@@ -60,6 +60,27 @@ class documentcloud(object):
     # URLs will be keys, responses will be values
     _cache = {}
 
+    #
+    # Private methods
+    #
+    
+    @staticmethod
+    def _get_search_page(query, page, per_page):
+        """
+        Retrieve one page of search results from the DocumentCloud API.
+        """
+        url = documentcloud.BASE_URL + u'search.json'
+        params = {
+            'q': query,
+            'page': page,
+            'per_page': per_page,
+        }
+        params = urllib.urlencode(params)
+        req = urllib2.Request(url, params)
+        response = urllib2.urlopen(req)
+        data = response.read()
+        return json.loads(data).get("documents")
+
     # 
     # Public methods
     #
@@ -70,7 +91,7 @@ class documentcloud(object):
         """
         
         @staticmethod
-        def search(query, page=1, per_page=10):
+        def search(query):
             """
             Retrieve all objects that make a search query.
             
@@ -79,23 +100,20 @@ class documentcloud(object):
                 >> documentcloud.documents.search('salazar')
                 
             """
-            url = documentcloud.BASE_URL + u'search.json'
-            params = {
-                'q': query,
-                'page': page,
-                'per_page': per_page,
-            }
-            params = urllib.urlencode(params)
-            req = urllib2.Request(url, params)
-            response = urllib2.urlopen(req)
-            data = response.read()
-            data = json.loads(data)
-            return [Document(d) for d in data.get('documents')]
-
+            page = 1
+            document_list = []
+            while True:
+                results = documentcloud._get_search_page(query, page=page, per_page=1000)
+                if results:
+                    document_list += results
+                    page += 1
+                else:
+                    break
+            return [Document(d) for d in document_list]
 
 if __name__ == '__main__':
-    document_list = documentcloud.documents.search('salazar')
-    print document_list
+    document_list = documentcloud.documents.search('ruben salazar')
+    print len(document_list)
 
 
 
