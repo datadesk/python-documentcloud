@@ -10,6 +10,7 @@ Further documentation:
     https://www.documentcloud.org/help/api
 
 """
+import base64
 import urllib, urllib2
 from datetime import datetime
 from dateutil.parser import parse as dateparser
@@ -23,7 +24,6 @@ class BaseAPIObject(object):
     """
     An abstract version of the objects returned by the API.
     """
-
     def __init__(self, d):
         self.__dict__ = d
     
@@ -58,7 +58,7 @@ class Document(BaseAPIObject):
         try:
             return self.__dict__[u'contributor']
         except KeyError:
-            obj = documentcloud.documents.get(id=self.id)
+            obj = DocumentCloud().documents.get(id=self.id)
             self.__dict__[u'contributor'] = obj.contributor
             return obj.contributor
     contributor = property(get_contributor)
@@ -70,7 +70,7 @@ class Document(BaseAPIObject):
         try:
             return self.__dict__[u'contributor_organization']
         except KeyError:
-            obj = documentcloud.documents.get(id=self.id)
+            obj = DocumentCloud().documents.get(id=self.id)
             self.__dict__[u'contributor_organization'] = obj.contributor_organization
             return obj.contributor_organization
     contributor_organization = property(get_contributor_organization)
@@ -83,9 +83,10 @@ class Document(BaseAPIObject):
             obj_list = self.__dict__[u'annotations']
             return [Annotation(i) for i in obj_list]
         except KeyError:
-            obj = documentcloud.documents.get(id=self.id)
+            obj = DocumentCloud().documents.get(id=self.id)
+            #print obj.__dict__['annotations']
             obj_list = [Annotation(i) for i in obj.__dict__['annotations']]
-            self.__dict__[u'annotations'] = obj_list
+            self.__dict__[u'annotations'] =obj.__dict__['annotations']
             return obj_list
     annotations = property(get_annotations)
     
@@ -97,9 +98,9 @@ class Document(BaseAPIObject):
             obj_list = self.__dict__[u'sections']
             return [Section(i) for i in obj_list]
         except KeyError:
-            obj = documentcloud.documents.get(id=self.id)
+            obj = DocumentCloud().documents.get(id=self.id)
             obj_list = [Section(i) for i in obj.__dict__['sections']]
-            self.__dict__[u'sections'] = obj_list
+            self.__dict__[u'sections'] = obj.__dict__['sections']
             return obj_list
     sections = property(get_sections)
     
@@ -269,6 +270,9 @@ class Annotation(BaseAPIObject):
     """
     An annotation earmarked inside of a Document.
     """
+    def __init__(self, d):
+        self.__dict__ = d
+    
     def __repr__(self):
         return '<%s>' % self.__class__.__name__
     
@@ -322,26 +326,27 @@ class Resource(BaseAPIObject):
         return u''
 
 
-class documentcloud(object):
+class BaseDocumentCloudClient(object):
     """
-    The main public method for interacting with the API.
+    Patterns common to all of the different API methods.
     """
-    
     BASE_URL = u'https://www.documentcloud.org/api/'
-    # For storing calls we've already made.
-    # URLs will be keys, responses will be values
-    _cache = {}
-
-    #
-    # Private methods
-    #
     
-    @staticmethod
-    def _get_search_page(query, page, per_page):
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
+
+
+class DocumentClient(BaseDocumentCloudClient):
+    """
+    Methods for collecting documents
+    """
+    
+    def _get_search_page(self, query, page, per_page):
         """
         Retrieve one page of search results from the DocumentCloud API.
         """
-        url = documentcloud.BASE_URL + u'search.json'
+        url = self.BASE_URL + u'search.json'
         params = {
             'q': query,
             'page': page,
@@ -352,68 +357,62 @@ class documentcloud(object):
         response = urllib2.urlopen(req)
         data = response.read()
         return json.loads(data).get("documents")
-
-    # 
-    # Public methods
-    #
-
-    class documents(object):
+    
+    def search(self, query):
         """
-        Methods for collecting Documents.
+        Retrieve all objects that make a search query.
+        
+        Example usage:
+        
+            >> documentcloud.documents.search('salazar')
+        
         """
+        page = 1
+        document_list = []
+        while True:
+            results = self._get_search_page(query, page=page, per_page=1000)
+            if results:
+                document_list += results
+                page += 1
+            else:
+                break
+        return [Document(d) for d in document_list]
+    
+    def get(self, id):
+        """
+        Retrieve a particular document using it's unique identifier.
         
-        @staticmethod
-        def search(query):
-            """
-            Retrieve all objects that make a search query.
-            
-            Example usage:
-            
-                >> documentcloud.documents.search('salazar')
-            
-            """
-            page = 1
-            document_list = []
-            while True:
-                results = documentcloud._get_search_page(query, page=page, per_page=1000)
-                if results:
-                    document_list += results
-                    page += 1
-                else:
-                    break
-            return [Document(d) for d in document_list]
+        Example usage:
         
-        @staticmethod
-        def get(id):
-            """
-            Retrieve a particular document using it's unique identifier.
-            
-            Example usage:
-            
-                >> documentcloud.documents.get(u'71072-oir-final-report')
-            
-            """
-            url = documentcloud.BASE_URL + 'documents/%s.json' % id
-            req = urllib2.Request(url)
-            response = urllib2.urlopen(req)
-            data = response.read()
-            return Document(json.loads(data).get("document"))
+            >> documentcloud.documents.get(u'71072-oir-final-report')
+        
+        """
+        url = self.BASE_URL + 'documents/%s.json' % id
+        req = urllib2.Request(url)
+        response = urllib2.urlopen(req)
+        data = response.read()
+        return Document(json.loads(data).get("document"))
+
+
+class DocumentCloud(BaseDocumentCloudClient):
+    """
+    The public interface for the DocumentCloud API
+    """
+    
+    def __init__(self, username=None, password=None):
+        super(DocumentCloud, self).__init__(username, password)
+        self.documents = DocumentClient(self.username, self.password,)
 
 
 if __name__ == '__main__':
     from pprint import pprint
-    #document_list = documentcloud.documents.search('Calpers special review')
-    #obj = document_list[0]
-    #pprint(obj.contributor)
-    #pprint(obj.__dict__)
-    #pprint(obj.annotations)
-    #pprint(obj.resources.__dict__)
-    #print obj.get_page_text(1)
-    obj = documentcloud.documents.get(u'74103-report-of-the-calpers-special-review')
-    pprint(obj.sections)
-    #pprint(obj)
-
-
+    from private_settings import *
+    documentcloud = DocumentCloud()
+    obj_list = documentcloud.documents.search("Calpers special review")
+    obj = documentcloud.documents.get('74103-report-of-the-calpers-special-review')
+    an=obj_list[0].annotations
+    #print hasattr(obj_list[0], 'annotations')
+    #print obj_list[0].annotations
 
 
 
