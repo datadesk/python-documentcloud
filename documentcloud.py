@@ -367,6 +367,9 @@ class DocumentClient(BaseDocumentCloudClient):
     def __init__(self, username, password, connection):
         self.username = username
         self.password = password
+        # We want to have the connection around on all Document objects
+        # this client creates in case the instance needs to hit the API
+        # later. Storing it will preserve the credentials.
         self._connection = connection
 
     def _get_search_page(self, query, page, per_page):
