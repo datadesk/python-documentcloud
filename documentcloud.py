@@ -330,11 +330,22 @@ class BaseDocumentCloudClient(object):
     """
     Patterns common to all of the different API methods.
     """
-    BASE_URL = u'https://www.documentcloud.org/api/'
+    BASE_URI = u'https://www.documentcloud.org/api/'
     
     def __init__(self, username, password):
         self.username = username
         self.password = password
+    
+    def fetch(self, method, params={}):
+        """
+        Fetch an url without using any authorization.
+        """
+        url = self.BASE_URI + method
+        params = urllib.urlencode(params)
+        request = urllib2.Request(url, params)
+        response = urllib2.urlopen(request)
+        data = response.read()
+        return json.loads(data)
 
 
 class DocumentClient(BaseDocumentCloudClient):
@@ -350,17 +361,13 @@ class DocumentClient(BaseDocumentCloudClient):
         """
         Retrieve one page of search results from the DocumentCloud API.
         """
-        url = self.BASE_URL + u'search.json'
         params = {
             'q': query,
             'page': page,
             'per_page': per_page,
         }
-        params = urllib.urlencode(params)
-        req = urllib2.Request(url, params)
-        response = urllib2.urlopen(req)
-        data = response.read()
-        return json.loads(data).get("documents")
+        data = self.fetch(u'search.json', params)
+        return data.get("documents")
     
     def search(self, query):
         """
@@ -396,13 +403,9 @@ class DocumentClient(BaseDocumentCloudClient):
             >> documentcloud.documents.get(u'71072-oir-final-report')
         
         """
-        url = self.BASE_URL + 'documents/%s.json' % id
-        req = urllib2.Request(url)
-        response = urllib2.urlopen(req)
-        data = response.read()
-        data_dict = json.loads(data).get("document")
-        data_dict['_connection'] = self._connection
-        return Document(data_dict)
+        data = self.fetch('documents/%s.json' % id).get("document")
+        data['_connection'] = self._connection
+        return Document(data)
 
 
 class DocumentCloud(BaseDocumentCloudClient):
@@ -420,9 +423,9 @@ if __name__ == '__main__':
     from private_settings import *
     documentcloud = DocumentCloud()
     obj_list = documentcloud.documents.search("Calpers special review")
+    print obj_list
     obj = documentcloud.documents.get('74103-report-of-the-calpers-special-review')
-    for obj in obj_list:
-        print obj.annotations
+    print obj
 
 
 
