@@ -1,0 +1,10 @@
+h1. Todo
+
+* Fetch document entities
+* Fetch projects
+* Throw errors when a request the requires authentication is made by an unauthenticated client
+* Update documents and projects with the PUT request
+* Upload and create new documents
+* Write documentation
+* Figure out what to do when the request hangs (timeout?)
+* Do I need to be caching requests?
