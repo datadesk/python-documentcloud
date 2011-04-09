@@ -340,11 +340,23 @@ class BaseDocumentCloudClient(object):
         """
         Fetch an url without using any authorization.
         """
+        # Assemble the URL
         url = self.BASE_URI + method
+        # Prepare any query string parameters
         params = urllib.urlencode(params)
+        # Create the request object
         request = urllib2.Request(url, params)
+        # If the client has credentials, includ them as a header
+        if self.username and self.password:
+            credentials = '%s:%s' % (self.username, self.password)
+            encoded_credentials = base64.encodestring(credentials)[:-1]
+            header = 'Basic %s' % encoded_credentials
+            request.add_header('Authorization', header)
+        # Make the request
         response = urllib2.urlopen(request)
+        # Read the response
         data = response.read()
+        # Convert its JSON to a Python dictionary and return
         return json.loads(data)
 
 
@@ -421,7 +433,7 @@ class DocumentCloud(BaseDocumentCloudClient):
 if __name__ == '__main__':
     from pprint import pprint
     from private_settings import *
-    documentcloud = DocumentCloud()
+    documentcloud = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
     obj_list = documentcloud.documents.search("Calpers special review")
     print obj_list
     obj = documentcloud.documents.get('74103-report-of-the-calpers-special-review')
