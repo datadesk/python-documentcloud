@@ -58,7 +58,7 @@ class Document(BaseAPIObject):
         try:
             return self.__dict__[u'contributor']
         except KeyError:
-            obj = DocumentCloud().documents.get(id=self.id)
+            obj = self._connection.documents.get(id=self.id)
             self.__dict__[u'contributor'] = obj.contributor
             return obj.contributor
     contributor = property(get_contributor)
@@ -70,7 +70,7 @@ class Document(BaseAPIObject):
         try:
             return self.__dict__[u'contributor_organization']
         except KeyError:
-            obj = DocumentCloud().documents.get(id=self.id)
+            obj = self._connection.documents.get(id=self.id)
             self.__dict__[u'contributor_organization'] = obj.contributor_organization
             return obj.contributor_organization
     contributor_organization = property(get_contributor_organization)
@@ -83,7 +83,7 @@ class Document(BaseAPIObject):
             obj_list = self.__dict__[u'annotations']
             return [Annotation(i) for i in obj_list]
         except KeyError:
-            obj = DocumentCloud().documents.get(id=self.id)
+            obj = self._connection.documents.get(id=self.id)
             #print obj.__dict__['annotations']
             obj_list = [Annotation(i) for i in obj.__dict__['annotations']]
             self.__dict__[u'annotations'] =obj.__dict__['annotations']
@@ -98,7 +98,7 @@ class Document(BaseAPIObject):
             obj_list = self.__dict__[u'sections']
             return [Section(i) for i in obj_list]
         except KeyError:
-            obj = DocumentCloud().documents.get(id=self.id)
+            obj = self._connection.documents.get(id=self.id)
             obj_list = [Section(i) for i in obj.__dict__['sections']]
             self.__dict__[u'sections'] = obj.__dict__['sections']
             return obj_list
@@ -341,7 +341,11 @@ class DocumentClient(BaseDocumentCloudClient):
     """
     Methods for collecting documents
     """
-    
+    def __init__(self, username, password, connection):
+        self.username = username
+        self.password = password
+        self._connection = connection
+
     def _get_search_page(self, query, page, per_page):
         """
         Retrieve one page of search results from the DocumentCloud API.
@@ -376,7 +380,12 @@ class DocumentClient(BaseDocumentCloudClient):
                 page += 1
             else:
                 break
-        return [Document(d) for d in document_list]
+        obj_list = []
+        for doc in document_list:
+            doc['_connection'] = self._connection
+            obj = Document(doc)
+            obj_list.append(obj)
+        return obj_list
     
     def get(self, id):
         """
@@ -391,7 +400,9 @@ class DocumentClient(BaseDocumentCloudClient):
         req = urllib2.Request(url)
         response = urllib2.urlopen(req)
         data = response.read()
-        return Document(json.loads(data).get("document"))
+        data_dict = json.loads(data).get("document")
+        data_dict['_connection'] = self._connection
+        return Document(data_dict)
 
 
 class DocumentCloud(BaseDocumentCloudClient):
@@ -401,7 +412,7 @@ class DocumentCloud(BaseDocumentCloudClient):
     
     def __init__(self, username=None, password=None):
         super(DocumentCloud, self).__init__(username, password)
-        self.documents = DocumentClient(self.username, self.password,)
+        self.documents = DocumentClient(self.username, self.password, self)
 
 
 if __name__ == '__main__':
@@ -410,9 +421,8 @@ if __name__ == '__main__':
     documentcloud = DocumentCloud()
     obj_list = documentcloud.documents.search("Calpers special review")
     obj = documentcloud.documents.get('74103-report-of-the-calpers-special-review')
-    an=obj_list[0].annotations
-    #print hasattr(obj_list[0], 'annotations')
-    #print obj_list[0].annotations
+    for obj in obj_list:
+        print obj.annotations
 
 
 
