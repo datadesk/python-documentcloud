@@ -339,6 +339,19 @@ class CredentialsMissingError(Exception):
     pass
 
 
+class CredentialsFailedError(Exception):
+    """
+    Raised if an API call fails because the login credentials are no good.
+    """
+    pass
+
+
+class DoesNotExistError(Exception):
+    """
+    Raised when the user asks the API for something it cannot find.
+    """
+    pass
+
 #
 # API connection clients
 #
@@ -372,7 +385,15 @@ class BaseDocumentCloudClient(object):
             header = 'Basic %s' % encoded_credentials
             request.add_header('Authorization', header)
         # Make the request
-        response = urllib2.urlopen(request)
+        try:
+            response = urllib2.urlopen(request)
+        except urllib2.HTTPError, e:
+            if e.code == 404:
+                raise DoesNotExistError()
+            elif e.code == 401:
+                raise CredentialsFailedError()
+            else:
+                raise e
         # Read the response
         data = response.read()
         # Convert its JSON to a Python dictionary and return
@@ -493,7 +514,8 @@ if __name__ == '__main__':
     from private_settings import *
     public = DocumentCloud()
     private = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
-    proj_list = public.projects.all()
+    bad = DocumentCloud("Bad", "Login")
+    proj_list = bad.documents.get("15144-mitchrpt")
     print proj_list
 
 
