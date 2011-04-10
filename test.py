@@ -140,12 +140,12 @@ class ErrorTest(BaseTest):
         """
         self.assertRaises(CredentialsMissingError, self.public_client.projects.all)
     
-#    def failed_credentials(self):
-#        """
-#        Make sure CredentialsFailedError works.
-#        """
-#        pass
-#    
+    def test_failed_credentials(self):
+        """
+        Make sure CredentialsFailedError works.
+        """
+        self.assertRaises(CredentialsFailedError, self.public_client.fetch, "projects.json")
+    
     def test_does_not_exist(self):
         """
         Make sure DoesNotExistError works.

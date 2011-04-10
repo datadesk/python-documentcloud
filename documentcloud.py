@@ -515,8 +515,8 @@ if __name__ == '__main__':
     public = DocumentCloud()
     private = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
     bad = DocumentCloud("Bad", "Login")
-    proj_list = public.documents.get("15144-mitchrpt")
-    print proj_list
+    #proj_list = public.projects.all()
+    public.fetch("projects.json")
 
 
 
