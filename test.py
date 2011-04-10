@@ -1,7 +1,8 @@
 #! /usr/bin/env python
 import unittest
 from documentcloud import DocumentCloud
-from documentcloud import Annotation, Document, Section
+from documentcloud import Annotation, Document, Project, Section
+from private_settings import DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD
 
 
 class BaseTest(unittest.TestCase):
@@ -10,6 +11,7 @@ class BaseTest(unittest.TestCase):
         self.test_search = 'Calpers special review'
         self.test_id = '74103-report-of-the-calpers-special-review'
         self.public_client = DocumentCloud()
+        self.private_client = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
 
 
 class DocumentSearchTest(BaseTest):
@@ -20,6 +22,7 @@ class DocumentSearchTest(BaseTest):
         """
         obj_list = self.public_client.documents.search(self.test_search)
         self.assertEqual(type(obj_list), type([]))
+        self.assertEqual(type(obj_list[0]), Document)
     
 #    def test_multipage_search(self):
 #        """
@@ -112,6 +115,18 @@ class DocumentGetTest(BaseTest):
         """
         obj = self.public_client.documents.get(self.test_id)
         self.assertEqual(type(obj.sections[0]), Section)
+
+
+class ProjectTest(BaseTest):
+    
+    def get_all(self):
+        """
+        Test an all request for a list of all projects belong to an 
+        authorized user.
+        """
+        obj_list = self.private_client.projects.all()
+        self.assertEqual(type(obj_list), type([]))
+        self.assertEqual(type(obj_list[0]), Project)
 
 
 if __name__ == '__main__':

@@ -19,6 +19,9 @@ try:
 except ImportError:
     import simplejson as json
 
+#
+# API objects
+#
 
 class BaseAPIObject(object):
     """
@@ -325,6 +328,9 @@ class Resource(BaseAPIObject):
     def __unicode__(self):
         return u''
 
+#
+# API connection clients
+#
 
 class BaseDocumentCloudClient(object):
     """
@@ -336,20 +342,22 @@ class BaseDocumentCloudClient(object):
         self.username = username
         self.password = password
     
-    def fetch(self, method, params={}):
+    def fetch(self, method, params=None):
         """
         Fetch an url without using any authorization.
         """
         # Assemble the URL
         url = self.BASE_URI + method
         # Prepare any query string parameters
-        params = urllib.urlencode(params)
+        if params:
+            params = urllib.urlencode(params)
         # Create the request object
-        request = urllib2.Request(url, params)
-        # If the client has credentials, includ them as a header
+        args = [i for i in [url, params] if i]
+        request = urllib2.Request(*args)
+        # If the client has credentials, include them as a header
         if self.username and self.password:
             credentials = '%s:%s' % (self.username, self.password)
-            encoded_credentials = base64.encodestring(credentials)[:-1]
+            encoded_credentials = base64.encodestring(credentials).replace("\n", "")
             header = 'Basic %s' % encoded_credentials
             request.add_header('Authorization', header)
         # Make the request
@@ -423,6 +431,36 @@ class DocumentClient(BaseDocumentCloudClient):
         return Document(data)
 
 
+class ProjectClient(BaseDocumentCloudClient):
+    """
+    Methods for collecting projects
+    """
+    def __init__(self, username, password, connection):
+        self.username = username
+        self.password = password
+        # We want to have the connection around on all Document objects
+        # this client creates in case the instance needs to hit the API
+        # later. Storing it will preserve the credentials.
+        self._connection = connection
+
+    def all(self):
+        """
+        Retrieve all your projects. Requires authentication.
+        
+        Example usage:
+        
+            >> documentcloud.projects.all()
+        
+        """
+        project_list = self.fetch('projects.json').get("projects")
+        obj_list = []
+        for proj in project_list:
+            proj['_connection'] = self._connection
+            proj = Project(proj)
+            obj_list.append(proj)
+        return obj_list
+
+
 class DocumentCloud(BaseDocumentCloudClient):
     """
     The public interface for the DocumentCloud API
@@ -431,16 +469,15 @@ class DocumentCloud(BaseDocumentCloudClient):
     def __init__(self, username=None, password=None):
         super(DocumentCloud, self).__init__(username, password)
         self.documents = DocumentClient(self.username, self.password, self)
+        self.projects = ProjectClient(self.username, self.password, self)
 
 
 if __name__ == '__main__':
     from pprint import pprint
     from private_settings import *
     documentcloud = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
-    obj_list = documentcloud.documents.search("Calpers special review")
-    print obj_list
-    obj = documentcloud.documents.get('74103-report-of-the-calpers-special-review')
-    print obj
+    proj_list = documentcloud.projects.all()
+    print proj_list
 
 
 
