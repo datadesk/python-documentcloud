@@ -3,7 +3,7 @@ import unittest
 from documentcloud import DocumentCloud
 from documentcloud import CredentialsMissingError
 from documentcloud import CredentialsFailedError, DoesNotExistError
-from documentcloud import Annotation, Document, Project, Section
+from documentcloud import Annotation, Document, Project, Section, Entity
 from private_settings import DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD
 
 
@@ -71,6 +71,14 @@ class DocumentSearchTest(BaseTest):
         """
         obj = self.public_client.documents.get(self.test_id)
         self.assertEqual(type(obj.sections[0]), Section)
+    
+    def test_entities(self):
+        """
+        Test whether entities exist.
+        """
+        obj = self.public_client.documents.get(self.test_id)
+        self.assertEqual(type(obj.entities[0]), Entity)
+
 
 
 class DocumentGetTest(BaseTest):
@@ -118,6 +126,13 @@ class DocumentGetTest(BaseTest):
         """
         obj = self.public_client.documents.get(self.test_id)
         self.assertEqual(type(obj.sections[0]), Section)
+    
+    def test_entities(self):
+        """
+        Test whether entities exist.
+        """
+        obj = self.public_client.documents.get(self.test_id)
+        self.assertEqual(type(obj.entities[0]), Entity)
 
 
 class ProjectTest(BaseTest):

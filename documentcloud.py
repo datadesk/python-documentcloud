@@ -106,6 +106,24 @@ class Document(BaseAPIObject):
             return obj_list
     sections = property(get_sections)
     
+    def get_entities(self):
+        """
+        Fetch the entities extracted from this document by OpenCalais.
+        """
+        try:
+            return self.__dict__[u'entities']
+        except KeyError:
+            data = self._connection.fetch("documents/%s/entities.json" % self.id).get("entities")
+            obj_list = []
+            for type, entity_list in data.items():
+                for entity in entity_list:
+                    entity['type'] = entity
+                    obj = Entity(entity)
+                    obj_list.append(obj)
+            self.__dict__[u'entities'] = obj_list
+            return obj_list
+    entities = property(get_entities)
+    
     #
     # Text
     #
@@ -286,6 +304,14 @@ class Section(BaseAPIObject):
     A section earmarked inside of a Document
     """
     pass
+
+
+class Entity(BaseAPIObject):
+    """
+    Keywords and such extracted from the document by OpenCalais.
+    """
+    def __unicode__(self):
+        return unicode(self.value)
 
 
 class Annotation(BaseAPIObject):
@@ -548,10 +574,7 @@ if __name__ == '__main__':
     public = DocumentCloud()
     private = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
     bad = DocumentCloud("Bad", "Login")
-    obj = private.projects.get("934")
-    print obj.__dict__
-    print obj.document_list
-    print obj.document_list
-    print obj.get_document(u'25798-pr-01092011-loughner')
+    obj = public.documents.get(u'25798-pr-01092011-loughner')
+    print obj.entities
 
 
