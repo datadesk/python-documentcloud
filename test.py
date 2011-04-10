@@ -175,5 +175,6 @@ class ErrorTest(BaseTest):
         """
         self.assertRaises(DoesNotExistError, self.public_client.documents.get, 'TK')
 
+
 if __name__ == '__main__':
     unittest.main()
