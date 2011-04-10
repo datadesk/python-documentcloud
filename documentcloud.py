@@ -329,6 +329,21 @@ class Resource(BaseAPIObject):
         return u''
 
 #
+# Exceptions
+#
+
+class CredentialsMissingError(Exception):
+    """
+    Raised if an API call is attempted without the required login credentials
+    """
+    def __init__(self, value):
+        self.parameter = value
+    
+    def __str__(self):
+        return repr(self.value)
+
+
+#
 # API connection clients
 #
 
@@ -442,7 +457,7 @@ class ProjectClient(BaseDocumentCloudClient):
         # this client creates in case the instance needs to hit the API
         # later. Storing it will preserve the credentials.
         self._connection = connection
-
+    
     def all(self):
         """
         Retrieve all your projects. Requires authentication.
@@ -452,6 +467,8 @@ class ProjectClient(BaseDocumentCloudClient):
             >> documentcloud.projects.all()
         
         """
+        if not self.username and not self.password:
+            raise CredentialsMissingError("This is a private method. You must provide a username and password when you initialize the DocumentCloud client to attempt this type of request.")
         project_list = self.fetch('projects.json').get("projects")
         obj_list = []
         for proj in project_list:
@@ -473,10 +490,14 @@ class DocumentCloud(BaseDocumentCloudClient):
 
 
 if __name__ == '__main__':
+    """
+    Ignore all this. Ad hoc testing ground as I build the API piece by piece.
+    """
     from pprint import pprint
     from private_settings import *
-    documentcloud = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
-    proj_list = documentcloud.projects.all()
+    public = DocumentCloud()
+    private = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
+    proj_list = public.projects.all()
     print proj_list
 
 

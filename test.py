@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 import unittest
 from documentcloud import DocumentCloud
+from documentcloud import CredentialsMissingError
 from documentcloud import Annotation, Document, Project, Section
 from private_settings import DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD
 
