@@ -1,4 +1,6 @@
 #! /usr/bin/env python
+import random
+import string
 import unittest
 from documentcloud import DocumentCloud
 from documentcloud import CredentialsMissingError
@@ -6,6 +8,19 @@ from documentcloud import CredentialsFailedError, DoesNotExistError
 from documentcloud import Annotation, Document, Project, Section, Entity
 from private_settings import DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD
 
+#
+# Odds and ends
+#
+
+def get_random_string(length=6):
+    """
+    Generate a random string of letters and numbers
+    """
+    return ''.join(random.choice(string.letters + string.digits) for i in xrange(length))
+
+#
+# Tests
+#
 
 class BaseTest(unittest.TestCase):
     
@@ -133,6 +148,40 @@ class DocumentGetTest(BaseTest):
         """
         obj = self.public_client.documents.get(self.test_id)
         self.assertEqual(type(obj.entities[0]), Entity)
+    
+    def test_put(self):
+        """
+        Test whether we can put random noise to all the editable fields.
+        """
+        # Pull the object we'll deface
+        obj = self.private_client.documents.get("15144-mitchrpt")
+        # Create random strings we will save to the editable attributes
+        title = 'The Mitchell Report (%s)' % get_random_string()
+        source = 'DLA Piper (%s)' % get_random_string()
+        description = get_random_string()
+        if obj.resources.related_article == 'http://documents.latimes.com':
+            related_article = 'http://documentcloud.org'
+        else:
+            related_article = 'http://documents.latimes.com'
+        if obj.resources.published_url == 'http://documents.latimes.com':
+            published_url = 'http://documentcloud.org'
+        else:
+            published_url = 'http://documents.latimes.com'
+        # Set the random strings our local object's attributes
+        obj.title = title
+        obj.source = source
+        obj.description = description
+        obj.resources.related_article = related_article
+        obj.resources.published_url = published_url
+        # Save the changes up to DocumentCloud
+        obj.put()
+        # Pull the object again and verify the changes stuck
+        obj = self.private_client.documents.get("15144-mitchrpt")
+        self.assertEqual(obj.title, title)
+        self.assertEqual(obj.source, source)
+        self.assertEqual(obj.description, description)
+        self.assertEqual(obj.resources.related_article, related_article)
+        self.assertEqual(obj.resources.published_url, published_url)
 
 
 class ProjectTest(BaseTest):

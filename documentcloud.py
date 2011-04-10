@@ -75,6 +75,7 @@ class Document(BaseAPIObject):
             description=self.description,
             related_article=self.resources.related_article,
             published_url=self.resources.published_url,
+            access=self.access,
         )
         self._connection.put('documents/%s.json' % self.id, params)
     
@@ -631,10 +632,10 @@ if __name__ == '__main__':
     private = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
     bad = DocumentCloud("Bad", "Login")
     obj = private.documents.get(u'15144-mitchrpt')
-    print obj.source
-    obj.source = 'DLA Piper'
-    print obj.source
-    obj.put()
+    #print obj.title
+    #obj.title = 'The Mitchell Report (w00t!)'
+    #print obj.title
+    #obj.put()
 
 
 
