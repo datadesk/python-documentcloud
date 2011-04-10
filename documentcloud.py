@@ -456,7 +456,7 @@ class DocumentClient(BaseDocumentCloudClient):
         # this client creates in case the instance needs to hit the API
         # later. Storing it will preserve the credentials.
         self._connection = connection
-
+    
     def _get_search_page(self, query, page, per_page):
         """
         Retrieve one page of search results from the DocumentCloud API.
