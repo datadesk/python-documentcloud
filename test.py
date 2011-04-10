@@ -2,6 +2,7 @@
 import unittest
 from documentcloud import DocumentCloud
 from documentcloud import CredentialsMissingError
+from documentcloud import CredentialsFailedError, DoesNotExistError
 from documentcloud import Annotation, Document, Project, Section
 from private_settings import DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD
 
@@ -13,6 +14,7 @@ class BaseTest(unittest.TestCase):
         self.test_id = '74103-report-of-the-calpers-special-review'
         self.public_client = DocumentCloud()
         self.private_client = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
+        self.fake_client = DocumentCloud("John Doe", "TK")
 
 
 class DocumentSearchTest(BaseTest):
@@ -55,15 +57,15 @@ class DocumentSearchTest(BaseTest):
         ]
         for attr in attr_list:
             self.assertTrue(hasattr(obj, attr))
-
-    def annotations(self):
+    
+    def test_annotations(self):
         """
         Test whether annotations exist.
         """
         obj = self.public_client.documents.search(self.test_search)[0]
         self.assertEqual(type(obj.annotations[0]), Annotation)
     
-    def sections(self):
+    def test_sections(self):
         """
         Test whether sections exist.
         """
@@ -103,14 +105,14 @@ class DocumentGetTest(BaseTest):
         ]
         [self.assertTrue(hasattr(obj, attr)) for attr in attr_list]
     
-    def annotations(self):
+    def test_annotations(self):
         """
         Test whether annotations exist.
         """
         obj = self.public_client.documents.get(self.test_id)
         self.assertEqual(type(obj.annotations[0]), Annotation)
     
-    def sections(self):
+    def test_sections(self):
         """
         Test whether sections exist.
         """
@@ -120,7 +122,7 @@ class DocumentGetTest(BaseTest):
 
 class ProjectTest(BaseTest):
     
-    def get_all(self):
+    def test_get_all(self):
         """
         Test an all request for a list of all projects belong to an 
         authorized user.
@@ -129,6 +131,27 @@ class ProjectTest(BaseTest):
         self.assertEqual(type(obj_list), type([]))
         self.assertEqual(type(obj_list[0]), Project)
 
+
+class ErrorTest(BaseTest):
+    
+    def test_missing_credentials(self):
+        """
+        Make sure CredentialsMissingError works.
+        """
+        self.assertRaises(CredentialsMissingError, self.public_client.projects.all)
+    
+#    def failed_credentials(self):
+#        """
+#        Make sure CredentialsFailedError works.
+#        """
+#        pass
+#    
+#    
+#    def does_not_exist(self):
+#        """
+#        Make sure DoesNotExistError works.
+#        """
+#        pass
 
 if __name__ == '__main__':
     unittest.main()
