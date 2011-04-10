@@ -336,11 +336,7 @@ class CredentialsMissingError(Exception):
     """
     Raised if an API call is attempted without the required login credentials
     """
-    def __init__(self, value):
-        self.parameter = value
-    
-    def __str__(self):
-        return repr(self.value)
+    pass
 
 
 #
