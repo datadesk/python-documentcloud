@@ -389,9 +389,9 @@ class BaseDocumentCloudClient(object):
             response = urllib2.urlopen(request)
         except urllib2.HTTPError, e:
             if e.code == 404:
-                raise DoesNotExistError()
+                raise DoesNotExistError("The resource you've requested does not exist or is unavailable without the proper credentials.")
             elif e.code == 401:
-                raise CredentialsFailedError()
+                raise CredentialsFailedError("The resource you've requested requires proper credentials.")
             else:
                 raise e
         # Read the response
@@ -515,7 +515,7 @@ if __name__ == '__main__':
     public = DocumentCloud()
     private = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
     bad = DocumentCloud("Bad", "Login")
-    proj_list = bad.documents.get("15144-mitchrpt")
+    proj_list = public.documents.get("15144-mitchrpt")
     print proj_list
 
 

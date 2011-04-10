@@ -146,7 +146,6 @@ class ErrorTest(BaseTest):
 #        """
 #        pass
 #    
-#    
     def test_does_not_exist(self):
         """
         Make sure DoesNotExistError works.
