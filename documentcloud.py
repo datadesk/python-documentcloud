@@ -51,6 +51,34 @@ class Document(BaseAPIObject):
         self.updated_at = dateparser(d.get("updated_at"))
     
     #
+    # Updates
+    #
+    
+    def put(self):
+        """
+        Save changes made to the object to DocumentCloud.
+        
+        According to DocumentCloud's docs, edits are allowed for the following
+        fields:
+        
+            * title
+            * source
+            * description
+            * related_article
+            * access
+            * published_url
+        
+        """
+        params = dict(
+            title=self.title,
+            source=self.source,
+            description=self.description,
+            related_article=self.resources.related_article,
+            published_url=self.resources.published_url,
+        )
+        self._connection.put('documents/%s.json' % self.id, params)
+    
+    #
     # Lazy loaded attributes
     #
     
@@ -372,6 +400,16 @@ class Resource(BaseAPIObject):
     
     def __unicode__(self):
         return u''
+    
+    def __getattr__(self, name):
+        # When these attrs don't exist in the DocumentCloud db,
+        # they aren't included in the JSON. But we need to them
+        # to come out as empty strings if someone tries to call
+        # them here in Python.
+        if name in ['related_article', 'published_url']:
+            return ''
+        else:
+            raise AttributeError
 
 #
 # Exceptions
@@ -411,9 +449,27 @@ class BaseDocumentCloudClient(object):
         self.username = username
         self.password = password
     
+    def put(self, method, params):
+        """
+        Post changes back to DocumentCloud
+        """
+        # Assemble the URL
+        url = self.BASE_URI + method
+        # Prepare the params
+        params['_method'] = 'put'
+        params = urllib.urlencode(params)
+        # Create the request object
+        request = urllib2.Request(url, params)
+        credentials = '%s:%s' % (self.username, self.password)
+        encoded_credentials = base64.encodestring(credentials).replace("\n", "")
+        header = 'Basic %s' % encoded_credentials
+        request.add_header('Authorization', header)
+        response = urllib2.urlopen(request)
+        print response.code
+    
     def fetch(self, method, params=None):
         """
-        Fetch an url without using any authorization.
+        Fetch an url.
         """
         # Assemble the URL
         url = self.BASE_URI + method
@@ -574,7 +630,12 @@ if __name__ == '__main__':
     public = DocumentCloud()
     private = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
     bad = DocumentCloud("Bad", "Login")
-    obj = public.documents.get(u'25798-pr-01092011-loughner')
-    print obj.entities
+    obj = private.documents.get(u'15144-mitchrpt')
+    print obj.source
+    obj.source = 'DLA Piper'
+    print obj.source
+    obj.put()
+
+
 
 
