@@ -147,11 +147,11 @@ class ErrorTest(BaseTest):
 #        pass
 #    
 #    
-#    def does_not_exist(self):
-#        """
-#        Make sure DoesNotExistError works.
-#        """
-#        pass
+    def test_does_not_exist(self):
+        """
+        Make sure DoesNotExistError works.
+        """
+        self.assertRaises(DoesNotExistError, self.public_client.documents.get, 'TK')
 
 if __name__ == '__main__':
     unittest.main()
