@@ -122,14 +122,21 @@ class DocumentGetTest(BaseTest):
 
 class ProjectTest(BaseTest):
     
-    def test_get_all(self):
+    def test_all(self):
         """
-        Test an all request for a list of all projects belong to an 
+        Test an `all` request for a list of all projects belong to an 
         authorized user.
         """
         obj_list = self.private_client.projects.all()
         self.assertEqual(type(obj_list), type([]))
         self.assertEqual(type(obj_list[0]), Project)
+    
+    def test_get(self):
+        """
+        Test a `get` request for a particular project
+        """
+        obj = self.private_client.projects.get('934')
+        self.assertEqual(type(obj), Project)
 
 
 class ErrorTest(BaseTest):

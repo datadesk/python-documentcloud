@@ -493,6 +493,20 @@ class ProjectClient(BaseDocumentCloudClient):
             proj = Project(proj)
             obj_list.append(proj)
         return obj_list
+    
+    def get(self, id):
+        """
+        Retrieve a particular project using its unique identifier.
+        
+        Example usage:
+        
+            >> documentcloud.projects.get(u'arizona-shootings')
+        
+        """
+        try:
+            return [i for i in self.all() if str(i.id) == str(id)][0]
+        except IndexError:
+            raise DoesNotExistError("The resource you've requested does not exist or is unavailable without the proper credentials.")
 
 
 class DocumentCloud(BaseDocumentCloudClient):
@@ -515,8 +529,7 @@ if __name__ == '__main__':
     public = DocumentCloud()
     private = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
     bad = DocumentCloud("Bad", "Login")
-    #proj_list = public.projects.all()
-    public.fetch("projects.json")
+    print bad.projects.get("934")
 
 
 
