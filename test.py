@@ -137,6 +137,22 @@ class ProjectTest(BaseTest):
         """
         obj = self.private_client.projects.get('934')
         self.assertEqual(type(obj), Project)
+    
+    def test_document_list(self):
+        """
+        Verify that a project can pull back all if its associated documents.
+        """
+        obj = self.private_client.projects.get('934')
+        doc_list = obj.document_list
+        self.assertEqual(type(doc_list[0]), Document)
+    
+    def test_get_document(self):
+        """
+        Verify that a project can pull a particular document by id
+        """
+        obj = self.private_client.projects.get('934')
+        doc = obj.get_document(u'25798-pr-01092011-loughner')
+        self.assertEqual(type(doc), Document)
 
 
 class ErrorTest(BaseTest):

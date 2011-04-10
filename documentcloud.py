@@ -87,7 +87,6 @@ class Document(BaseAPIObject):
             return [Annotation(i) for i in obj_list]
         except KeyError:
             obj = self._connection.documents.get(id=self.id)
-            #print obj.__dict__['annotations']
             obj_list = [Annotation(i) for i in obj.__dict__['annotations']]
             self.__dict__[u'annotations'] =obj.__dict__['annotations']
             return obj_list
@@ -259,7 +258,27 @@ class Project(BaseAPIObject):
     """
     A project returned by the API.
     """
-    pass
+    def get_document_list(self):
+        """
+        Retrieves all documents included in this project.
+        """
+        try:
+            return self.__dict__[u'document_list']
+        except KeyError:
+            obj_list = [self._connection.documents.get(i) for i in self.document_ids]
+            self.__dict__[u'document_list'] = obj_list
+            return obj_list
+    document_list = property(get_document_list)
+    
+    def get_document(self, id):
+        """
+        Retrieves a particular document from this project.
+        """
+        obj_list = self.document_list
+        matches = [i for i in obj_list if str(i.id) == str(id)]
+        if not matches:
+            raise DoesNotExistError("The resource you've requested does not exist or is unavailable without the proper credentials.")
+        return matches[0]
 
 
 class Section(BaseAPIObject):
@@ -529,7 +548,10 @@ if __name__ == '__main__':
     public = DocumentCloud()
     private = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
     bad = DocumentCloud("Bad", "Login")
-    print bad.projects.get("934")
-
+    obj = private.projects.get("934")
+    print obj.__dict__
+    print obj.document_list
+    print obj.document_list
+    print obj.get_document(u'25798-pr-01092011-loughner')
 
 
