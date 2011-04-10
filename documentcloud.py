@@ -68,6 +68,7 @@ class Document(BaseAPIObject):
             * access
             * published_url
         
+        Returns nothing.
         """
         params = dict(
             title=self.title,
@@ -454,6 +455,8 @@ class BaseDocumentCloudClient(object):
         """
         Post changes back to DocumentCloud
         """
+        if not self.username and not self.password:
+            raise CredentialsMissingError("This is a private method. You must provide a username and password when you initialize the DocumentCloud client to attempt this type of request.")
         # Assemble the URL
         url = self.BASE_URI + method
         # Prepare the params
@@ -465,8 +468,16 @@ class BaseDocumentCloudClient(object):
         encoded_credentials = base64.encodestring(credentials).replace("\n", "")
         header = 'Basic %s' % encoded_credentials
         request.add_header('Authorization', header)
-        response = urllib2.urlopen(request)
-        print response.code
+        # Make the request
+        try:
+            response = urllib2.urlopen(request)
+        except urllib2.HTTPError, e:
+            if e.code == 404:
+                raise DoesNotExistError("The resource you've requested does not exist or is unavailable without the proper credentials.")
+            elif e.code == 401:
+                raise CredentialsFailedError("The resource you've requested requires proper credentials.")
+            else:
+                raise e
     
     def fetch(self, method, params=None):
         """
@@ -537,6 +548,7 @@ class DocumentClient(BaseDocumentCloudClient):
         """
         page = 1
         document_list = []
+        # Loop through all the search pages and fetch everything
         while True:
             results = self._get_search_page(query, page=page, per_page=1000)
             if results:
@@ -632,6 +644,7 @@ if __name__ == '__main__':
     private = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
     bad = DocumentCloud("Bad", "Login")
     obj = private.documents.get(u'15144-mitchrpt')
+    print obj.resources.related_article
     #print obj.title
     #obj.title = 'The Mitchell Report (w00t!)'
     #print obj.title

@@ -1,4 +1,14 @@
 #! /usr/bin/env python
+"""
+Tests out the DocumentCloud API.
+
+Most requests require authentication, which I'm not sure how deal with properly
+in this circumstance. For the time being, I'm importing latimes.com credentials
+and fiddling around with junk files I've placed in there. Obviously, that means
+this test suite will only work on my computer, which seems like a problem.
+
+If you know how I ought to sort this sort of thing out, please let me know.
+"""
 import random
 import string
 import unittest
