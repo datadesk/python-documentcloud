@@ -14,7 +14,7 @@ import string
 import textwrap
 import unittest
 from documentcloud import DocumentCloud
-from documentcloud import CredentialsMissingError
+from documentcloud import CredentialsMissingError, DuplicateObjectError
 from documentcloud import CredentialsFailedError, DoesNotExistError
 from documentcloud import Annotation, Document, Project, Section, Entity
 from private_settings import DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD
@@ -270,6 +270,13 @@ class ProjectTest(BaseTest):
         obj.put()
         obj = self.private_client.projects.get("703")
         self.assertEqual(len(obj.document_list), len(proj_ids))
+    
+    def test_document_list_type_restrictions(self):
+        """
+        Make sure document_lists will only accept Document objects
+        """
+        obj = self.private_client.projects.get("703")
+        self.assertRaises(TypeError, obj.document_list.append, "The letter C")
 
 
 class ErrorTest(BaseTest):
@@ -291,6 +298,14 @@ class ErrorTest(BaseTest):
         Make sure DoesNotExistError works.
         """
         self.assertRaises(DoesNotExistError, self.public_client.documents.get, 'TK')
+    
+    def test_duplicate_object(self):
+        """
+        Make sure DuplicateObjectError works.
+        """
+        obj = self.private_client.projects.get("703")
+        doc = self.private_client.documents.get(u'12672-the-klee-report-volume-4')
+        self.assertRaises(DuplicateObjectError, obj.document_list.append, doc)
 
 
 if __name__ == '__main__':

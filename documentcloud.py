@@ -311,12 +311,15 @@ class DocumentSet(list):
     from getting into the list and ensuring that only Document
     objects are appended.
     """
-    
-    def append(self, obj, n=1):
-        for i in xrange(n):
-            existing_ids = [i.id for i in list(self.__iter__())]
-            if obj.id not in existing_ids:
-                super(DocumentSet, self).append(copy.copy(obj))
+    def append(self, obj):
+        # Verify that the user is trying to add a Document object
+        if not isinstance(obj, Document):
+            raise TypeError("Only Document objects can be added to the document_list")
+        # Check if the object is already in the list
+        if obj.id in [i.id for i in list(self.__iter__())]:
+            raise DuplicateObjectError("This object already exists in the document_list")
+        # If it's all true, append it.
+        super(DocumentSet, self).append(copy.copy(obj))
 
 
 class Project(BaseAPIObject):
@@ -331,7 +334,7 @@ class Project(BaseAPIObject):
         if attr == 'document_list':
             if value == None:
                 self.__dict__[u'document_list'] = DocumentSet([])
-            elif type(value) == list:
+            elif isinstance(value, list):
                 self.__dict__[u'document_list'] = DocumentSet(value)
             else:
                 raise TypeError
@@ -494,6 +497,12 @@ class CredentialsFailedError(Exception):
 class DoesNotExistError(Exception):
     """
     Raised when the user asks the API for something it cannot find.
+    """
+    pass
+
+class DuplicateObjectError(Exception):
+    """
+    Raised when the user tries to add a duplicate to a distinct list.
     """
     pass
 
@@ -716,13 +725,15 @@ if __name__ == '__main__':
     public = DocumentCloud()
     private = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
     bad = DocumentCloud("Bad", "Login")
+    # Pull the project
     proj = private.projects.get("703")
     print proj.document_list
     print "docs: %s" % len(proj.document_list)
+    # Zero out the list
     doc = private.documents.get(u'12672-the-klee-report-volume-4')
-    proj.document_list.append(doc)
-    #proj.document_list = None
+    proj.document_list = None
     print proj.document_list
+    # Save the changes and check what sticks
     proj.put()
     proj = private.projects.get("703")
     print "docs: %s" % len(proj.document_list)
