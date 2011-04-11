@@ -67,35 +67,7 @@ class Document(BaseAPIObject):
             * related_article
             * access
             * published_url
-            #
-    # Updates
-    #
-    
-    def put(self):
-        """
-        Save changes made to the object to DocumentCloud.
         
-        According to DocumentCloud's docs, edits are allowed for the following
-        fields:
-        
-            * title
-            * source
-            * description
-            * related_article
-            * access
-            * published_url
-        
-        Returns nothing.
-        """
-        params = dict(
-            title=self.title,
-            source=self.source,
-            description=self.description,
-            related_article=self.resources.related_article,
-            published_url=self.resources.published_url,
-            access=self.access,
-        )
-        self._connection.put('documents/%s.json' % self.id, params)
         Returns nothing.
         """
         params = dict(
@@ -700,12 +672,17 @@ if __name__ == '__main__':
     private = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
     bad = DocumentCloud("Bad", "Login")
     obj = private.documents.get(u'15144-mitchrpt')
-    print obj.resources.related_article
-    #print obj.title
-    #obj.title = 'The Mitchell Report (w00t!)'
-    #print obj.title
-    #obj.put()
+    proj = private.projects.get("703")
+    print "docs: %s" % len(proj.document_list)
+    proj.document_list.append(obj)
+    print "docs: %s" % len(proj.document_list)
+    #proj.put()
+    #proj = private.projects.get("703")
+    #print "docs: %s" % len(proj.document_list)
 
+"""
+[u'12672-the-klee-report-volume-4', u'12671-the-klee-report-volume-3', u'12670-the-klee-report-volume-2-annex-c', u'12669-the-klee-report-volume-2-annex-b', u'12668-the-klee-report-volume-2-annex-a', u'12667-the-klee-report-volume-2', u'12666-the-klee-report-volume-1']
+"""
 
 
 
