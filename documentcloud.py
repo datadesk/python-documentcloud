@@ -10,6 +10,7 @@ Further documentation:
     https://www.documentcloud.org/help/api
 
 """
+import copy
 import base64
 import urllib, urllib2
 from datetime import datetime
@@ -302,6 +303,22 @@ class Document(BaseAPIObject):
     large_image = property(get_large_image)
 
 
+class DocumentSet(list):
+    """
+    A custom class for project lists associated with projects.
+    
+    Allows some tweaks, like preventing duplicate documents
+    from getting into the list and ensuring that only Document
+    objects are appended.
+    """
+    
+    def append(self, obj, n=1):
+        for i in xrange(n):
+            existing_ids = [i.id for i in list(self.__iter__())]
+            if obj.id not in existing_ids:
+                super(DocumentSet, self).append(copy.copy(obj))
+
+
 class Project(BaseAPIObject):
     """
     A project returned by the API.
@@ -310,8 +327,14 @@ class Project(BaseAPIObject):
         """
         An override that allows for a custom method setting 'document_list'
         """
+        # Allow document_list to be zeroed out with [] or None
         if attr == 'document_list':
-            self.__dict__[u'document_list'] = value
+            if value == None:
+                self.__dict__[u'document_list'] = DocumentSet([])
+            elif type(value) == list:
+                self.__dict__[u'document_list'] = DocumentSet(value)
+            else:
+                raise TypeError
         else:
             object.__setattr__(self, attr, value)
     
@@ -350,7 +373,7 @@ class Project(BaseAPIObject):
         try:
             return self.__dict__[u'document_list']
         except KeyError:
-            obj_list = [self._connection.documents.get(i) for i in self.document_ids]
+            obj_list = DocumentSet([self._connection.documents.get(i) for i in self.document_ids])
             self.__dict__[u'document_list'] = obj_list
             return obj_list
     document_list = property(get_document_list)
@@ -693,25 +716,16 @@ if __name__ == '__main__':
     public = DocumentCloud()
     private = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
     bad = DocumentCloud("Bad", "Login")
-    #obj = private.documents.get(u'15144-mitchrpt')
     proj = private.projects.get("703")
+    print proj.document_list
     print "docs: %s" % len(proj.document_list)
-#    proj.document_list = []
-#    proj.put()
-#    proj = private.projects.get("703")
-#    print "docs: %s" % len(proj.document_list)
-    klee_ids = [u'12672-the-klee-report-volume-4', u'12671-the-klee-report-volume-3', u'12670-the-klee-report-volume-2-annex-c', u'12669-the-klee-report-volume-2-annex-b', u'12668-the-klee-report-volume-2-annex-a', u'12667-the-klee-report-volume-2', u'12666-the-klee-report-volume-1']
-    for id in klee_ids[:2]:
-        obj = private.documents.get(id)
-        proj.document_list.append(obj)
-    print "docs: %s" % len(proj.document_list)
+    doc = private.documents.get(u'12672-the-klee-report-volume-4')
+    proj.document_list.append(doc)
+    #proj.document_list = None
+    print proj.document_list
     proj.put()
     proj = private.projects.get("703")
     print "docs: %s" % len(proj.document_list)
-
-"""
-[u'12672-the-klee-report-volume-4', u'12671-the-klee-report-volume-3', u'12670-the-klee-report-volume-2-annex-c', u'12669-the-klee-report-volume-2-annex-b', u'12668-the-klee-report-volume-2-annex-a', u'12667-the-klee-report-volume-2', u'12666-the-klee-report-volume-1']
-"""
 
 
 
