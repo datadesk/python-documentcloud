@@ -503,7 +503,6 @@ class BaseDocumentCloudClient(object):
         else:
             # Otherwise, we can just use the vanilla urllib prep method
             params = urllib.urlencode(params)
-        print params
         # Create the request object
         request = urllib2.Request(url, params)
         credentials = '%s:%s' % (self.username, self.password)
@@ -520,7 +519,6 @@ class BaseDocumentCloudClient(object):
                 raise CredentialsFailedError("The resource you've requested requires proper credentials.")
             else:
                 raise e
-        print response.read()
     
     def fetch(self, method, params=None):
         """
