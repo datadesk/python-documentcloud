@@ -487,9 +487,23 @@ class BaseDocumentCloudClient(object):
             raise CredentialsMissingError("This is a private method. You must provide a username and password when you initialize the DocumentCloud client to attempt this type of request.")
         # Assemble the URL
         url = self.BASE_URI + method
-        # Prepare the params
+        # Prepare the params, first by adding a custom command to simulate a PUT request
+        # even though we are actually POSTing. This is something DocumentCloud expects.
         params['_method'] = 'put'
-        params = urllib.urlencode(params)
+        # ..with some special case handling of the document_ids list, if it exists
+        if params.get("document_ids", None):
+            # Pull the document_ids out of the params
+            document_ids = params.get("document_ids")
+            del params['document_ids']
+            params = urllib.urlencode(params)
+            # These need to be specially formatted in the style documentcloud
+            # expects arrays. The example they provide is:
+            # ?document_ids[]=28-boumediene&document_ids[]=207-academy&document_ids[]=30-insider-trading
+            params += "".join(['&document_ids[]=%s' % id for id in document_ids])
+        else:
+            # Otherwise, we can just use the vanilla urllib prep method
+            params = urllib.urlencode(params)
+        print params
         # Create the request object
         request = urllib2.Request(url, params)
         credentials = '%s:%s' % (self.username, self.password)
@@ -506,6 +520,7 @@ class BaseDocumentCloudClient(object):
                 raise CredentialsFailedError("The resource you've requested requires proper credentials.")
             else:
                 raise e
+        print response.read()
     
     def fetch(self, method, params=None):
         """
@@ -671,14 +686,18 @@ if __name__ == '__main__':
     public = DocumentCloud()
     private = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
     bad = DocumentCloud("Bad", "Login")
-    obj = private.documents.get(u'15144-mitchrpt')
+    #obj = private.documents.get(u'15144-mitchrpt')
+    proj = private.projects.get("703")
+    klee_ids = [u'12672-the-klee-report-volume-4', u'12671-the-klee-report-volume-3', u'12670-the-klee-report-volume-2-annex-c', u'12669-the-klee-report-volume-2-annex-b', u'12668-the-klee-report-volume-2-annex-a', u'12667-the-klee-report-volume-2', u'12666-the-klee-report-volume-1']
+    for id in klee_ids[:2]:
+        obj = private.documents.get(id)
+        proj.document_list.append(obj)
+    print "docs: %s" % len(proj.document_list)
+    #proj.document_list.append(obj)
+    #print "docs: %s" % len(proj.document_list)
+    proj.put()
     proj = private.projects.get("703")
     print "docs: %s" % len(proj.document_list)
-    proj.document_list.append(obj)
-    print "docs: %s" % len(proj.document_list)
-    #proj.put()
-    #proj = private.projects.get("703")
-    #print "docs: %s" % len(proj.document_list)
 
 """
 [u'12672-the-klee-report-volume-4', u'12671-the-klee-report-volume-3', u'12670-the-klee-report-volume-2-annex-c', u'12669-the-klee-report-volume-2-annex-b', u'12668-the-klee-report-volume-2-annex-a', u'12667-the-klee-report-volume-2', u'12666-the-klee-report-volume-1']
