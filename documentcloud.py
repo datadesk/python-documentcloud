@@ -67,7 +67,35 @@ class Document(BaseAPIObject):
             * related_article
             * access
             * published_url
+            #
+    # Updates
+    #
+    
+    def put(self):
+        """
+        Save changes made to the object to DocumentCloud.
         
+        According to DocumentCloud's docs, edits are allowed for the following
+        fields:
+        
+            * title
+            * source
+            * description
+            * related_article
+            * access
+            * published_url
+        
+        Returns nothing.
+        """
+        params = dict(
+            title=self.title,
+            source=self.source,
+            description=self.description,
+            related_article=self.resources.related_article,
+            published_url=self.resources.published_url,
+            access=self.access,
+        )
+        self._connection.put('documents/%s.json' % self.id, params)
         Returns nothing.
         """
         params = dict(
@@ -306,6 +334,34 @@ class Project(BaseAPIObject):
     """
     A project returned by the API.
     """
+    #
+    # Updates
+    #
+    
+    def put(self):
+        """
+        Save changes made to the object to DocumentCloud.
+        
+        According to DocumentCloud's docs, edits are allowed for the following
+        fields:
+        
+            * title
+            * description
+            * document_ids
+        
+        Returns nothing.
+        """
+        params = dict(
+            title=self.title,
+            description=self.description,
+            document_ids=[str(i.id) for i in self.document_list]
+        )
+        self._connection.put('projects/%s.json' % self.id, params)
+    
+    #
+    # Documents
+    #
+    
     def get_document_list(self):
         """
         Retrieves all documents included in this project.
