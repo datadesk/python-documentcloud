@@ -306,6 +306,15 @@ class Project(BaseAPIObject):
     """
     A project returned by the API.
     """
+    def __setattr__(self, attr, value):
+        """
+        An override that allows for a custom method setting 'document_list'
+        """
+        if attr == 'document_list':
+            self.__dict__[u'document_list'] = value
+        else:
+            object.__setattr__(self, attr, value)
+    
     #
     # Updates
     #
@@ -686,13 +695,16 @@ if __name__ == '__main__':
     bad = DocumentCloud("Bad", "Login")
     #obj = private.documents.get(u'15144-mitchrpt')
     proj = private.projects.get("703")
+    print "docs: %s" % len(proj.document_list)
+#    proj.document_list = []
+#    proj.put()
+#    proj = private.projects.get("703")
+#    print "docs: %s" % len(proj.document_list)
     klee_ids = [u'12672-the-klee-report-volume-4', u'12671-the-klee-report-volume-3', u'12670-the-klee-report-volume-2-annex-c', u'12669-the-klee-report-volume-2-annex-b', u'12668-the-klee-report-volume-2-annex-a', u'12667-the-klee-report-volume-2', u'12666-the-klee-report-volume-1']
     for id in klee_ids[:2]:
         obj = private.documents.get(id)
         proj.document_list.append(obj)
     print "docs: %s" % len(proj.document_list)
-    #proj.document_list.append(obj)
-    #print "docs: %s" % len(proj.document_list)
     proj.put()
     proj = private.projects.get("703")
     print "docs: %s" % len(proj.document_list)

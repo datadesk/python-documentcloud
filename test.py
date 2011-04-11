@@ -11,6 +11,7 @@ If you know how I ought to sort this sort of thing out, please let me know.
 """
 import random
 import string
+import textwrap
 import unittest
 from documentcloud import DocumentCloud
 from documentcloud import CredentialsMissingError
@@ -227,6 +228,48 @@ class ProjectTest(BaseTest):
         obj = self.private_client.projects.get('934')
         doc = obj.get_document(u'25798-pr-01092011-loughner')
         self.assertEqual(type(doc), Document)
+    
+    def test_put(self):
+        """
+        Test whether we can put random noise to all the editable fields.
+        """
+        # Pull the object we'll deface
+        obj = self.private_client.projects.get("703")
+        # Create random strings we will save to the editable attributes
+        title = 'The Klee Report (%s)' % get_random_string()
+        description = textwrap.dedent("""
+        An independent probe into Sam Zell\'s purchase of Tribune Company by 
+        investigator Kenneth Klee. Released at the end of July 2010. (%s)
+        """)
+        description = description % get_random_string()
+        # Set the random strings our local object's attributes
+        # and zero out the document list.
+        obj.title = title
+        obj.description = description
+        obj.document_list = []
+        # Save the changes up to DocumentCloud
+        obj.put()
+        # Pull the object again and verify the changes stuck
+        obj = self.private_client.projects.get("703")
+        self.assertEqual(obj.title, title)
+        self.assertEqual(obj.description, description)
+        self.assertEqual(len(obj.document_list), 0)
+        # Now add all the documents back in
+        proj_ids = [
+            u'12672-the-klee-report-volume-4',
+            u'12671-the-klee-report-volume-3',
+            u'12670-the-klee-report-volume-2-annex-c',
+            u'12669-the-klee-report-volume-2-annex-b',
+            u'12668-the-klee-report-volume-2-annex-a',
+            u'12667-the-klee-report-volume-2',
+            u'12666-the-klee-report-volume-1'
+        ]
+        for id in proj_ids:
+            doc = self.private_client.documents.get(id)
+            obj.document_list.append(doc)
+        obj.put()
+        obj = self.private_client.projects.get("703")
+        self.assertEqual(len(obj.document_list), len(proj_ids))
 
 
 class ErrorTest(BaseTest):
