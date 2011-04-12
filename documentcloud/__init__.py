@@ -23,6 +23,278 @@ try:
 except ImportError:
     import simplejson as json
 
+
+#
+# API connection clients
+#
+
+class BaseDocumentCloudClient(object):
+    """
+    Patterns common to all of the different API methods.
+    """
+    BASE_URI = u'https://www.documentcloud.org/api/'
+    
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
+    
+    def _make_request(self, url, params=None, opener=None):
+        """
+        Issue a HTTP request and return the response.
+        """
+        # Create the request object
+        args = [i for i in [url, params] if i]
+        request = urllib2.Request(*args)
+        # If the client has credentials, include them as a header
+        if self.username and self.password:
+            credentials = '%s:%s' % (self.username, self.password)
+            encoded_credentials = base64.encodestring(credentials).replace("\n", "")
+            header = 'Basic %s' % encoded_credentials
+            request.add_header('Authorization', header)
+        # Make the request
+        try:
+            # If the request provides a custom opener, like the upload request,
+            # which relies on a multipart request, it is applied here.
+            if opener:
+                opener = urllib2.build_opener(opener)
+                response = opener.open(request)
+            else:
+                response = urllib2.urlopen(request)
+        except urllib2.HTTPError, e:
+            if e.code == 404:
+                raise DoesNotExistError("The resource you've requested does not exist or is unavailable without the proper credentials.")
+            elif e.code == 401:
+                raise CredentialsFailedError("The resource you've requested requires proper credentials.")
+            else:
+                raise e
+        # Read the response
+        return response.read()
+    
+    def put(self, method, params):
+        """
+        Post changes back to DocumentCloud
+        """
+        # Make sure the client has credentials
+        if not self.username and not self.password:
+            raise CredentialsMissingError("This is a private method. You must provide a username and password when you initialize the DocumentCloud client to attempt this type of request.")
+        # Prepare the params, first by adding a custom command to simulate a PUT request
+        # even though we are actually POSTing. This is something DocumentCloud expects.
+        params['_method'] = 'put'
+        # Some special case handling of the document_ids list, if it exists
+        if params.get("document_ids", None):
+            # Pull the document_ids out of the params
+            document_ids = params.get("document_ids")
+            del params['document_ids']
+            params = urllib.urlencode(params)
+            # These need to be specially formatted in the style documentcloud
+            # expects arrays. The example they provide is:
+            # ?document_ids[]=28-boumediene&document_ids[]=207-academy&document_ids[]=30-insider-trading
+            params += "".join(['&document_ids[]=%s' % id for id in document_ids])
+        else:
+            # Otherwise, we can just use the vanilla urllib prep method
+            params = urllib.urlencode(params)
+        content = self._make_request(
+            self.BASE_URI + method,
+            params,
+        )
+    
+    def fetch(self, method, params=None):
+        """
+        Fetch an url.
+        """
+        if params:
+            params = urllib.urlencode(params)
+        content = self._make_request(
+            self.BASE_URI + method,
+            params,
+        )
+        # Convert its JSON to a Python dictionary and return
+        return json.loads(content)
+
+
+class DocumentCloud(BaseDocumentCloudClient):
+    """
+    The public interface for the DocumentCloud API
+    """
+    
+    def __init__(self, username=None, password=None):
+        super(DocumentCloud, self).__init__(username, password)
+        self.documents = DocumentClient(self.username, self.password, self)
+        self.projects = ProjectClient(self.username, self.password, self)
+
+
+class DocumentClient(BaseDocumentCloudClient):
+    """
+    Methods for collecting documents
+    """
+    def __init__(self, username, password, connection):
+        self.username = username
+        self.password = password
+        # We want to have the connection around on all Document objects
+        # this client creates in case the instance needs to hit the API
+        # later. Storing it will preserve the credentials.
+        self._connection = connection
+    
+    def _get_search_page(self, query, page, per_page):
+        """
+        Retrieve one page of search results from the DocumentCloud API.
+        """
+        params = {
+            'q': query,
+            'page': page,
+            'per_page': per_page,
+        }
+        data = self.fetch(u'search.json', params)
+        return data.get("documents")
+    
+    def search(self, query):
+        """
+        Retrieve all objects that make a search query.
+        
+        Example usage:
+        
+            >> documentcloud.documents.search('salazar')
+        
+        Based on code by Chris Amico
+        """
+        page = 1
+        document_list = []
+        # Loop through all the search pages and fetch everything
+        while True:
+            results = self._get_search_page(query, page=page, per_page=1000)
+            if results:
+                document_list += results
+                page += 1
+            else:
+                break
+        obj_list = []
+        for doc in document_list:
+            doc['_connection'] = self._connection
+            obj = Document(doc)
+            obj_list.append(obj)
+        return obj_list
+    
+    def get(self, id):
+        """
+        Retrieve a particular document using it's unique identifier.
+        
+        Example usage:
+        
+            >> documentcloud.documents.get(u'71072-oir-final-report')
+        
+        """
+        data = self.fetch('documents/%s.json' % id).get("document")
+        data['_connection'] = self._connection
+        return Document(data)
+    
+    def upload(self, path, title=None, source=None,description=None,
+        related_article=None, published_url=None,
+        access='private', project=None):
+        """
+        Upload a PDF or other image file to DocumentCloud.
+        
+        Example usage:
+        
+            >> documentcloud.documents.upload("/home/ben/sample.pdf", "sample")
+        
+        Returns the documentcloud id of the document that's created.
+        
+        Based on code developed by Mitchell Kotler and refined by Christopher Groskopf.
+        """
+        # Make sure the client has credentials
+        if not self.username and not self.password:
+            raise CredentialsMissingError("This is a private method. You must provide a username and password when you initialize the DocumentCloud client to attempt this type of request.")
+        # Required parameters
+        params = {'file': open(path, 'rb')}
+        # Optional parameters
+        if title:
+            params['title'] = title
+        else:
+            # Set it to the file name
+            params['title'] = path.split(os.sep)[-1].split(".")[0]
+        if source: params['source'] = source
+        if description: params['description'] = description
+        if related_article: params['related_article'] = related_article
+        if published_url: params['published_url'] = published_url
+        if access: params['access'] = access
+        if project: params['project'] = project
+        # Make the request
+        response = self._make_request(self.BASE_URI + 'upload.json', params, MultipartPostHandler)
+        return json.loads(response)['id']
+
+
+class ProjectClient(BaseDocumentCloudClient):
+    """
+    Methods for collecting projects
+    """
+    def __init__(self, username, password, connection):
+        self.username = username
+        self.password = password
+        # We want to have the connection around on all Document objects
+        # this client creates in case the instance needs to hit the API
+        # later. Storing it will preserve the credentials.
+        self._connection = connection
+    
+    def all(self):
+        """
+        Retrieve all your projects. Requires authentication.
+        
+        Example usage:
+        
+            >> documentcloud.projects.all()
+        
+        """
+        if not self.username and not self.password:
+            raise CredentialsMissingError("This is a private method. You must provide a username and password when you initialize the DocumentCloud client to attempt this type of request.")
+        project_list = self.fetch('projects.json').get("projects")
+        obj_list = []
+        for proj in project_list:
+            proj['_connection'] = self._connection
+            proj = Project(proj)
+            obj_list.append(proj)
+        return obj_list
+    
+    def get(self, id):
+        """
+        Retrieve a particular project using its unique identifier.
+        
+        Example usage:
+        
+            >> documentcloud.projects.get(u'arizona-shootings')
+        
+        """
+        try:
+            return [i for i in self.all() if str(i.id) == str(id)][0]
+        except IndexError:
+            raise DoesNotExistError("The resource you've requested does not exist or is unavailable without the proper credentials.")
+    
+    def create(self, title, description=None, document_ids=None):
+        """
+        Creates a new project.
+        
+        Returns its unique identifer in documentcloud
+        
+        Example usage:
+        
+            >> documentcloud.projects.create("The Ruben Salazar Files")
+        
+        """
+        if not self.username and not self.password:
+            raise CredentialsMissingError("This is a private method. You must provide a username and password when you initialize the DocumentCloud client to attempt this type of request.")
+        params = {
+            'title': title,
+        }
+        if description: params['description'] = description
+        params = urllib.urlencode(params)
+        if document_ids:
+            # These need to be specially formatted in the style documentcloud
+            # expects arrays. The example they provide is:
+            # ?document_ids[]=28-boumediene&document_ids[]=207-academy&document_ids[]=30-insider-trading
+            params += "".join(['&document_ids[]=%s' % id for id in document_ids])
+        response = self._make_request(self.BASE_URI + "projects.json", params)
+        return json.loads(response)['project']['id']
+
+
 #
 # API objects
 #
@@ -42,6 +314,32 @@ class BaseAPIObject(object):
     
     def __unicode__(self):
         return unicode(self.title)
+
+
+class Annotation(BaseAPIObject):
+    """
+    An annotation earmarked inside of a Document.
+    """
+    def __init__(self, d):
+        self.__dict__ = d
+    
+    def __repr__(self):
+        return '<%s>' % self.__class__.__name__
+    
+    def __str__(self):
+        return self.__unicode__().encode("utf-8")
+    
+    def __unicode__(self):
+        return u''
+    
+    def get_location(self):
+        """
+        Return the location as a good
+        """
+        image_string =  self.__dict__['location']['image']
+        image_ints = map(int, image_string.split(","))
+        return Location(*image_ints)
+    location = property(get_location)
 
 
 class Document(BaseAPIObject):
@@ -325,6 +623,34 @@ class DocumentSet(list):
         super(DocumentSet, self).append(copy.copy(obj))
 
 
+class Entity(BaseAPIObject):
+    """
+    Keywords and such extracted from the document by OpenCalais.
+    """
+    def __unicode__(self):
+        return unicode(self.value)
+
+
+class Location(object):
+    """
+    The location of a 
+    """
+    def __repr__(self):
+        return '<%s>' % self.__class__.__name__
+    
+    def __str__(self):
+        return self.__unicode__().encode("utf-8")
+    
+    def __unicode__(self):
+        return u''
+    
+    def __init__(self, top, right, bottom, left):
+        self.top = top
+        self.right = right
+        self.bottom = bottom
+        self.left = left
+
+
 class Project(BaseAPIObject):
     """
     A project returned by the API.
@@ -395,67 +721,6 @@ class Project(BaseAPIObject):
         return matches[0]
 
 
-class Section(BaseAPIObject):
-    """
-    A section earmarked inside of a Document
-    """
-    pass
-
-
-class Entity(BaseAPIObject):
-    """
-    Keywords and such extracted from the document by OpenCalais.
-    """
-    def __unicode__(self):
-        return unicode(self.value)
-
-
-class Annotation(BaseAPIObject):
-    """
-    An annotation earmarked inside of a Document.
-    """
-    def __init__(self, d):
-        self.__dict__ = d
-    
-    def __repr__(self):
-        return '<%s>' % self.__class__.__name__
-    
-    def __str__(self):
-        return self.__unicode__().encode("utf-8")
-    
-    def __unicode__(self):
-        return u''
-    
-    def get_location(self):
-        """
-        Return the location as a good
-        """
-        image_string =  self.__dict__['location']['image']
-        image_ints = map(int, image_string.split(","))
-        return Location(*image_ints)
-    location = property(get_location)
-
-
-class Location(object):
-    """
-    The location of a 
-    """
-    def __repr__(self):
-        return '<%s>' % self.__class__.__name__
-    
-    def __str__(self):
-        return self.__unicode__().encode("utf-8")
-    
-    def __unicode__(self):
-        return u''
-    
-    def __init__(self, top, right, bottom, left):
-        self.top = top
-        self.right = right
-        self.bottom = bottom
-        self.left = left
-
-
 class Resource(BaseAPIObject):
     """
     The resources associated with a Document. Hyperlinks and such.
@@ -479,275 +744,13 @@ class Resource(BaseAPIObject):
         else:
             raise AttributeError
 
-#
-# API connection clients
-#
 
-class BaseDocumentCloudClient(object):
+class Section(BaseAPIObject):
     """
-    Patterns common to all of the different API methods.
+    A section earmarked inside of a Document
     """
-    BASE_URI = u'https://www.documentcloud.org/api/'
-    
-    def __init__(self, username, password):
-        self.username = username
-        self.password = password
-    
-    def _make_request(self, url, params=None, opener=None):
-        """
-        Issue a HTTP request and return the response.
-        """
-        # Create the request object
-        args = [i for i in [url, params] if i]
-        request = urllib2.Request(*args)
-        # If the client has credentials, include them as a header
-        if self.username and self.password:
-            credentials = '%s:%s' % (self.username, self.password)
-            encoded_credentials = base64.encodestring(credentials).replace("\n", "")
-            header = 'Basic %s' % encoded_credentials
-            request.add_header('Authorization', header)
-        # Make the request
-        try:
-            # If the request provides a custom opener, like the upload request,
-            # which relies on a multipart request, it is applied here.
-            if opener:
-                opener = urllib2.build_opener(opener)
-                response = opener.open(request)
-            else:
-                response = urllib2.urlopen(request)
-        except urllib2.HTTPError, e:
-            if e.code == 404:
-                raise DoesNotExistError("The resource you've requested does not exist or is unavailable without the proper credentials.")
-            elif e.code == 401:
-                raise CredentialsFailedError("The resource you've requested requires proper credentials.")
-            else:
-                raise e
-        # Read the response
-        return response.read()
-    
-    def put(self, method, params):
-        """
-        Post changes back to DocumentCloud
-        """
-        # Make sure the client has credentials
-        if not self.username and not self.password:
-            raise CredentialsMissingError("This is a private method. You must provide a username and password when you initialize the DocumentCloud client to attempt this type of request.")
-        # Prepare the params, first by adding a custom command to simulate a PUT request
-        # even though we are actually POSTing. This is something DocumentCloud expects.
-        params['_method'] = 'put'
-        # Some special case handling of the document_ids list, if it exists
-        if params.get("document_ids", None):
-            # Pull the document_ids out of the params
-            document_ids = params.get("document_ids")
-            del params['document_ids']
-            params = urllib.urlencode(params)
-            # These need to be specially formatted in the style documentcloud
-            # expects arrays. The example they provide is:
-            # ?document_ids[]=28-boumediene&document_ids[]=207-academy&document_ids[]=30-insider-trading
-            params += "".join(['&document_ids[]=%s' % id for id in document_ids])
-        else:
-            # Otherwise, we can just use the vanilla urllib prep method
-            params = urllib.urlencode(params)
-        content = self._make_request(
-            self.BASE_URI + method,
-            params,
-        )
-    
-    def fetch(self, method, params=None):
-        """
-        Fetch an url.
-        """
-        if params:
-            params = urllib.urlencode(params)
-        content = self._make_request(
-            self.BASE_URI + method,
-            params,
-        )
-        # Convert its JSON to a Python dictionary and return
-        return json.loads(content)
+    pass
 
-
-class DocumentClient(BaseDocumentCloudClient):
-    """
-    Methods for collecting documents
-    """
-    def __init__(self, username, password, connection):
-        self.username = username
-        self.password = password
-        # We want to have the connection around on all Document objects
-        # this client creates in case the instance needs to hit the API
-        # later. Storing it will preserve the credentials.
-        self._connection = connection
-    
-    def _get_search_page(self, query, page, per_page):
-        """
-        Retrieve one page of search results from the DocumentCloud API.
-        """
-        params = {
-            'q': query,
-            'page': page,
-            'per_page': per_page,
-        }
-        data = self.fetch(u'search.json', params)
-        return data.get("documents")
-    
-    def search(self, query):
-        """
-        Retrieve all objects that make a search query.
-        
-        Example usage:
-        
-            >> documentcloud.documents.search('salazar')
-        
-        Based on code by Chris Amico
-        """
-        page = 1
-        document_list = []
-        # Loop through all the search pages and fetch everything
-        while True:
-            results = self._get_search_page(query, page=page, per_page=1000)
-            if results:
-                document_list += results
-                page += 1
-            else:
-                break
-        obj_list = []
-        for doc in document_list:
-            doc['_connection'] = self._connection
-            obj = Document(doc)
-            obj_list.append(obj)
-        return obj_list
-    
-    def get(self, id):
-        """
-        Retrieve a particular document using it's unique identifier.
-        
-        Example usage:
-        
-            >> documentcloud.documents.get(u'71072-oir-final-report')
-        
-        """
-        data = self.fetch('documents/%s.json' % id).get("document")
-        data['_connection'] = self._connection
-        return Document(data)
-    
-    def upload(self, path, title=None, source=None,description=None,
-        related_article=None, published_url=None,
-        access='private', project=None):
-        """
-        Upload a PDF or other image file to DocumentCloud.
-        
-        Example usage:
-        
-            >> documentcloud.documents.upload("/home/ben/sample.pdf", "sample")
-        
-        Returns the documentcloud id of the document that's created.
-        
-        Based on code developed by Mitchell Kotler and refined by Christopher Groskopf.
-        """
-        # Make sure the client has credentials
-        if not self.username and not self.password:
-            raise CredentialsMissingError("This is a private method. You must provide a username and password when you initialize the DocumentCloud client to attempt this type of request.")
-        # Required parameters
-        params = {'file': open(path, 'rb')}
-        # Optional parameters
-        if title:
-            params['title'] = title
-        else:
-            # Set it to the file name
-            params['title'] = path.split(os.sep)[-1].split(".")[0]
-        if source: params['source'] = source
-        if description: params['description'] = description
-        if related_article: params['related_article'] = related_article
-        if published_url: params['published_url'] = published_url
-        if access: params['access'] = access
-        if project: params['project'] = project
-        # Make the request
-        response = self._make_request(self.BASE_URI + 'upload.json', params, MultipartPostHandler)
-        return json.loads(response)['id']
-
-
-class ProjectClient(BaseDocumentCloudClient):
-    """
-    Methods for collecting projects
-    """
-    def __init__(self, username, password, connection):
-        self.username = username
-        self.password = password
-        # We want to have the connection around on all Document objects
-        # this client creates in case the instance needs to hit the API
-        # later. Storing it will preserve the credentials.
-        self._connection = connection
-    
-    def all(self):
-        """
-        Retrieve all your projects. Requires authentication.
-        
-        Example usage:
-        
-            >> documentcloud.projects.all()
-        
-        """
-        if not self.username and not self.password:
-            raise CredentialsMissingError("This is a private method. You must provide a username and password when you initialize the DocumentCloud client to attempt this type of request.")
-        project_list = self.fetch('projects.json').get("projects")
-        obj_list = []
-        for proj in project_list:
-            proj['_connection'] = self._connection
-            proj = Project(proj)
-            obj_list.append(proj)
-        return obj_list
-    
-    def get(self, id):
-        """
-        Retrieve a particular project using its unique identifier.
-        
-        Example usage:
-        
-            >> documentcloud.projects.get(u'arizona-shootings')
-        
-        """
-        try:
-            return [i for i in self.all() if str(i.id) == str(id)][0]
-        except IndexError:
-            raise DoesNotExistError("The resource you've requested does not exist or is unavailable without the proper credentials.")
-    
-    def create(self, title, description=None, document_ids=None):
-        """
-        Creates a new project.
-        
-        Returns its unique identifer in documentcloud
-        
-        Example usage:
-        
-            >> documentcloud.projects.create("The Ruben Salazar Files")
-        
-        """
-        if not self.username and not self.password:
-            raise CredentialsMissingError("This is a private method. You must provide a username and password when you initialize the DocumentCloud client to attempt this type of request.")
-        params = {
-            'title': title,
-        }
-        if description: params['description'] = description
-        params = urllib.urlencode(params)
-        if document_ids:
-            # These need to be specially formatted in the style documentcloud
-            # expects arrays. The example they provide is:
-            # ?document_ids[]=28-boumediene&document_ids[]=207-academy&document_ids[]=30-insider-trading
-            params += "".join(['&document_ids[]=%s' % id for id in document_ids])
-        response = self._make_request(self.BASE_URI + "projects.json", params)
-        return json.loads(response)['project']['id']
-
-
-class DocumentCloud(BaseDocumentCloudClient):
-    """
-    The public interface for the DocumentCloud API
-    """
-    
-    def __init__(self, username=None, password=None):
-        super(DocumentCloud, self).__init__(username, password)
-        self.documents = DocumentClient(self.username, self.password, self)
-        self.projects = ProjectClient(self.username, self.password, self)
 
 if __name__ == '__main__':
     """
@@ -763,6 +766,4 @@ if __name__ == '__main__':
     #doc = private.documents.get(u'83251-fbi-file-on-christopher-biggie-smalls-wallace')
     upload = private.projects.create("This is only a test")
     print upload
-
-
 
