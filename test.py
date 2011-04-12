@@ -278,6 +278,14 @@ class ProjectTest(BaseTest):
         """
         obj = self.private_client.projects.get("703")
         self.assertRaises(TypeError, obj.document_list.append, "The letter C")
+    
+    def test_create(self):
+        """
+        Test whether you can create a new project.
+        """
+        new_id = self.private_client.projects.create("This is only a test (%s)" % get_random_string())
+        proj = self.private_client.projects.get(new_id)
+        self.assertEqual(type(proj), Project)
 
 
 class ErrorTest(BaseTest):

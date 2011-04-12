@@ -695,6 +695,7 @@ class DocumentClient(BaseDocumentCloudClient):
         response = self._make_request(self.BASE_URI + 'upload.json', params, MultipartPostHandler)
         return json.loads(response)['id']
 
+
 class ProjectClient(BaseDocumentCloudClient):
     """
     Methods for collecting projects
@@ -739,6 +740,32 @@ class ProjectClient(BaseDocumentCloudClient):
             return [i for i in self.all() if str(i.id) == str(id)][0]
         except IndexError:
             raise DoesNotExistError("The resource you've requested does not exist or is unavailable without the proper credentials.")
+    
+    def create(self, title, description=None, document_ids=None):
+        """
+        Creates a new project.
+        
+        Returns its unique identifer in documentcloud
+        
+        Example usage:
+        
+            >> documentcloud.projects.create("The Ruben Salazar Files")
+        
+        """
+        if not self.username and not self.password:
+            raise CredentialsMissingError("This is a private method. You must provide a username and password when you initialize the DocumentCloud client to attempt this type of request.")
+        params = {
+            'title': title,
+        }
+        if description: params['description'] = description
+        params = urllib.urlencode(params)
+        if document_ids:
+            # These need to be specially formatted in the style documentcloud
+            # expects arrays. The example they provide is:
+            # ?document_ids[]=28-boumediene&document_ids[]=207-academy&document_ids[]=30-insider-trading
+            params += "".join(['&document_ids[]=%s' % id for id in document_ids])
+        response = self._make_request(self.BASE_URI + "projects.json", params)
+        return json.loads(response)['project']['id']
 
 
 class DocumentCloud(BaseDocumentCloudClient):
@@ -763,7 +790,7 @@ if __name__ == '__main__':
     # Pull the project
     #proj = private.projects.get("703")
     #doc = private.documents.get(u'83251-fbi-file-on-christopher-biggie-smalls-wallace')
-    upload = private.documents.upload("../test.pdf", "Test upload")
+    upload = private.projects.create("This is only a test")
     print upload
 
 
