@@ -10,11 +10,13 @@ Further documentation:
     https://www.documentcloud.org/help/api
 
 """
+import os
 import copy
 import base64
 import urllib, urllib2
 from datetime import datetime
 from dateutil.parser import parse as dateparser
+from MultipartPostHandler import MultipartPostHandler
 try:
     import json
 except ImportError:
@@ -520,7 +522,7 @@ class BaseDocumentCloudClient(object):
         self.username = username
         self.password = password
     
-    def _make_request(self, url, params=None):
+    def _make_request(self, url, params=None, opener=None):
         """
         Issue a HTTP request and return the response.
         """
@@ -535,7 +537,12 @@ class BaseDocumentCloudClient(object):
             request.add_header('Authorization', header)
         # Make the request
         try:
-            response = urllib2.urlopen(request)
+            if opener:
+                print url, params
+                opener = urllib2.build_opener(opener)
+                response = opener.open(request)
+            else:
+                response = urllib2.urlopen(request)
         except urllib2.HTTPError, e:
             if e.code == 404:
                 raise DoesNotExistError("The resource you've requested does not exist or is unavailable without the proper credentials.")
@@ -545,7 +552,7 @@ class BaseDocumentCloudClient(object):
                 raise e
         # Read the response
         return response.read()
-
+    
     def put(self, method, params):
         """
         Post changes back to DocumentCloud
@@ -620,6 +627,7 @@ class DocumentClient(BaseDocumentCloudClient):
         
             >> documentcloud.documents.search('salazar')
         
+        Based on code by Chris Amico
         """
         page = 1
         document_list = []
@@ -650,7 +658,41 @@ class DocumentClient(BaseDocumentCloudClient):
         data = self.fetch('documents/%s.json' % id).get("document")
         data['_connection'] = self._connection
         return Document(data)
-
+    
+    def upload(self, path, title=None, source=None,description=None,
+        related_article=None, published_url=None,
+        access='private', project=None):
+        """
+        Upload a PDF or other image file to DocumentCloud.
+        
+        Example usage:
+        
+            >> documentcloud.documents.upload("/home/ben/sample.pdf", "sample")
+        
+        Returns the documentcloud id of the document that's created.
+        
+        Based on code developed by Mitchell Kotler and refined by Christopher Groskopf.
+        """
+        # Make sure the client has credentials
+        if not self.username and not self.password:
+            raise CredentialsMissingError("This is a private method. You must provide a username and password when you initialize the DocumentCloud client to attempt this type of request.")
+        # Required parameters
+        params = {'file': open(path, 'rb')}
+        # Optional parameters
+        if title:
+            params['title'] = title
+        else:
+            # Set it to the file name
+            params['title'] = path.split(os.sep)[-1].split(".")[0]
+        if source: params['source'] = source
+        if description: params['description'] = description
+        if related_article: params['related_article'] = related_article
+        if published_url: params['published_url'] = published_url
+        if access: params['access'] = access
+        if project: params['project'] = project
+        # Make the request
+        response = self._make_request(self.BASE_URI + 'upload.json', params, MultipartPostHandler)
+        return json.loads(response)['id']
 
 class ProjectClient(BaseDocumentCloudClient):
     """
@@ -718,10 +760,10 @@ if __name__ == '__main__':
     private = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
     bad = DocumentCloud("Bad", "Login")
     # Pull the project
-    proj = private.projects.get("703")
-    doc = private.documents.get(u'83251-fbi-file-on-christopher-biggie-smalls-wallace')
-    search = public.documents.search("Calpers special review")
-    print search
+    #proj = private.projects.get("703")
+    #doc = private.documents.get(u'83251-fbi-file-on-christopher-biggie-smalls-wallace')
+    upload = private.documents.upload("../test.pdf", "Test upload")
+    print upload
 
 
 
