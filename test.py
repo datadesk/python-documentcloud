@@ -9,6 +9,7 @@ this test suite will only work on my computer, which seems like a problem.
 
 If you know how I ought to sort this sort of thing out, please let me know.
 """
+import os
 import random
 import string
 import textwrap
@@ -189,6 +190,15 @@ class DocumentSearchTest(BaseTest):
         self.assertEqual(obj.description, description)
         self.assertEqual(obj.resources.related_article, related_article)
         self.assertEqual(obj.resources.published_url, published_url)
+    
+    def test_upload(self):
+        title = 'Test upload (%s)' % get_random_string()
+        new_id = self.private_client.documents.upload(
+            os.path.join(os.path.dirname(__file__), "test.pdf"),
+            title,
+        )
+        obj = self.private_client.documents.get(new_id)
+        self.assertEqual(type(obj), Document)
 
 
 class ProjectTest(BaseTest):
@@ -295,7 +305,7 @@ class ErrorTest(BaseTest):
         Make sure DuplicateObjectError works.
         """
         obj = self.private_client.projects.get("703")
-        doc = self.private_client.documents.get(u'12672-the-klee-report-volume-4')
+        doc = self.private_client.documents.get(u'12666-the-klee-report-volume-1')
         self.assertRaises(DuplicateObjectError, obj.document_list.append, doc)
 
 

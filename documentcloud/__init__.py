@@ -537,8 +537,9 @@ class BaseDocumentCloudClient(object):
             request.add_header('Authorization', header)
         # Make the request
         try:
+            # If the request provides a custom opener, like the upload request,
+            # which relies on a multipart request, it is applied here.
             if opener:
-                print url, params
                 opener = urllib2.build_opener(opener)
                 response = opener.open(request)
             else:
