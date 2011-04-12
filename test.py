@@ -256,11 +256,6 @@ class ProjectTest(BaseTest):
         self.assertEqual(len(obj.document_list), 0)
         # Now add all the documents back in
         proj_ids = [
-            u'12672-the-klee-report-volume-4',
-            u'12671-the-klee-report-volume-3',
-            u'12670-the-klee-report-volume-2-annex-c',
-            u'12669-the-klee-report-volume-2-annex-b',
-            u'12668-the-klee-report-volume-2-annex-a',
             u'12667-the-klee-report-volume-2',
             u'12666-the-klee-report-volume-1'
         ]

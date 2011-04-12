@@ -520,56 +520,10 @@ class BaseDocumentCloudClient(object):
         self.username = username
         self.password = password
     
-    def put(self, method, params):
+    def _make_request(self, url, params=None):
         """
-        Post changes back to DocumentCloud
+        Issue a HTTP request and return the response.
         """
-        if not self.username and not self.password:
-            raise CredentialsMissingError("This is a private method. You must provide a username and password when you initialize the DocumentCloud client to attempt this type of request.")
-        # Assemble the URL
-        url = self.BASE_URI + method
-        # Prepare the params, first by adding a custom command to simulate a PUT request
-        # even though we are actually POSTing. This is something DocumentCloud expects.
-        params['_method'] = 'put'
-        # ..with some special case handling of the document_ids list, if it exists
-        if params.get("document_ids", None):
-            # Pull the document_ids out of the params
-            document_ids = params.get("document_ids")
-            del params['document_ids']
-            params = urllib.urlencode(params)
-            # These need to be specially formatted in the style documentcloud
-            # expects arrays. The example they provide is:
-            # ?document_ids[]=28-boumediene&document_ids[]=207-academy&document_ids[]=30-insider-trading
-            params += "".join(['&document_ids[]=%s' % id for id in document_ids])
-        else:
-            # Otherwise, we can just use the vanilla urllib prep method
-            params = urllib.urlencode(params)
-        # Create the request object
-        request = urllib2.Request(url, params)
-        credentials = '%s:%s' % (self.username, self.password)
-        encoded_credentials = base64.encodestring(credentials).replace("\n", "")
-        header = 'Basic %s' % encoded_credentials
-        request.add_header('Authorization', header)
-        # Make the request
-        try:
-            response = urllib2.urlopen(request)
-        except urllib2.HTTPError, e:
-            if e.code == 404:
-                raise DoesNotExistError("The resource you've requested does not exist or is unavailable without the proper credentials.")
-            elif e.code == 401:
-                raise CredentialsFailedError("The resource you've requested requires proper credentials.")
-            else:
-                raise e
-    
-    def fetch(self, method, params=None):
-        """
-        Fetch an url.
-        """
-        # Assemble the URL
-        url = self.BASE_URI + method
-        # Prepare any query string parameters
-        if params:
-            params = urllib.urlencode(params)
         # Create the request object
         args = [i for i in [url, params] if i]
         request = urllib2.Request(*args)
@@ -590,9 +544,48 @@ class BaseDocumentCloudClient(object):
             else:
                 raise e
         # Read the response
-        data = response.read()
+        return response.read()
+
+    def put(self, method, params):
+        """
+        Post changes back to DocumentCloud
+        """
+        # Make sure the client has credentials
+        if not self.username and not self.password:
+            raise CredentialsMissingError("This is a private method. You must provide a username and password when you initialize the DocumentCloud client to attempt this type of request.")
+        # Prepare the params, first by adding a custom command to simulate a PUT request
+        # even though we are actually POSTing. This is something DocumentCloud expects.
+        params['_method'] = 'put'
+        # Some special case handling of the document_ids list, if it exists
+        if params.get("document_ids", None):
+            # Pull the document_ids out of the params
+            document_ids = params.get("document_ids")
+            del params['document_ids']
+            params = urllib.urlencode(params)
+            # These need to be specially formatted in the style documentcloud
+            # expects arrays. The example they provide is:
+            # ?document_ids[]=28-boumediene&document_ids[]=207-academy&document_ids[]=30-insider-trading
+            params += "".join(['&document_ids[]=%s' % id for id in document_ids])
+        else:
+            # Otherwise, we can just use the vanilla urllib prep method
+            params = urllib.urlencode(params)
+        content = self._make_request(
+            self.BASE_URI + method,
+            params,
+        )
+    
+    def fetch(self, method, params=None):
+        """
+        Fetch an url.
+        """
+        if params:
+            params = urllib.urlencode(params)
+        content = self._make_request(
+            self.BASE_URI + method,
+            params,
+        )
         # Convert its JSON to a Python dictionary and return
-        return json.loads(data)
+        return json.loads(content)
 
 
 class DocumentClient(BaseDocumentCloudClient):
@@ -715,7 +708,6 @@ class DocumentCloud(BaseDocumentCloudClient):
         self.documents = DocumentClient(self.username, self.password, self)
         self.projects = ProjectClient(self.username, self.password, self)
 
-
 if __name__ == '__main__':
     """
     Ignore all this. Ad hoc testing ground as I build the API piece by piece.
@@ -727,16 +719,9 @@ if __name__ == '__main__':
     bad = DocumentCloud("Bad", "Login")
     # Pull the project
     proj = private.projects.get("703")
-    print proj.document_list
-    print "docs: %s" % len(proj.document_list)
-    # Zero out the list
-    doc = private.documents.get(u'12672-the-klee-report-volume-4')
-    proj.document_list = None
-    print proj.document_list
-    # Save the changes and check what sticks
-    proj.put()
-    proj = private.projects.get("703")
-    print "docs: %s" % len(proj.document_list)
+    doc = private.documents.get(u'83251-fbi-file-on-christopher-biggie-smalls-wallace')
+    search = public.documents.search("Calpers special review")
+    print search
 
 
 
