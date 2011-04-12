@@ -286,7 +286,11 @@ class ProjectClient(BaseDocumentCloudClient):
             # ?document_ids[]=28-boumediene&document_ids[]=207-academy&document_ids[]=30-insider-trading
             params += "".join(['&document_ids[]=%s' % id for id in document_ids])
         response = self._make_request(self.BASE_URI + "projects.json", params)
-        return json.loads(response)['project']['id']
+        new_id = json.loads(response)['project']['id']
+        # If it doesn't exist, that suggests the project already exists
+        if not new_id:
+            raise DuplicateObjectError("The Project title you tried to create already exists")
+        return new_id
 
 
 #
@@ -758,6 +762,6 @@ if __name__ == '__main__':
     # Pull the project
     #proj = private.projects.get("703")
     #doc = private.documents.get(u'83251-fbi-file-on-christopher-biggie-smalls-wallace')
-    upload = public.projects.create("This is bad test")
+    upload = private.projects.create("This is bad test")
     print upload
 
