@@ -60,7 +60,7 @@ class DocumentSearchTest(BaseTest):
 #        obj_list = documentcloud.documents.search("johnson")
 #        self.assertTrue(len(obj_list) > 1000)
     
-    def test_attrs(self):
+    def test_search_attrs(self):
         """
         Verify that all the Document attributes exist.
         """
@@ -84,30 +84,26 @@ class DocumentSearchTest(BaseTest):
         for attr in attr_list:
             self.assertTrue(hasattr(obj, attr))
     
-    def test_annotations(self):
+    def test_search_annotations(self):
         """
         Test whether annotations exist.
         """
         obj = self.public_client.documents.search(self.test_search)[0]
         self.assertEqual(type(obj.annotations[0]), Annotation)
     
-    def test_sections(self):
+    def test_search_sections(self):
         """
         Test whether sections exist.
         """
         obj = self.public_client.documents.get(self.test_id)
         self.assertEqual(type(obj.sections[0]), Section)
     
-    def test_entities(self):
+    def test_search_entities(self):
         """
         Test whether entities exist.
         """
         obj = self.public_client.documents.get(self.test_id)
         self.assertEqual(type(obj.entities[0]), Entity)
-
-
-
-class DocumentGetTest(BaseTest):
     
     def test_get(self):
         """
@@ -116,7 +112,7 @@ class DocumentGetTest(BaseTest):
         obj = self.public_client.documents.get(self.test_id)
         self.assertEqual(type(obj), Document)
     
-    def test_attrs(self):
+    def test_get_attrs(self):
         """
         Verify that all the Document attributes exist.
         """
@@ -139,28 +135,28 @@ class DocumentGetTest(BaseTest):
         ]
         [self.assertTrue(hasattr(obj, attr)) for attr in attr_list]
     
-    def test_annotations(self):
+    def test_get_annotations(self):
         """
         Test whether annotations exist.
         """
         obj = self.public_client.documents.get(self.test_id)
         self.assertEqual(type(obj.annotations[0]), Annotation)
     
-    def test_sections(self):
+    def test_get_sections(self):
         """
         Test whether sections exist.
         """
         obj = self.public_client.documents.get(self.test_id)
         self.assertEqual(type(obj.sections[0]), Section)
     
-    def test_entities(self):
+    def test_get_entities(self):
         """
         Test whether entities exist.
         """
         obj = self.public_client.documents.get(self.test_id)
         self.assertEqual(type(obj.entities[0]), Entity)
     
-    def test_put(self):
+    def test_get_put(self):
         """
         Test whether we can put random noise to all the editable fields.
         """
