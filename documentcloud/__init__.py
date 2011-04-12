@@ -15,6 +15,7 @@ import copy
 import base64
 import urllib, urllib2
 from datetime import datetime
+from exceptions import *
 from dateutil.parser import parse as dateparser
 from MultipartPostHandler import MultipartPostHandler
 try:
@@ -477,36 +478,6 @@ class Resource(BaseAPIObject):
             return ''
         else:
             raise AttributeError
-
-#
-# Exceptions
-#
-
-class CredentialsMissingError(Exception):
-    """
-    Raised if an API call is attempted without the required login credentials
-    """
-    pass
-
-
-class CredentialsFailedError(Exception):
-    """
-    Raised if an API call fails because the login credentials are no good.
-    """
-    pass
-
-
-class DoesNotExistError(Exception):
-    """
-    Raised when the user asks the API for something it cannot find.
-    """
-    pass
-
-class DuplicateObjectError(Exception):
-    """
-    Raised when the user tries to add a duplicate to a distinct list.
-    """
-    pass
 
 #
 # API connection clients
