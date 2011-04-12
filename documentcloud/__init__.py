@@ -15,7 +15,7 @@ import copy
 import base64
 import urllib, urllib2
 from datetime import datetime
-from exceptions import *
+from toolbox import *
 from dateutil.parser import parse as dateparser
 from MultipartPostHandler import MultipartPostHandler
 try:
@@ -70,13 +70,11 @@ class BaseDocumentCloudClient(object):
         # Read the response
         return response.read()
     
+    @credentials_required
     def put(self, method, params):
         """
         Post changes back to DocumentCloud
         """
-        # Make sure the client has credentials
-        if not self.username and not self.password:
-            raise CredentialsMissingError("This is a private method. You must provide a username and password when you initialize the DocumentCloud client to attempt this type of request.")
         # Prepare the params, first by adding a custom command to simulate a PUT request
         # even though we are actually POSTing. This is something DocumentCloud expects.
         params['_method'] = 'put'
@@ -187,6 +185,7 @@ class DocumentClient(BaseDocumentCloudClient):
         data['_connection'] = self._connection
         return Document(data)
     
+    @credentials_required
     def upload(self, path, title=None, source=None,description=None,
         related_article=None, published_url=None,
         access='private', project=None):
@@ -201,9 +200,6 @@ class DocumentClient(BaseDocumentCloudClient):
         
         Based on code developed by Mitchell Kotler and refined by Christopher Groskopf.
         """
-        # Make sure the client has credentials
-        if not self.username and not self.password:
-            raise CredentialsMissingError("This is a private method. You must provide a username and password when you initialize the DocumentCloud client to attempt this type of request.")
         # Required parameters
         params = {'file': open(path, 'rb')}
         # Optional parameters
@@ -235,6 +231,7 @@ class ProjectClient(BaseDocumentCloudClient):
         # later. Storing it will preserve the credentials.
         self._connection = connection
     
+    @credentials_required
     def all(self):
         """
         Retrieve all your projects. Requires authentication.
@@ -244,8 +241,6 @@ class ProjectClient(BaseDocumentCloudClient):
             >> documentcloud.projects.all()
         
         """
-        if not self.username and not self.password:
-            raise CredentialsMissingError("This is a private method. You must provide a username and password when you initialize the DocumentCloud client to attempt this type of request.")
         project_list = self.fetch('projects.json').get("projects")
         obj_list = []
         for proj in project_list:
@@ -268,6 +263,7 @@ class ProjectClient(BaseDocumentCloudClient):
         except IndexError:
             raise DoesNotExistError("The resource you've requested does not exist or is unavailable without the proper credentials.")
     
+    @credentials_required
     def create(self, title, description=None, document_ids=None):
         """
         Creates a new project.
@@ -279,8 +275,6 @@ class ProjectClient(BaseDocumentCloudClient):
             >> documentcloud.projects.create("The Ruben Salazar Files")
         
         """
-        if not self.username and not self.password:
-            raise CredentialsMissingError("This is a private method. You must provide a username and password when you initialize the DocumentCloud client to attempt this type of request.")
         params = {
             'title': title,
         }
@@ -764,6 +758,6 @@ if __name__ == '__main__':
     # Pull the project
     #proj = private.projects.get("703")
     #doc = private.documents.get(u'83251-fbi-file-on-christopher-biggie-smalls-wallace')
-    upload = private.projects.create("This is only a test")
+    upload = public.projects.create("This is bad test")
     print upload
 
