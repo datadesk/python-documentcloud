@@ -67,7 +67,7 @@ class BaseDocumentCloudClient(object):
                 raise CredentialsFailedError("The resource you've requested requires proper credentials.")
             else:
                 raise e
-        # Read the response
+        # Read the response and return it
         return response.read()
     
     @credentials_required
@@ -91,6 +91,7 @@ class BaseDocumentCloudClient(object):
         else:
             # Otherwise, we can just use the vanilla urllib prep method
             params = urllib.urlencode(params)
+        # Make the request
         content = self._make_request(
             self.BASE_URI + method,
             params,
@@ -100,6 +101,7 @@ class BaseDocumentCloudClient(object):
         """
         Fetch an url.
         """
+        # Encode params if they exist
         if params:
             params = urllib.urlencode(params)
         content = self._make_request(
@@ -291,6 +293,16 @@ class ProjectClient(BaseDocumentCloudClient):
         if not new_id:
             raise DuplicateObjectError("The Project title you tried to create already exists")
         return new_id
+    
+    @credentials_required
+    def delete(self, id):
+        """
+        Deletes a Project.
+        """
+        data = self.fetch(
+            'projects/%s.json' % id,
+            {'_method': 'delete'},
+        )
 
 
 #
@@ -669,12 +681,12 @@ class Project(BaseAPIObject):
             object.__setattr__(self, attr, value)
     
     #
-    # Updates
+    # Updates and such
     #
     
     def put(self):
         """
-        Save changes made to the object to DocumentCloud.
+        Save changes made to the object to documentcloud.org
         
         According to DocumentCloud's docs, edits are allowed for the following
         fields:
@@ -691,6 +703,12 @@ class Project(BaseAPIObject):
             document_ids=[str(i.id) for i in self.document_list]
         )
         self._connection.put('projects/%s.json' % self.id, params)
+    
+    def delete(self):
+        """
+        Deletes this object from documentcloud.org.
+        """
+        self._connection.projects.delete(self.id)
     
     #
     # Documents
@@ -762,6 +780,7 @@ if __name__ == '__main__':
     # Pull the project
     #proj = private.projects.get("703")
     #doc = private.documents.get(u'83251-fbi-file-on-christopher-biggie-smalls-wallace')
-    upload = private.projects.create("This is bad test")
-    print upload
+    #upload = private.projects.create("0001 - This is a test")
+    obj = private.projects.get(1630)
+    obj.delete()
 

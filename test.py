@@ -279,13 +279,18 @@ class ProjectTest(BaseTest):
         obj = self.private_client.projects.get("703")
         self.assertRaises(TypeError, obj.document_list.append, "The letter C")
     
-    def test_create(self):
+    def test_create_and_delete(self):
         """
         Test whether you can create a new project.
         """
-        new_id = self.private_client.projects.create("This is only a test (%s)" % get_random_string())
+        # Create it
+        title = "00 - (%s) - This is only a test" % get_random_string()
+        new_id = self.private_client.projects.create(title)
         proj = self.private_client.projects.get(new_id)
         self.assertEqual(type(proj), Project)
+        # Delete it
+        proj.delete()
+        self.assertRaises(DoesNotExistError, self.private_client.projects.get, new_id)
 
 
 class ErrorTest(BaseTest):
