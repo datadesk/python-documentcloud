@@ -30,7 +30,7 @@ div.documentwrapper {
 }
 
 div.bodywrapper {
-    margin: 0 0 0 230px;
+    margin: 10px 0 0 230px;
     background-color:white;
 }
 
@@ -118,6 +118,9 @@ div.footer a {
 div.smalllogo {
     display:block;
     margin-bottom:5px;
+}
+div.smalllogo img {
+    width:200px;
 }
 
 div.sphinxsidebar {
@@ -264,7 +267,7 @@ p.admonition-title:after {
 
 blockquote.epigraph {
     font-style: italic;
-    margin:15px 0;
+    margin:0 0 15px 0;
     padding:0 0 8px 0;
     font-size:1.6em;
     border-bottom: 2px dotted #CCC;

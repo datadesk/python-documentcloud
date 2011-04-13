@@ -20,7 +20,6 @@ Documentation
    retrievingdata
    editingdata
    uploadingdata
-   examples
    credits
 
 Other resources

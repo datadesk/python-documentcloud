@@ -27,7 +27,7 @@
     <link rel="next" title="Retrieving data" href="retrievingdata.html" />
     <link rel="prev" title="Features" href="index.html" /> 
   </head>
-  <body>             
+  <body>              
 <a href="http://www.github.com/datadesk/python-documentcloud/">
     <img style="position: absolute; top: 0; right: 0; border: 0;" src="_static/forkme.png" alt="Fork me on GitHub">
 </a>
@@ -45,6 +45,32 @@
             
   <div class="section" id="getting-started">
 <h1>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<p>This tutorial will walk you through the process of installing python-documentment and making your first requests.</p>
+</div>
+<div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>Provided that you have <a class="reference external" href="http://pypi.python.org/pypi/pip">pip</a> installed, you can install the library like so:</p>
+<div class="highlight-python"><pre>$ pip install python-documentcloud</pre>
+</div>
+</div>
+<div class="section" id="creating-a-client">
+<h1>Creating a client<a class="headerlink" href="#creating-a-client" title="Permalink to this headline">¶</a></h1>
+<p>Before you can interact with DocumentCloud, you first must import the library and initialize a client to talk with the site on your behalf.</p>
+<div class="highlight-python"><pre>$ python
+&gt;&gt; from documentcloud import DocumentCloud
+&gt;&gt; client = DocumentCloud()</pre>
+</div>
+<p>Since we didn&#8217;t provide any log-in credentials, the client above will only be able to access published documents. If have an account at DocumentCloud and want to use that, you can provide the crendentials to the client.</p>
+<div class="highlight-python"><pre>&gt;&gt; client = DocumentCloud(USERNAME, PASSWORD)</pre>
+</div>
+</div>
+<div class="section" id="searching-for-documents">
+<h1>Searching for documents<a class="headerlink" href="#searching-for-documents" title="Permalink to this headline">¶</a></h1>
+<p>You can now you use client to interact with DocumentCloud. A search for documents about <a class="reference external" href="http://en.wikipedia.org/wiki/Rub%C3%A9n_Salazar">journalist Ruben Salazar</a> would look like this:</p>
+<div class="highlight-python"><pre>&gt;&gt; obj_list = client.documents.search("Ruben Salazar")
+&gt;&gt; # Let's look at the first one
+&gt;&gt; obj_list[0]</pre>
+</div>
 </div>
 
 
@@ -53,6 +79,14 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Getting started</a></li>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#creating-a-client">Creating a client</a></li>
+<li><a class="reference internal" href="#searching-for-documents">Searching for documents</a></li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="index.html"
                         title="previous chapter">Features</a></p>
