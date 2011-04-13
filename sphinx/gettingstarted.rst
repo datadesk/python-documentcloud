@@ -1,5 +1,6 @@
+===============
 Getting started
----------------
+===============
 
 This tutorial will walk you through the process of installing python-documentment and making your first requests.
 
