@@ -22,6 +22,7 @@ body {
     padding: 0;
 }
 
+
 div.documentwrapper {
     float: left;
     width: 100%;
@@ -40,9 +41,52 @@ a {
 hr {
     border: 1px solid #B1B4B6;
 }
- 
+
+div.banner {
+    background-color:#B11B1C;
+    color:white;
+    padding: 15px 0 15px 0;
+    margin:0;
+}
+
+div.banner h1 {
+    margin:10px 0 15px 0;
+    padding:0;
+    text-align:center;
+    display:block;
+}
+
+div.banner h1 img {
+    margin: 0;
+    padding: 0;
+}
+
+div.banner h2 {
+    text-transform: uppercase;
+    padding: 0;
+    margin: 0 0 0 0;
+    font-size:0.9em;
+    display:block;
+    text-align:center;
+    font-weight:bold;
+}
+
+div.banner h2 a {
+    color:white;
+    text-decoration:none;
+}
+
+div.banner-underline {
+    border-top:1px solid white;
+    border-bottom:1px solid white;
+    height:12px;
+    background-color:#CCC;
+}
+
 div.document {
-    background-color: #eee;
+    background-color: white;
+    padding-bottom:1px;
+    border-bottom:4px solid black;
 }
  
 div.body {
@@ -51,49 +95,26 @@ div.body {
     padding: 0 30px 30px 30px;
     font-size: 0.9em;
 }
- 
+  
 div.footer {
     width: 100%;
-    padding: 13px 0;
-    text-align: center;
+    padding: 13px 10px;
+    text-align: left;
     font-size: 75%;
     background-color: white;
     color:black;
+    margin-top: 4px;
+    border-top: 1px solid black;
 }
  
 div.footer a {
     text-decoration: underlines;
 }
- 
-div.related {
-    background-color: white;
-    line-height: 32px;
-    color: black;
-    font-size: 0.9em;
-    border-bottom:2px solid black;
-    padding:10px 0 0 5px;
+div.smalllogo {
+    display:block;
+    margin-bottom:5px;
 }
 
-div.related div.smalllogo {
-    margin-right:12px;
-    display:inline;
-}
-
-div.related div.shorttitle {
-    text-transform: uppercase;
-    padding: 0 0 0 12px;
-    border-left: 2px solid #CCC;
-    font-size:1.3em;
-    display:inline;
-    position:absolute;
-    top:12px;
-}
-
-div.related a {
-    color: black;
-    text-decoration: none;
-}
- 
 div.sphinxsidebar {
     font-size: 0.75em;
     line-height: 1.5em;
