@@ -35,3 +35,4 @@ You can now you use client to interact with DocumentCloud. A search for document
     >> # Let's grab the first one and look at it
     >> obj = obj_list[0]
     >> obj
+    <Document: Final OIR Report>

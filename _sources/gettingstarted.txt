@@ -32,5 +32,7 @@ Searching for documents
 You can now you use client to interact with DocumentCloud. A search for documents about `journalist Ruben Salazar <http://en.wikipedia.org/wiki/Rub%C3%A9n_Salazar>`_ would look like this: ::
 
     >> obj_list = client.documents.search("Ruben Salazar")
-    >> # Let's look at the first one
-    >> obj_list[0]
+    >> # Let's grab the first one and look at it
+    >> obj = obj_list[0]
+    >> obj
+    <Document: Final OIR Report>

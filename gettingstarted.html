@@ -68,8 +68,10 @@
 <h1>Searching for documents<a class="headerlink" href="#searching-for-documents" title="Permalink to this headline">¶</a></h1>
 <p>You can now you use client to interact with DocumentCloud. A search for documents about <a class="reference external" href="http://en.wikipedia.org/wiki/Rub%C3%A9n_Salazar">journalist Ruben Salazar</a> would look like this:</p>
 <div class="highlight-python"><pre>&gt;&gt; obj_list = client.documents.search("Ruben Salazar")
-&gt;&gt; # Let's look at the first one
-&gt;&gt; obj_list[0]</pre>
+&gt;&gt; # Let's grab the first one and look at it
+&gt;&gt; obj = obj_list[0]
+&gt;&gt; obj
+&lt;Document: Final OIR Report&gt;</pre>
 </div>
 </div>
 
