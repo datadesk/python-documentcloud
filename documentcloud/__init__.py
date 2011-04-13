@@ -219,6 +219,16 @@ class DocumentClient(BaseDocumentCloudClient):
         # Make the request
         response = self._make_request(self.BASE_URI + 'upload.json', params, MultipartPostHandler)
         return json.loads(response)['id']
+    
+    @credentials_required
+    def delete(self, id):
+        """
+        Deletes a Document.
+        """
+        data = self.fetch(
+            'documents/%s.json' % id,
+            {'_method': 'delete'},
+        )
 
 
 class ProjectClient(BaseDocumentCloudClient):
@@ -363,7 +373,7 @@ class Document(BaseAPIObject):
         self.updated_at = dateparser(d.get("updated_at"))
     
     #
-    # Updates
+    # Updates and such
     #
     
     def put(self):
@@ -391,6 +401,12 @@ class Document(BaseAPIObject):
             access=self.access,
         )
         self._connection.put('documents/%s.json' % self.id, params)
+    
+    def delete(self):
+        """
+        Deletes this object from documentcloud.org.
+        """
+        self._connection.documents.delete(self.id)
     
     #
     # Lazy loaded attributes
