@@ -38,9 +38,10 @@ class BaseDocumentCloudClient(object):
         self.username = username
         self.password = password
     
+    
     def _make_request(self, url, params=None, opener=None):
         """
-        Issue a HTTP request and return the response.
+        Configure a HTTP request, fire it off and return the response.
         """
         # Create the request object
         args = [i for i in [url, params] if i]
@@ -51,15 +52,16 @@ class BaseDocumentCloudClient(object):
             encoded_credentials = base64.encodestring(credentials).replace("\n", "")
             header = 'Basic %s' % encoded_credentials
             request.add_header('Authorization', header)
+        # If the request provides a custom opener, like the upload request,
+        # which relies on a multipart request, it is applied here.
+        if opener:
+            opener = urllib2.build_opener(opener)
+            request_method = opener.open
+        else:
+            request_method = urllib2.urlopen
         # Make the request
         try:
-            # If the request provides a custom opener, like the upload request,
-            # which relies on a multipart request, it is applied here.
-            if opener:
-                opener = urllib2.build_opener(opener)
-                response = opener.open(request)
-            else:
-                response = urllib2.urlopen(request)
+           response = request_method(request)
         except urllib2.HTTPError, e:
             if e.code == 404:
                 raise DoesNotExistError("The resource you've requested does not exist or is unavailable without the proper credentials.")

@@ -1,6 +1,7 @@
 """
 A few toys the API will use.
 """
+import time
 from functools import wraps
 
 #
@@ -50,4 +51,30 @@ def credentials_required(method_func):
             raise CredentialsMissingError("This is a private method. You must provide a username and password when you initialize the DocumentCloud client to attempt this type of request.")
     
     return wraps(method_func)(_checkcredentials)
+
+
+def retry(ExceptionToCheck, tries=4, delay=3, backoff=2):
+    """
+    Retry decorator published by Saltry Crane. 
+    
+    http://www.saltycrane.com/blog/2009/11/trying-out-retry-decorator-python/
+    """
+    def deco_retry(f):
+        def f_retry(*args, **kwargs):
+            mtries, mdelay = tries, delay
+            try_one_last_time = True
+            while mtries > 1:
+                try:
+                    return f(*args, **kwargs)
+                    try_one_last_time = False
+                    break
+                except ExceptionToCheck, e:
+                    time.sleep(mdelay)
+                    mtries -= 1
+                    mdelay *= backoff
+            if try_one_last_time:
+                return f(*args, **kwargs)
+            return
+        return f_retry # true decorator
+    return deco_retry
 
