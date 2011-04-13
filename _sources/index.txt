@@ -1,21 +1,17 @@
-A Python wrapper on the `DocumentCloud API <http://www.documentcloud.org/api/>`_.
+A Python wrapper on the `DocumentCloud API <http://www.documentcloud.org/>`_.
+
+.. DANGER::
+   Beware killer rabbits!
 
 Features
---------
+========
 
 * Retrieve and edit documents and projects, both public and private, from documentcloud.org
-* Upload PDFs into your documentcloud.org and organize them into projects
+* Upload PDFs into your documentcloud.org account and organize them into projects
 * Download text, images and entities extracted from your PDFs by DocumentCloud
 
-Resources
----------
-
-* `Source code <https://www.github.com/datadesk/python-documentcloud/>`_
-* `Working demonstration <http://documents.latimes.com>`_
-
-
-Table of Contents
------------------
+Documentation
+=============
 
 .. toctree::
    :maxdepth: 3
@@ -27,3 +23,9 @@ Table of Contents
    examples
    credits
 
+Other resources
+===============
+
+* `Source code <https://www.github.com/datadesk/python-documentcloud/>`_
+* `DocumentCloud's API documentation <http://www.documentcloud.org/>`_
+* `The Times' Google App Engine publishing tool for DocumentCloud data <https://github.com/datadesk/latimes-document-stacker>`_

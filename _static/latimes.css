@@ -36,6 +36,11 @@ div.bodywrapper {
 
 a {
     color: #2662CC;
+    text-decoration:none;
+}
+
+a:hover {
+    text-decoration:underline;
 }
 
 hr {
@@ -92,7 +97,7 @@ div.document {
 div.body {
     background-color: #ffffff;
     color: black;
-    padding: 0 30px 30px 30px;
+    padding: 0 30px 30px 20px;
     font-size: 0.9em;
 }
   
@@ -122,7 +127,7 @@ div.sphinxsidebar {
 }
 
 div.sphinxsidebarwrapper{
-    padding: 20px 0;
+    padding: 0;
 }
  
 div.sphinxsidebar h3,
@@ -130,31 +135,44 @@ div.sphinxsidebar h4 {
     font-family: Georgia, serif;
     color: black;
     font-size: 1.2em;
-    font-weight: bold;
+    font-weight: bold;;
+    padding: 10px 10px 0 10px;
     margin: 0;
-    padding: 5px 10px;
 }
 
 div.sphinxsidebar h4{
     font-size: 1.1em;
 }
  
-div.sphinxsidebar h3 a {
+div.sphinxsidebar a {
     color:#2262CC;
+    text-decoration:none;
+}
+
+div.sphinxsidebar a:hover {
+    text-decoration:underline;
 }
  
 div.sphinxsidebar p {
     color: black;
-    padding: 0px 20px;
+    padding: 0px;
+    margin-top:5px;
+    margin-left:20px;
 }
  
 div.sphinxsidebar p.topless {
+    font-size:1.2em;
+    line-height:150%;
 }
  
 div.sphinxsidebar ul {
     margin: 5px 20px;
     padding: 0;
     color: black;
+    font-size:1.2em;
+}
+div.sphinxsidebar li {
+    line-height:150%;
 }
  
 div.sphinxsidebar a {
@@ -187,7 +205,7 @@ div.body h6 {
     padding: 5px 0 5px 0px;
 }
  
-div.body h1 { margin: 10px 0; font-size: 200%; }
+div.body h1 { margin: 5px 0; padding: 0; font-size: 150%; }
 div.body h2 { font-size: 150%; background-color: white; }
 div.body h3 { font-size: 120%; background-color: white; }
 div.body h4 { font-size: 110%; background-color: white; }
@@ -272,4 +290,15 @@ div.viewcode-block:target {
     background-color: #f4debf;
     border-top: 1px solid #ac9;
     border-bottom: 1px solid #ac9;
+}
+
+div.section ul {
+    margin: 5px 0 10px 0;
+    padding-left:30px;
+}
+
+div.section {
+    margin-bottom:10px;
+    padding:0 0 10px 0;
+    border-bottom: 1px solid #CCC;
 }
