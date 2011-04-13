@@ -55,45 +55,49 @@
 <div class="section" id="creating-a-client">
 <h2>Creating a client<a class="headerlink" href="#creating-a-client" title="Permalink to this headline">¶</a></h2>
 <p>Before you can interact with DocumentCloud, you first must import the library and initialize a client to talk with the site on your behalf.</p>
-<div class="highlight-python"><pre>$ python
-&gt;&gt; from documentcloud import DocumentCloud
-&gt;&gt; client = DocumentCloud()</pre>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">documentcloud</span> <span class="kn">import</span> <span class="n">DocumentCloud</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">DocumentCloud</span><span class="p">()</span>
+</pre></div>
 </div>
 <p>Since we didn&#8217;t provide any log-in credentials, the client above will only be able to access published documents. If have an account at DocumentCloud and want to use that, you can provide the crendentials to the client.</p>
-<div class="highlight-python"><pre>&gt;&gt; client = DocumentCloud(USERNAME, PASSWORD)</pre>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">DocumentCloud</span><span class="p">(</span><span class="n">USERNAME</span><span class="p">,</span> <span class="n">PASSWORD</span><span class="p">)</span>
+</pre></div>
 </div>
 <hr></div>
 <div class="section" id="searching-for-documents">
 <h2>Searching for documents<a class="headerlink" href="#searching-for-documents" title="Permalink to this headline">¶</a></h2>
 <p>You can now you use client to interact with DocumentCloud. A search for documents about <a class="reference external" href="http://en.wikipedia.org/wiki/Rub%C3%A9n_Salazar">journalist Ruben Salazar</a> would look like this:</p>
-<div class="highlight-python"><pre>&gt;&gt; obj_list = client.documents.search("Ruben Salazar")
-&gt;&gt; # Let's grab the first one and look at it
-&gt;&gt; obj = obj_list[0]
-&gt;&gt; obj
-&lt;Document: Final OIR Report&gt;</pre>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">obj_list</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">&quot;Ruben Salazar&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Let&#39;s grab the first one and look at it</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">obj_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span>
+<span class="go">&lt;Document: Final OIR Report&gt;</span>
+</pre></div>
 </div>
 <hr></div>
 <div class="section" id="interacting-with-a-document">
 <h2>Interacting with a document<a class="headerlink" href="#interacting-with-a-document" title="Permalink to this headline">¶</a></h2>
 <p>Once you have you hands on a document object, you can interact with the metadata stored at documentcloud.org. Here&#8217;s a sample:</p>
-<div class="highlight-python"><pre>&gt;&gt; print obj.title
-Final OIR Report
-&gt;&gt; print obj.id
-71072-oir-final-report
-&gt;&gt; print obj.contributor_organization
-Los Angeles Times
-&gt;&gt; print obj.canonical_url
-http://www.documentcloud.org/documents/71072-oir-final-report.html</pre>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">obj</span><span class="o">.</span><span class="n">title</span>
+<span class="go">Final OIR Report</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">obj</span><span class="o">.</span><span class="n">id</span>
+<span class="go">71072-oir-final-report</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">obj</span><span class="o">.</span><span class="n">contributor_organization</span>
+<span class="go">Los Angeles Times</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">obj</span><span class="o">.</span><span class="n">canonical_url</span>
+<span class="go">http://www.documentcloud.org/documents/71072-oir-final-report.html</span>
+</pre></div>
 </div>
 <p>You can even download the PDF, page images and full text.</p>
-<div class="highlight-python"><pre>&gt;&gt; obj.large_image_url
-...
-&gt;&gt; obj.large_image
-...
-&gt;&gt; obj.full_text
-...
-&gt;&gt; obj.pdf
-...</pre>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">large_image_url</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">large_image</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">full_text</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">pdf</span>
+<span class="gp">...</span>
+</pre></div>
 </div>
 <p>Move ahead to the sections on <a class="reference internal" href="retrievingdata.html"><em>retrieving</em></a>, <a class="reference internal" href="editingdata.html"><em>editing</em></a> and <a class="reference internal" href="uploadingdata.html"><em>uploading</em></a> data for more detail on what&#8217;s possible.</p>
 </div>

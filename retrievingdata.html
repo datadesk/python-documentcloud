@@ -45,6 +45,67 @@
             
   <div class="section" id="retrieving-data">
 <h1>Retrieving data<a class="headerlink" href="#retrieving-data" title="Permalink to this headline">¶</a></h1>
+<p>Methods for drawing down data about documents and projects.</p>
+<hr><div class="section" id="documents">
+<h2>Documents<a class="headerlink" href="#documents" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="client.documents.get">
+<tt class="descclassname">client.documents.</tt><tt class="descname">get</tt><big>(</big><em>id</em><big>)</big><a class="headerlink" href="#client.documents.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the document with the provided DocumentCloud identifer.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">documentcloud</span> <span class="kn">import</span> <span class="n">DocumentCloud</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">DocumentCloud</span><span class="p">(</span><span class="n">USERNAME</span><span class="p">,</span> <span class="n">PASSWORD</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;71072-oir-final-report&#39;</span><span class="p">)</span>
+<span class="go">&lt;Document: Final OIR Report&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="client.documents.search">
+<tt class="descclassname">client.documents.</tt><tt class="descname">search</tt><big>(</big><em>keyword</em><big>)</big><a class="headerlink" href="#client.documents.search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of documents that match the provided keyword.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">documentcloud</span> <span class="kn">import</span> <span class="n">DocumentCloud</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">DocumentCloud</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj_list</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">&#39;Ruben Salazar&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">&lt;Document: Final OIR Report&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<hr></div>
+<div class="section" id="projects">
+<h2>Projects<a class="headerlink" href="#projects" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="client.projects.get">
+<tt class="descclassname">client.projects.</tt><tt class="descname">get</tt><big>(</big><em>id</em><big>)</big><a class="headerlink" href="#client.projects.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the project with the provided DocumentCloud identifer.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">documentcloud</span> <span class="kn">import</span> <span class="n">DocumentCloud</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">DocumentCloud</span><span class="p">(</span><span class="n">USERNAME</span><span class="p">,</span> <span class="n">PASSWORD</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">projects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;1339&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span>
+<span class="go">&lt;Project: Ruben Salazar&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">document_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">&lt;Document: Final OIR Report&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="client.projects.all">
+<tt class="descclassname">client.projects.</tt><tt class="descname">all</tt><big>(</big><big>)</big><a class="headerlink" href="#client.projects.all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all projects for the authorized DocumentCloud account</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">documentcloud</span> <span class="kn">import</span> <span class="n">DocumentCloud</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">DocumentCloud</span><span class="p">(</span><span class="n">USERNAME</span><span class="p">,</span> <span class="n">PASSWORD</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj_list</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">projects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">&lt;Project: Ruben Salazar&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<p>Other sections explain how to <a class="reference internal" href="editingdata.html"><em>edit</em></a> and <a class="reference internal" href="uploadingdata.html"><em>upload</em></a> data.</p>
+</div>
 </div>
 
 
@@ -53,6 +114,15 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Retrieving data</a><ul>
+<li><a class="reference internal" href="#documents">Documents</a></li>
+<li><a class="reference internal" href="#projects">Projects</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="gettingstarted.html"
                         title="previous chapter">Getting started</a></p>
