@@ -1,0 +1,254 @@
+/*
+ * nature.css_t
+ * ~~~~~~~~~~~~
+ *
+ * Sphinx stylesheet -- nature theme.
+ *
+ * :copyright: Copyright 2007-2011 by the Sphinx team, see AUTHORS.
+ * :license: BSD, see LICENSE for details.
+ *
+ */
+ 
+@import url("basic.css");
+ 
+/* -- page layout ----------------------------------------------------------- */
+ 
+body {
+    font-family: Georgia, serif;
+    font-size: 100%;
+    background-color: white;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+div.documentwrapper {
+    float: left;
+    width: 100%;
+    background-color:white;
+}
+
+div.bodywrapper {
+    margin: 0 0 0 230px;
+    background-color:white;
+}
+
+a {
+    color: #2662CC;
+}
+
+hr {
+    border: 1px solid #B1B4B6;
+}
+ 
+div.document {
+    background-color: #eee;
+}
+ 
+div.body {
+    background-color: #ffffff;
+    color: black;
+    padding: 0 30px 30px 30px;
+    font-size: 0.9em;
+}
+ 
+div.footer {
+    width: 100%;
+    padding: 13px 0;
+    text-align: center;
+    font-size: 75%;
+    background-color: white;
+    color:black;
+}
+ 
+div.footer a {
+    text-decoration: underlines;
+}
+ 
+div.related {
+    background-color: white;
+    line-height: 32px;
+    color: black;
+    font-size: 0.9em;
+    border-bottom:2px solid black;
+    padding:10px 0 0 5px;
+}
+
+div.related div.smalllogo {
+    margin-right:12px;
+    display:inline;
+}
+
+div.related div.shorttitle {
+    text-transform: uppercase;
+    padding: 0 0 0 12px;
+    border-left: 2px solid #CCC;
+    font-size:1.3em;
+    display:inline;
+    position:absolute;
+    top:12px;
+}
+
+div.related a {
+    color: black;
+    text-decoration: none;
+}
+ 
+div.sphinxsidebar {
+    font-size: 0.75em;
+    line-height: 1.5em;
+    background-color: #F7EFE3;
+}
+
+div.sphinxsidebarwrapper{
+    padding: 20px 0;
+}
+ 
+div.sphinxsidebar h3,
+div.sphinxsidebar h4 {
+    font-family: Georgia, serif;
+    color: black;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 0;
+    padding: 5px 10px;
+}
+
+div.sphinxsidebar h4{
+    font-size: 1.1em;
+}
+ 
+div.sphinxsidebar h3 a {
+    color:#2262CC;
+}
+ 
+div.sphinxsidebar p {
+    color: black;
+    padding: 0px 20px;
+}
+ 
+div.sphinxsidebar p.topless {
+}
+ 
+div.sphinxsidebar ul {
+    margin: 5px 20px;
+    padding: 0;
+    color: black;
+}
+ 
+div.sphinxsidebar a {
+    color:#2262CC;
+}
+ 
+div.sphinxsidebar input {
+    border: 1px solid #ccc;
+    font-family: sans-serif;
+    font-size: 1em;
+}
+
+div.sphinxsidebar input[type=text]{
+    margin-left: 20px;
+}
+ 
+/* -- body styles ----------------------------------------------------------- */
+
+div.body h1,
+div.body h2,
+div.body h3,
+div.body h4,
+div.body h5,
+div.body h6 {
+    font-family: Georgia, serif;
+    background-color: white;
+    font-weight: normal;
+    color: black;
+    margin: 30px 0px 10px 0px;
+    padding: 5px 0 5px 0px;
+}
+ 
+div.body h1 { margin: 10px 0; font-size: 200%; }
+div.body h2 { font-size: 150%; background-color: white; }
+div.body h3 { font-size: 120%; background-color: white; }
+div.body h4 { font-size: 110%; background-color: white; }
+div.body h5 { font-size: 100%; background-color: white; }
+div.body h6 { font-size: 100%; background-color: white; }
+ 
+a.headerlink {
+    color: #2262CC;
+    font-size: 0.8em;
+    padding: 0 4px 0 4px;
+    text-decoration: none;
+}
+ 
+a.headerlink:hover {
+    color: #2262CC;
+}
+ 
+div.body p, div.body dd, div.body li {
+    line-height: 1.5em;
+}
+ 
+div.admonition p.admonition-title + p {
+    display: inline;
+}
+
+div.highlight{
+    background-color: white;
+}
+
+div.note {
+    background-color: #eee;
+    border: 1px solid #ccc;
+}
+ 
+div.seealso {
+    background-color: #ffc;
+    border: 1px solid #ff6;
+}
+ 
+div.topic {
+    background-color: #eee;
+}
+ 
+div.warning {
+    background-color: #ffe4e4;
+    border: 1px solid #f66;
+}
+ 
+p.admonition-title {
+    display: inline;
+}
+ 
+p.admonition-title:after {
+    content: ":";
+}
+ 
+pre {
+    padding: 10px;
+    background-color: White;
+    color: #222;
+    line-height: 1.2em;
+    border: 1px solid #C6C9CB;
+    font-size: 1.1em;
+    margin: 1.5em 0 1.5em 0;
+    -webkit-box-shadow: 1px 1px 1px #d8d8d8;
+    -moz-box-shadow: 1px 1px 1px #d8d8d8;
+}
+ 
+tt {
+    background-color: #ecf0f3;
+    color: #222;
+    /* padding: 1px 2px; */
+    font-size: 1.1em;
+    font-family: monospace;
+}
+
+.viewcode-back {
+    font-family: Georgia, serif;
+}
+
+div.viewcode-block:target {
+    background-color: #f4debf;
+    border-top: 1px solid #ac9;
+    border-bottom: 1px solid #ac9;
+}
