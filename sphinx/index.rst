@@ -1,6 +1,6 @@
 .. epigraph::
 
-    A simple Python wrapper for the `DocumentCloud API <http://www.documentcloud.org/>`_
+    A simple Python wrapper for the `DocumentCloud API <http://www.documentcloud.org/api/>`_
 
 
 Features
