@@ -10,6 +10,10 @@ Features
 * Upload PDFs into your documentcloud.org account and organize them into projects
 * Download text, images and entities extracted from your PDFs by DocumentCloud
 
+.. raw:: html
+
+   <hr>
+
 Documentation
 =============
 
@@ -21,6 +25,10 @@ Documentation
    editingdata
    uploadingdata
    credits
+
+.. raw:: html
+
+   <hr>
 
 Other resources
 ===============

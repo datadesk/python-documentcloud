@@ -46,12 +46,12 @@
   <div class="section" id="getting-started">
 <h1>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
 <p>This tutorial will walk you through the process of installing python-documentment and making your first requests.</p>
-<div class="section" id="installation">
+<hr><div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <p>Provided that you have <a class="reference external" href="http://pypi.python.org/pypi/pip">pip</a> installed, you can install the library like so:</p>
 <div class="highlight-python"><pre>$ pip install python-documentcloud</pre>
 </div>
-</div>
+<hr></div>
 <div class="section" id="creating-a-client">
 <h2>Creating a client<a class="headerlink" href="#creating-a-client" title="Permalink to this headline">¶</a></h2>
 <p>Before you can interact with DocumentCloud, you first must import the library and initialize a client to talk with the site on your behalf.</p>
@@ -62,7 +62,7 @@
 <p>Since we didn&#8217;t provide any log-in credentials, the client above will only be able to access published documents. If have an account at DocumentCloud and want to use that, you can provide the crendentials to the client.</p>
 <div class="highlight-python"><pre>&gt;&gt; client = DocumentCloud(USERNAME, PASSWORD)</pre>
 </div>
-</div>
+<hr></div>
 <div class="section" id="searching-for-documents">
 <h2>Searching for documents<a class="headerlink" href="#searching-for-documents" title="Permalink to this headline">¶</a></h2>
 <p>You can now you use client to interact with DocumentCloud. A search for documents about <a class="reference external" href="http://en.wikipedia.org/wiki/Rub%C3%A9n_Salazar">journalist Ruben Salazar</a> would look like this:</p>
@@ -71,6 +71,29 @@
 &gt;&gt; obj = obj_list[0]
 &gt;&gt; obj
 &lt;Document: Final OIR Report&gt;</pre>
+</div>
+<hr></div>
+<div class="section" id="interacting-with-a-document">
+<h2>Interacting with a document<a class="headerlink" href="#interacting-with-a-document" title="Permalink to this headline">¶</a></h2>
+<p>Once you have you hands on a document object, you can interact with the metadata stored at documentcloud.org. Here&#8217;s a sample:</p>
+<div class="highlight-python"><pre>&gt;&gt; print obj.title
+Final OIR Report
+&gt;&gt; print obj.id
+71072-oir-final-report
+&gt;&gt; print obj.contributor_organization
+Los Angeles Times
+&gt;&gt; print obj.canonical_url
+http://www.documentcloud.org/documents/71072-oir-final-report.html</pre>
+</div>
+<p>You can even download the PDF, page images and full text.</p>
+<div class="highlight-python"><pre>&gt;&gt; obj.large_image_url
+...
+&gt;&gt; obj.large_image
+...
+&gt;&gt; obj.full_text
+...
+&gt;&gt; obj.pdf
+...</pre>
 </div>
 </div>
 </div>
@@ -87,6 +110,7 @@
 <li><a class="reference internal" href="#installation">Installation</a></li>
 <li><a class="reference internal" href="#creating-a-client">Creating a client</a></li>
 <li><a class="reference internal" href="#searching-for-documents">Searching for documents</a></li>
+<li><a class="reference internal" href="#interacting-with-a-document">Interacting with a document</a></li>
 </ul>
 </li>
 </ul>

@@ -4,6 +4,9 @@ Getting started
 
 This tutorial will walk you through the process of installing python-documentment and making your first requests.
 
+.. raw:: html
+
+   <hr>
 
 Installation
 ------------
@@ -12,6 +15,9 @@ Provided that you have `pip <http://pypi.python.org/pypi/pip>`_ installed, you c
 
     $ pip install python-documentcloud
 
+.. raw:: html
+
+   <hr>
 
 Creating a client
 -----------------
@@ -26,6 +32,9 @@ Since we didn't provide any log-in credentials, the client above will only be ab
 
     >> client = DocumentCloud(USERNAME, PASSWORD)
 
+.. raw:: html
+
+   <hr>
 
 Searching for documents
 -----------------------
@@ -37,3 +46,51 @@ You can now you use client to interact with DocumentCloud. A search for document
     >> obj = obj_list[0]
     >> obj
     <Document: Final OIR Report>
+
+.. raw:: html
+
+   <hr>
+
+Interacting with a document
+---------------------------
+
+Once you have you hands on a document object, you can interact with the metadata stored at documentcloud.org. Here's a sample: ::
+
+    >> print obj.title
+    Final OIR Report
+    >> print obj.id
+    71072-oir-final-report
+    >> print obj.contributor_organization
+    Los Angeles Times
+    >> print obj.canonical_url
+    http://www.documentcloud.org/documents/71072-oir-final-report.html
+
+You can even download the PDF, page images and full text. ::
+
+    >> obj.large_image_url
+    ...
+    >> obj.large_image
+    ...
+    >> obj.full_text
+    ...
+    >> obj.pdf
+    ...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
