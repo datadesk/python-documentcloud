@@ -38,7 +38,6 @@ class BaseDocumentCloudClient(object):
         self.username = username
         self.password = password
     
-    
     def _make_request(self, url, params=None, opener=None):
         """
         Configure a HTTP request, fire it off and return the response.
@@ -786,19 +785,5 @@ class Section(BaseAPIObject):
     pass
 
 
-if __name__ == '__main__':
-    """
-    Ignore all this. Ad hoc testing ground as I build the API piece by piece.
-    """
-    from pprint import pprint
-    from private_settings import *
-    public = DocumentCloud()
-    private = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
-    bad = DocumentCloud("Bad", "Login")
-    # Pull the project
-    #proj = private.projects.get("703")
-    #doc = private.documents.get(u'83251-fbi-file-on-christopher-biggie-smalls-wallace')
-    #upload = private.projects.create("0001 - This is a test")
-    obj = private.projects.get(1630)
-    obj.delete()
+
 
