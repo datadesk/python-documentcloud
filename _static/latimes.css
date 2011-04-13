@@ -261,7 +261,15 @@ p.admonition-title {
 p.admonition-title:after {
     content: ":";
 }
- 
+
+blockquote.epigraph {
+    font-style: italic;
+    margin:15px 0;
+    padding:0 0 8px 0;
+    font-size:1.6em;
+    border-bottom: 2px dotted #CCC;
+}
+
 pre {
     padding: 10px;
     background-color: White;

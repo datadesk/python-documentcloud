@@ -1,7 +1,7 @@
-A Python wrapper on the `DocumentCloud API <http://www.documentcloud.org/>`_.
+.. epigraph::
 
-.. DANGER::
-   Beware killer rabbits!
+    A simple Python wrapper for the `DocumentCloud API <http://www.documentcloud.org/>`_
+
 
 Features
 ========
