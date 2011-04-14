@@ -44,7 +44,7 @@ Projects
 
    Save changes to a project back to DocumentCloud. You must be authorized to make these changes. Only the `title`, `source`, `document_list` attributes may be edited. ::
 
-        >>> obj = client.projects.get('1339')
+        >>> obj = client.projects.get('816')
         >>> obj.title = "Brand new title"
         >>> obj.put()
 
@@ -52,7 +52,7 @@ Projects
 
    Delete a project from DocumentCloud. You must be authorized to make these changes. ::
 
-        >>> obj = client.projects.get('1339')
+        >>> obj = client.projects.get('816')
         >>> obj.delete()
 
 

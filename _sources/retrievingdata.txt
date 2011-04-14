@@ -44,11 +44,11 @@ Projects
 
         >>> from documentcloud import DocumentCloud
         >>> client = DocumentCloud(USERNAME, PASSWORD)
-        >>> obj = client.projects.get('1339')
+        >>> obj = client.projects.get('816')
         >>> obj
-        <Project: Ruben Salazar>
+        <Project: The Ruben Salazar Files>
         >>> obj.document_list[0]
-        <Document: Final OIR Report>
+        <Document: Times Columnist Ruben Salazar Slain by Tear-gas Missile>
 
 .. function:: client.projects.all()
 
