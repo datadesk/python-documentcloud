@@ -127,7 +127,10 @@ div.smalllogo img {
 div.sphinxsidebar {
     font-size: 0.75em;
     line-height: 1.5em;
-    background-color: #F7EFE3;
+    background-color: #FAFAFA;
+    border-right: 2px solid #CCC;
+    border-bottom: 1px solid #E0E0E0;
+    padding-bottom:5px;
 }
 
 div.sphinxsidebarwrapper{
