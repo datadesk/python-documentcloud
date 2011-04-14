@@ -176,8 +176,19 @@
 <tt class="descclassname">document_obj.</tt><tt class="descname">entities</tt><a class="headerlink" href="#document_obj.entities" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of the entities extracted from the document by <a class="reference external" href="http://www.opencalais.com/">OpenCalais</a>. The data are modeled by their own Python class, defined int the <a class="reference internal" href="otherdata.html#entities"><em>Entities</em></a> section.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;83251-fbi-file-on-christopher-biggie-smalls-wallace&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">annotations</span>
-<span class="go">[&lt;Annotation&gt;, &lt;Annotation&gt;, &lt;Annotation&gt;, &lt;Annotation&gt;, &lt;Annotation&gt;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">entities</span>
+<span class="go">[&lt;Entity: Angeles&gt;, &lt;Entity: FD&gt;, &lt;Entity: OO&gt;, &lt;Entity: Los Angeles&gt;, ...</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="document_obj.full_text">
+<tt class="descclassname">document_obj.</tt><tt class="descname">full_text</tt><a class="headerlink" href="#document_obj.full_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the full text of the document, as extracted from the original PDF by DocumentCloud. Results may vary, but this will give you what they got.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;71072-oir-final-report&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">full_text</span><span class="p">[:</span><span class="mi">250</span><span class="p">]</span>
+<span class="go">&quot;Review of the Los Angeles County Sheriff&#39;s\nDepartment&#39;s Investigation into the\nHomicide of Ruben Salazar\nA Special Report by the\nLos Angeles County Office of Independent Review\n ...</span>
 </pre></div>
 </div>
 </dd></dl>

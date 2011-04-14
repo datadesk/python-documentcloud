@@ -118,8 +118,16 @@ Attributes
     A list of the entities extracted from the document by `OpenCalais <http://www.opencalais.com/>`_. The data are modeled by their own Python class, defined int the :ref:`entities` section.
 
         >>> obj = client.documents.get('83251-fbi-file-on-christopher-biggie-smalls-wallace')
-        >>> obj.annotations
-        [<Annotation>, <Annotation>, <Annotation>, <Annotation>, <Annotation>]
+        >>> obj.entities
+        [<Entity: Angeles>, <Entity: FD>, <Entity: OO>, <Entity: Los Angeles>, ...
+
+.. attribute:: document_obj.full_text
+
+    Returns the full text of the document, as extracted from the original PDF by DocumentCloud. Results may vary, but this will give you what they got.
+
+        >>> obj = client.documents.get('71072-oir-final-report')
+        >>> obj.full_text[:250]
+        "Review of the Los Angeles County Sheriff's\nDepartment's Investigation into the\nHomicide of Ruben Salazar\nA Special Report by the\nLos Angeles County Office of Independent Review\n ...
 
 .. attribute:: document_obj.title
 
