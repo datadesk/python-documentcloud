@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Retrieving data &mdash; python-documentcloud v0.1 documentation</title>
+    <title>Projects &mdash; python-documentcloud v0.1 documentation</title>
     <link rel="stylesheet" href="_static/latimes.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -23,7 +23,9 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="python-documentcloud v0.1 documentation" href="index.html" /> 
+    <link rel="top" title="python-documentcloud v0.1 documentation" href="index.html" />
+    <link rel="next" title="Credits" href="credits.html" />
+    <link rel="prev" title="Documents" href="documents.html" /> 
   </head>
   <body>              
 <a href="http://www.github.com/datadesk/python-documentcloud/">
@@ -41,39 +43,11 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="retrieving-data">
-<h1>Retrieving data<a class="headerlink" href="#retrieving-data" title="Permalink to this headline">¶</a></h1>
-<p>Methods for drawing down data about documents and projects.</p>
-<hr><div class="section" id="documents">
-<h2>Documents<a class="headerlink" href="#documents" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="client.documents.get">
-<tt class="descclassname">client.documents.</tt><tt class="descname">get</tt><big>(</big><em>id</em><big>)</big><a class="headerlink" href="#client.documents.get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the document with the provided DocumentCloud identifer.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">documentcloud</span> <span class="kn">import</span> <span class="n">DocumentCloud</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">DocumentCloud</span><span class="p">(</span><span class="n">USERNAME</span><span class="p">,</span> <span class="n">PASSWORD</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;71072-oir-final-report&#39;</span><span class="p">)</span>
-<span class="go">&lt;Document: Final OIR Report&gt;</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="function">
-<dt id="client.documents.search">
-<tt class="descclassname">client.documents.</tt><tt class="descname">search</tt><big>(</big><em>keyword</em><big>)</big><a class="headerlink" href="#client.documents.search" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a list of documents that match the provided keyword.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">documentcloud</span> <span class="kn">import</span> <span class="n">DocumentCloud</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">DocumentCloud</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">obj_list</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">&#39;Ruben Salazar&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">obj_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="go">&lt;Document: Final OIR Report&gt;</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<hr></div>
-<div class="section" id="projects">
-<h2>Projects<a class="headerlink" href="#projects" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="projects">
+<h1>Projects<a class="headerlink" href="#projects" title="Permalink to this headline">¶</a></h1>
+<p>Methods for drawing down, editing and uploading data about DocumentCloud projects. A project is a group of documents.</p>
+<hr><div class="section" id="retrieval">
+<h2>Retrieval<a class="headerlink" href="#retrieval" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="client.projects.get">
 <tt class="descclassname">client.projects.</tt><tt class="descname">get</tt><big>(</big><em>id</em><big>)</big><a class="headerlink" href="#client.projects.get" title="Permalink to this definition">¶</a></dt>
@@ -102,7 +76,47 @@
 </div>
 </dd></dl>
 
-<p>Other sections explain how to <a class="reference internal" href="editingdata.html"><em>edit</em></a> and <a class="reference internal" href="uploadingdata.html"><em>upload</em></a> data.</p>
+<hr></div>
+<div class="section" id="editing">
+<h2>Editing<a class="headerlink" href="#editing" title="Permalink to this headline">¶</a></h2>
+<dl class="method">
+<dt id="project_obj.put">
+<tt class="descclassname">project_obj.</tt><tt class="descname">put</tt><big>(</big><big>)</big><a class="headerlink" href="#project_obj.put" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save changes to a project back to DocumentCloud. You must be authorized to make these changes. Only the <cite>title</cite>, <cite>source</cite>, <cite>document_list</cite> attributes may be edited.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">projects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;816&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">&quot;Brand new title&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">put</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="project_obj.delete">
+<tt class="descclassname">project_obj.</tt><tt class="descname">delete</tt><big>(</big><big>)</big><a class="headerlink" href="#project_obj.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a project from DocumentCloud. You must be authorized to make these changes.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">projects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;816&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<hr></div>
+<div class="section" id="creation">
+<h2>Creation<a class="headerlink" href="#creation" title="Permalink to this headline">¶</a></h2>
+<dl class="method">
+<dt id="client.projects.create">
+<tt class="descclassname">client.projects.</tt><tt class="descname">create</tt><big>(</big><em>title=None</em>, <em>description=None</em>, <em>document_ids=None</em><big>)</big><a class="headerlink" href="#client.projects.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new project on DocumentCloud. You must be authorized to do this. Returns the DocumentCloud identifer of the new record you&#8217;ve created.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">documentcloud</span> <span class="kn">import</span> <span class="n">DocumentCloud</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">DocumentCloud</span><span class="p">(</span><span class="n">USERNAME</span><span class="p">,</span> <span class="n">PASSWORD</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_id</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">projects</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="s">&quot;New project&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Now fetch it</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">projects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">new_id</span><span class="p">)</span>
+<span class="go">&lt;Project: New project&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </div>
 </div>
 
@@ -114,16 +128,23 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Retrieving data</a><ul>
-<li><a class="reference internal" href="#documents">Documents</a></li>
-<li><a class="reference internal" href="#projects">Projects</a></li>
+<li><a class="reference internal" href="#">Projects</a><ul>
+<li><a class="reference internal" href="#retrieval">Retrieval</a></li>
+<li><a class="reference internal" href="#editing">Editing</a></li>
+<li><a class="reference internal" href="#creation">Creation</a></li>
 </ul>
 </li>
 </ul>
 
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="documents.html"
+                        title="previous chapter">Documents</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="credits.html"
+                        title="next chapter">Credits</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
-    <li><a href="_sources/retrievingdata.txt"
+    <li><a href="_sources/projects.txt"
            rel="nofollow">Show Source</a></li>
   </ul>
 <div id="searchbox" style="display: none">

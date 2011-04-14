@@ -21,9 +21,8 @@ Documentation
    :maxdepth: 3
 
    gettingstarted
-   retrievingdata
-   editingdata
-   uploadingdata
+   documents
+   projects
    credits
 
 .. raw:: html

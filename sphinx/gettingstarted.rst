@@ -75,8 +75,7 @@ You can even download the PDF, page images and full text. ::
     >>> obj.pdf
     ...
 
-Move ahead to the sections on :doc:`retrieving </retrievingdata>`, :doc:`editing </editingdata>` and :doc:`uploading </uploadingdata>` data for more detail on what's possible.
-
+Move ahead to the sections focused on :doc:`documents </documents>`, or :doc:`projects </projects>` for greater detail.
 
 
 
