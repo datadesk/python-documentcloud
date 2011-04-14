@@ -40,7 +40,7 @@ Editing
 
 .. method:: document_obj.put()
 
-   Save changes to a document back to DocumentCloud. You must be authorized to make these changes. Only the `title`, `source`, `description`, `related_article`, `published_url` and `access` attributes may be edited. ::
+   Save changes to a document back to DocumentCloud. You must be authorized to make these changes. Only the ``title``, ``source``, ``description``, ``related_article``, ``published_url`` and ``access`` attributes may be edited. ::
 
         >>> # Grab a document
         >>> obj = client.documents.get('71072-oir-final-report')
@@ -83,11 +83,39 @@ Attributes
 
 .. attribute:: document_obj.access
 
-    The privacy level of the resource within the DocumentCloud system. It will be either ``public``, ``private`` or ``organization``, the last of which means the is only visible to members of the contributors organization.
+    The privacy level of the resource within the DocumentCloud system. It will be either ``public``, ``private`` or ``organization``, the last of which means the is only visible to members of the contributors organization. Can be edited and saved with a put command.
 
 .. attribute:: document_obj.annotations
 
-    A list of the annotations users have left on the document. Annotations data are modeled by their own Python class, defined :doc:`here </annotations>`.
+    A list of the annotations users have left on the document. The data are modeled by their own Python class, defined in the :ref:`annotations` section.
+
+        >>> obj = client.documents.get('83251-fbi-file-on-christopher-biggie-smalls-wallace')
+        >>> obj.annotations
+        [<Annotation>, <Annotation>, <Annotation>, <Annotation>, <Annotation>]
+
+.. attribute:: document_obj.canonical_url
+
+    The URL where the document is hosted at documentcloud.org.
+
+.. attribute:: document_obj.contributor
+
+    The user who originally uploaded the document.
+
+.. attribute:: document_obj.contributor_organization
+
+    The organizational affiliation of the user who originally uploaded the document.
+
+.. attribute:: document_obj.created_at
+
+    The date and time that the document was created, in Python's datetime format.
+
+.. attribute:: document_obj.description
+
+    A summary of the document. Can be edited and saved with a put command.
+
+.. attribute:: document_obj.entities
+
+    A list of the entities extracted from the document by `OpenCalais <http://www.opencalais.com/>`_. The data are modeled by their own Python class, defined int the :ref:`entities` section.
 
         >>> obj = client.documents.get('83251-fbi-file-on-christopher-biggie-smalls-wallace')
         >>> obj.annotations
@@ -96,7 +124,6 @@ Attributes
 .. attribute:: document_obj.title
 
     The name of the Document. Can be edited and saved with a put command.
-
 
 
 

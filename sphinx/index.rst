@@ -23,7 +23,7 @@ Documentation
    gettingstarted
    documents
    projects
-   annotations
+   otherdata
    credits
 
 .. raw:: html
