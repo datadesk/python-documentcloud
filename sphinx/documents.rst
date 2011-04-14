@@ -126,13 +126,21 @@ Attributes
     Returns the full text of the document, as extracted from the original PDF by DocumentCloud. Results may vary, but this will give you what they got.
 
         >>> obj = client.documents.get('71072-oir-final-report')
-        >>> obj.full_text[:250]
+        >>> obj.full_text
         "Review of the Los Angeles County Sheriff's\nDepartment's Investigation into the\nHomicide of Ruben Salazar\nA Special Report by the\nLos Angeles County Office of Independent Review\n ...
+
+.. attribute:: document_obj.full_text_url
+
+    Returns the URL that contains the full text of the document, as extracted from the original PDF by DocumentCloud. 
+
+.. attribute:: document_obj.id
+
+    The unique identifer of the document in DocumentCloud's system. Typically this is a string that begins with a number, link ``83251-fbi-file-on-christopher-biggie-s.malls-wallace``
 
 .. attribute:: document_obj.title
 
     The name of the Document. Can be edited and saved with a put command.
 
-
+MORE TK
 
 
