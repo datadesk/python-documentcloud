@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="python-documentcloud v0.1 documentation" href="index.html" />
-    <link rel="next" title="Credits" href="credits.html" />
+    <link rel="next" title="Projects" href="projects.html" />
     <link rel="prev" title="Getting started" href="gettingstarted.html" /> 
   </head>
   <body>              
@@ -122,6 +122,32 @@
 </dd></dl>
 
 </div>
+<div class="section" id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h2>
+<dl class="attribute">
+<dt id="document_obj.access">
+<tt class="descclassname">document_obj.</tt><tt class="descname">access</tt><a class="headerlink" href="#document_obj.access" title="Permalink to this definition">¶</a></dt>
+<dd><p>The privacy level of the resource within the DocumentCloud system. It will be either <tt class="docutils literal"><span class="pre">public</span></tt>, <tt class="docutils literal"><span class="pre">private</span></tt> or <tt class="docutils literal"><span class="pre">organization</span></tt>, the last of which means the is only visible to members of the contributors organization.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="document_obj.annotations">
+<tt class="descclassname">document_obj.</tt><tt class="descname">annotations</tt><a class="headerlink" href="#document_obj.annotations" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of the annotations users have left on the document. Annotations data are modeled by their own Python class, defined <a class="reference internal" href="annotations.html"><em>here</em></a>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;83251-fbi-file-on-christopher-biggie-smalls-wallace&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">annotations</span>
+<span class="go">[&lt;Annotation&gt;, &lt;Annotation&gt;, &lt;Annotation&gt;, &lt;Annotation&gt;, &lt;Annotation&gt;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="document_obj.title">
+<tt class="descclassname">document_obj.</tt><tt class="descname">title</tt><a class="headerlink" href="#document_obj.title" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the Document. Can be edited and saved with a put command.</p>
+</dd></dl>
+
+</div>
 </div>
 
 
@@ -136,6 +162,7 @@
 <li><a class="reference internal" href="#retrieval">Retrieval</a></li>
 <li><a class="reference internal" href="#editing">Editing</a></li>
 <li><a class="reference internal" href="#uploading">Uploading</a></li>
+<li><a class="reference internal" href="#attributes">Attributes</a></li>
 </ul>
 </li>
 </ul>
@@ -144,8 +171,8 @@
   <p class="topless"><a href="gettingstarted.html"
                         title="previous chapter">Getting started</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="credits.html"
-                        title="next chapter">Credits</a></p>
+  <p class="topless"><a href="projects.html"
+                        title="next chapter">Projects</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/documents.txt"

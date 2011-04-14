@@ -78,4 +78,26 @@ Uploading
         >>> client.documents.get(new_id)
         <Document: Test PDF>
 
+Attributes
+----------
+
+.. attribute:: document_obj.access
+
+    The privacy level of the resource within the DocumentCloud system. It will be either ``public``, ``private`` or ``organization``, the last of which means the is only visible to members of the contributors organization.
+
+.. attribute:: document_obj.annotations
+
+    A list of the annotations users have left on the document. Annotations data are modeled by their own Python class, defined :doc:`here </annotations>`.
+
+        >>> obj = client.documents.get('83251-fbi-file-on-christopher-biggie-smalls-wallace')
+        >>> obj.annotations
+        [<Annotation>, <Annotation>, <Annotation>, <Annotation>, <Annotation>]
+
+.. attribute:: document_obj.title
+
+    The name of the Document. Can be edited and saved with a put command.
+
+
+
+
 
