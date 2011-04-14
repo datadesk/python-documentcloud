@@ -78,8 +78,12 @@ Uploading
         >>> client.documents.get(new_id)
         <Document: Test PDF>
 
-Attributes
-----------
+.. raw:: html
+
+   <hr>
+
+Metadata
+--------
 
 .. attribute:: document_obj.access
 
@@ -115,7 +119,7 @@ Attributes
 
 .. attribute:: document_obj.entities
 
-    A list of the entities extracted from the document by `OpenCalais <http://www.opencalais.com/>`_. The data are modeled by their own Python class, defined int the :ref:`entities` section.
+    A list of the entities extracted from the document by `OpenCalais <http://www.opencalais.com/>`_. The data are modeled by their own Python class, defined in the :ref:`entities` section.
 
         >>> obj = client.documents.get('83251-fbi-file-on-christopher-biggie-smalls-wallace')
         >>> obj.entities
@@ -135,12 +139,73 @@ Attributes
 
 .. attribute:: document_obj.id
 
-    The unique identifer of the document in DocumentCloud's system. Typically this is a string that begins with a number, link ``83251-fbi-file-on-christopher-biggie-s.malls-wallace``
+    The unique identifer of the document in DocumentCloud's system. Typically this is a string that begins with a number, like ``83251-fbi-file-on-christopher-biggie-s.malls-wallace``
+
+.. attribute:: document_obj.large_image
+
+    Returns the binary data for the "large" sized image of the document's first page. If you would like the data for some other page, pass the page number into ``document_obj.get_large_image(page)``.
+
+.. attribute:: document_obj.large_image_url
+
+    Returns a URL containing the "large" sized image of the document's first page. If you would like the URL for some other page, pass the page number into ``document_obj.get_large_image_url(page)``.
+
+.. attribute:: document_obj.large_image_url_list
+
+    Returns a list of URLs for the "large" sized image of every page in the document.
+
+.. attribute:: document_obj.pages
+
+    The number of pages in the document.
+
+.. attribute:: document_obj.pdf
+
+    Returns the binary data for document's original PDF file.
+
+.. attribute:: document_obj.pdf_url
+
+    Returns a URL containing the binary data for document's original PDF file.
+
+.. attribute:: document_obj.sections
+
+    A list of the sections earmarked in the text by a user. The data are modeled by their own Python class, defined in the :ref:`sections` section.
+
+        >>> obj = client.documents.get('74103-report-of-the-calpers-special-review')
+        >>> obj.sections
+        [<Section: Letter to Avraham Shemesh and Richard Resller of SIM Group>, <Section: Letter to Ralph Whitworth, founder of Relational Investors>, ...
+
+.. attribute:: document_obj.small_image
+
+    Returns the binary data for the "small" sized image of the document's first page. If you would like the data for some other page, pass the page number into ``document_obj.get_small_image(page)``.
+
+.. attribute:: document_obj.small_image_url
+
+    Returns a URL containing the "small" sized image of the document's first page. If you would like the URL for some other page, pass the page number into ``document_obj.get_small_image_url(page)``.
+
+.. attribute:: document_obj.small_image_url_list
+
+    Returns a list of URLs for the "small" sized image of every page in the document.
+
+.. attribute:: document_obj.source
+
+    The original source of the document. Can be edited and saved with a put command.
+
+.. attribute:: document_obj.thumbnail_image
+
+    Returns the binary data for the "thumbnail" sized image of the document's first page. If you would like the data for some other page, pass the page number into ``document_obj.get_thumbnail_image(page)``.
+
+.. attribute:: document_obj.thumbnail_image_url
+
+    Returns a URL containing the "thumbnail" sized image of the document's first page. If you would like the URL for some other page, pass the page number into ``document_obj.get_small_thumbnail_url(page)``.
+
+.. attribute:: document_obj.thumbnail_image_url_list
+
+    Returns a list of URLs for the "small" sized image of every page in the document.
 
 .. attribute:: document_obj.title
 
     The name of the Document. Can be edited and saved with a put command.
 
-MORE TK
+.. attribute:: document_obj.updated_at
 
+    The date and time that the document was last updated, in Python's datetime format.
 

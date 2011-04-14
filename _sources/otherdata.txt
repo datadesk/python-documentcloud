@@ -25,3 +25,12 @@ Entities
 --------
 
 Keywords extracted from documents with OpenCalais.
+
+.. raw:: html
+
+   <hr>
+
+.. _sections:
+
+Sections
+--------

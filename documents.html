@@ -121,9 +121,9 @@
 </div>
 </dd></dl>
 
-</div>
-<div class="section" id="attributes">
-<h2>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h2>
+<hr></div>
+<div class="section" id="metadata">
+<h2>Metadata<a class="headerlink" href="#metadata" title="Permalink to this headline">¶</a></h2>
 <dl class="attribute">
 <dt id="document_obj.access">
 <tt class="descclassname">document_obj.</tt><tt class="descname">access</tt><a class="headerlink" href="#document_obj.access" title="Permalink to this definition">¶</a></dt>
@@ -174,7 +174,7 @@
 <dl class="attribute">
 <dt id="document_obj.entities">
 <tt class="descclassname">document_obj.</tt><tt class="descname">entities</tt><a class="headerlink" href="#document_obj.entities" title="Permalink to this definition">¶</a></dt>
-<dd><p>A list of the entities extracted from the document by <a class="reference external" href="http://www.opencalais.com/">OpenCalais</a>. The data are modeled by their own Python class, defined int the <a class="reference internal" href="otherdata.html#entities"><em>Entities</em></a> section.</p>
+<dd><p>A list of the entities extracted from the document by <a class="reference external" href="http://www.opencalais.com/">OpenCalais</a>. The data are modeled by their own Python class, defined in the <a class="reference internal" href="otherdata.html#entities"><em>Entities</em></a> section.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;83251-fbi-file-on-christopher-biggie-smalls-wallace&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">entities</span>
 <span class="go">[&lt;Entity: Angeles&gt;, &lt;Entity: FD&gt;, &lt;Entity: OO&gt;, &lt;Entity: Los Angeles&gt;, ...</span>
@@ -202,13 +202,108 @@
 <dl class="attribute">
 <dt id="document_obj.id">
 <tt class="descclassname">document_obj.</tt><tt class="descname">id</tt><a class="headerlink" href="#document_obj.id" title="Permalink to this definition">¶</a></dt>
-<dd><p>The unique identifer of the document in DocumentCloud&#8217;s system. Typically this is a string that begins with a number, link <tt class="docutils literal"><span class="pre">83251-fbi-file-on-christopher-biggie-s.malls-wallace</span></tt></p>
+<dd><p>The unique identifer of the document in DocumentCloud&#8217;s system. Typically this is a string that begins with a number, like <tt class="docutils literal"><span class="pre">83251-fbi-file-on-christopher-biggie-s.malls-wallace</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="document_obj.large_image">
+<tt class="descclassname">document_obj.</tt><tt class="descname">large_image</tt><a class="headerlink" href="#document_obj.large_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the binary data for the &#8220;large&#8221; sized image of the document&#8217;s first page. If you would like the data for some other page, pass the page number into <tt class="docutils literal"><span class="pre">document_obj.get_large_image(page)</span></tt>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="document_obj.large_image_url">
+<tt class="descclassname">document_obj.</tt><tt class="descname">large_image_url</tt><a class="headerlink" href="#document_obj.large_image_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a URL containing the &#8220;large&#8221; sized image of the document&#8217;s first page. If you would like the URL for some other page, pass the page number into <tt class="docutils literal"><span class="pre">document_obj.get_large_image_url(page)</span></tt>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="document_obj.large_image_url_list">
+<tt class="descclassname">document_obj.</tt><tt class="descname">large_image_url_list</tt><a class="headerlink" href="#document_obj.large_image_url_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of URLs for the &#8220;large&#8221; sized image of every page in the document.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="document_obj.pages">
+<tt class="descclassname">document_obj.</tt><tt class="descname">pages</tt><a class="headerlink" href="#document_obj.pages" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of pages in the document.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="document_obj.pdf">
+<tt class="descclassname">document_obj.</tt><tt class="descname">pdf</tt><a class="headerlink" href="#document_obj.pdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the binary data for document&#8217;s original PDF file.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="document_obj.pdf_url">
+<tt class="descclassname">document_obj.</tt><tt class="descname">pdf_url</tt><a class="headerlink" href="#document_obj.pdf_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a URL containing the binary data for document&#8217;s original PDF file.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="document_obj.sections">
+<tt class="descclassname">document_obj.</tt><tt class="descname">sections</tt><a class="headerlink" href="#document_obj.sections" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of the sections earmarked in the text by a user. The data are modeled by their own Python class, defined in the <a class="reference internal" href="otherdata.html#sections"><em>Sections</em></a> section.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;74103-report-of-the-calpers-special-review&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">sections</span>
+<span class="go">[&lt;Section: Letter to Avraham Shemesh and Richard Resller of SIM Group&gt;, &lt;Section: Letter to Ralph Whitworth, founder of Relational Investors&gt;, ...</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="document_obj.small_image">
+<tt class="descclassname">document_obj.</tt><tt class="descname">small_image</tt><a class="headerlink" href="#document_obj.small_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the binary data for the &#8220;small&#8221; sized image of the document&#8217;s first page. If you would like the data for some other page, pass the page number into <tt class="docutils literal"><span class="pre">document_obj.get_small_image(page)</span></tt>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="document_obj.small_image_url">
+<tt class="descclassname">document_obj.</tt><tt class="descname">small_image_url</tt><a class="headerlink" href="#document_obj.small_image_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a URL containing the &#8220;small&#8221; sized image of the document&#8217;s first page. If you would like the URL for some other page, pass the page number into <tt class="docutils literal"><span class="pre">document_obj.get_small_image_url(page)</span></tt>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="document_obj.small_image_url_list">
+<tt class="descclassname">document_obj.</tt><tt class="descname">small_image_url_list</tt><a class="headerlink" href="#document_obj.small_image_url_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of URLs for the &#8220;small&#8221; sized image of every page in the document.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="document_obj.source">
+<tt class="descclassname">document_obj.</tt><tt class="descname">source</tt><a class="headerlink" href="#document_obj.source" title="Permalink to this definition">¶</a></dt>
+<dd><p>The original source of the document. Can be edited and saved with a put command.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="document_obj.thumbnail_image">
+<tt class="descclassname">document_obj.</tt><tt class="descname">thumbnail_image</tt><a class="headerlink" href="#document_obj.thumbnail_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the binary data for the &#8220;thumbnail&#8221; sized image of the document&#8217;s first page. If you would like the data for some other page, pass the page number into <tt class="docutils literal"><span class="pre">document_obj.get_thumbnail_image(page)</span></tt>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="document_obj.thumbnail_image_url">
+<tt class="descclassname">document_obj.</tt><tt class="descname">thumbnail_image_url</tt><a class="headerlink" href="#document_obj.thumbnail_image_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a URL containing the &#8220;thumbnail&#8221; sized image of the document&#8217;s first page. If you would like the URL for some other page, pass the page number into <tt class="docutils literal"><span class="pre">document_obj.get_small_thumbnail_url(page)</span></tt>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="document_obj.thumbnail_image_url_list">
+<tt class="descclassname">document_obj.</tt><tt class="descname">thumbnail_image_url_list</tt><a class="headerlink" href="#document_obj.thumbnail_image_url_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of URLs for the &#8220;small&#8221; sized image of every page in the document.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="document_obj.title">
 <tt class="descclassname">document_obj.</tt><tt class="descname">title</tt><a class="headerlink" href="#document_obj.title" title="Permalink to this definition">¶</a></dt>
 <dd><p>The name of the Document. Can be edited and saved with a put command.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="document_obj.updated_at">
+<tt class="descclassname">document_obj.</tt><tt class="descname">updated_at</tt><a class="headerlink" href="#document_obj.updated_at" title="Permalink to this definition">¶</a></dt>
+<dd><p>The date and time that the document was last updated, in Python&#8217;s datetime format.</p>
 </dd></dl>
 
 </div>
@@ -226,7 +321,7 @@
 <li><a class="reference internal" href="#retrieval">Retrieval</a></li>
 <li><a class="reference internal" href="#editing">Editing</a></li>
 <li><a class="reference internal" href="#uploading">Uploading</a></li>
-<li><a class="reference internal" href="#attributes">Attributes</a></li>
+<li><a class="reference internal" href="#metadata">Metadata</a></li>
 </ul>
 </li>
 </ul>
