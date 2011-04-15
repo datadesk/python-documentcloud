@@ -50,6 +50,18 @@ Entities
 
 Keywords extracted from :doc:`documents </documents>` with OpenCalais.
 
+.. attribute:: location_obj.revelance
+
+    The weighting associated with this connection by OpenCalais. Higher numbers are supposed to be more relevant.
+
+.. attribute:: location_obj.type
+
+    The category of entity the value belongs to.
+
+.. attribute:: location_obj.value
+
+    The name of the entity extracted from the document (i.e. "Los Angeles" or "Museum of Modern Art")
+
 .. raw:: html
 
    <hr>
