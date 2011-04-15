@@ -73,4 +73,44 @@ Creation
         >>> client.projects.get(new_id)
         <Project: New project>
 
+.. raw:: html
+
+   <hr>
+
+Metadata
+--------
+
+.. attribute:: project_obj.description
+
+    A summary of the project. Can be edited and saved with a put command.
+
+.. attribute:: project_obj.document_ids
+
+    A list that contains the unique identifier of the documents assigned to this project. Cannot be edited. Edit the document_list instead.
+
+        >>> obj = client.projects.get('816')
+        >>> obj.document_ids
+        [u'19419-times-columnist-ruben-salazar-killed-by-bullet', u'19420-usps-american-journalists-stamp', u'19280-fbi-file-on-el-paso-investigations', u'19281-letter-from-the-lapd-chief', ...
+
+.. attribute:: project_obj.document_list
+
+    A list that documents assigned to this project. Can be expanded by appending new documents to the list or cleared by reassigning it as an empty list and then issuing the put command.
+
+        >>> obj = client.projects.get('816')
+        >>> obj.document_list
+        [<Document: Times Columnist Ruben Salazar Slain by Tear-gas Missile>, <Document: Salazar's Legacy Lives On>, <Document: Cub Reporter Catches Attention of El Paso FBI>, ...
+
+    method:: project_obj.get_document(id)
+
+        Retrieves a particular document from the project using the provided DocumentCloud identifer.
+
+.. attribute:: document_obj.id
+
+    The unique identifer of the project in DocumentCloud's system. Typically this is a number.
+
+.. attribute:: document_obj.title
+
+    The name of the project. Can be edited and saved with a put command.
+
+
 

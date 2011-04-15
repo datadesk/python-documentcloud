@@ -203,7 +203,7 @@ Metadata
 
 .. attribute:: document_obj.title
 
-    The name of the Document. Can be edited and saved with a put command.
+    The name of the document. Can be edited and saved with a put command.
 
 .. attribute:: document_obj.updated_at
 
