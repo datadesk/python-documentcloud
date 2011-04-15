@@ -2,7 +2,7 @@
 Other data
 ===========
 
-Notes earmarked in documents. Can be either public or private.
+Other types of data provided by the DocumentCloud system.
 
 .. raw:: html
 
@@ -13,7 +13,7 @@ Notes earmarked in documents. Can be either public or private.
 Annotations
 -----------
 
-Notes earmarked in documents. Can be either public or private.
+Notes left in ::doc:`documents </documents>`. Can be either public or private.
 
 .. raw:: html
 
@@ -24,7 +24,7 @@ Notes earmarked in documents. Can be either public or private.
 Entities
 --------
 
-Keywords extracted from documents with OpenCalais.
+Keywords extracted from :doc:`documents </documents>` with OpenCalais.
 
 .. raw:: html
 
@@ -34,3 +34,15 @@ Keywords extracted from documents with OpenCalais.
 
 Sections
 --------
+
+Sections of the :doc:`documents </documents>` earmarked by users.
+
+.. attribute:: section_obj.title
+
+    The name of the section.
+
+.. attribute:: section_obj.page
+
+    The page where the section begins.
+
+
