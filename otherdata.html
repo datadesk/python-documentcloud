@@ -48,14 +48,54 @@
 <p>Other types of data provided by the DocumentCloud system.</p>
 <hr><div class="section" id="annotations">
 <span id="id1"></span><h2>Annotations<a class="headerlink" href="#annotations" title="Permalink to this headline">¶</a></h2>
-<p>Notes left in :<a class="reference internal" href="documents.html"><em>documents</em></a>. Can be either public or private.</p>
+<p>Notes left in <a class="reference internal" href="documents.html"><em>documents</em></a>.</p>
+<dl class="attribute">
+<dt id="annotation_obj.access">
+<tt class="descclassname">annotation_obj.</tt><tt class="descname">access</tt><a class="headerlink" href="#annotation_obj.access" title="Permalink to this definition">¶</a></dt>
+<dd><p>The privacy level of the resource within the DocumentCloud system. It will be either <tt class="docutils literal"><span class="pre">public</span></tt> or <tt class="docutils literal"><span class="pre">private</span></tt>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="annotation_obj.description">
+<tt class="descclassname">annotation_obj.</tt><tt class="descname">description</tt><a class="headerlink" href="#annotation_obj.description" title="Permalink to this definition">¶</a></dt>
+<dd><p>Space for a lengthy text block that will be published below the highlighted text in the DocumentCloud design.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="annotation_obj.id">
+<tt class="descclassname">annotation_obj.</tt><tt class="descname">id</tt><a class="headerlink" href="#annotation_obj.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>The unique identifer of the document in DocumentCloud&#8217;s system.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="annotation_obj.location">
+<tt class="descclassname">annotation_obj.</tt><tt class="descname">location</tt><a class="headerlink" href="#annotation_obj.location" title="Permalink to this definition">¶</a></dt>
+<dd><p>The location of where the annotation appears on the document&#8217;s page. Defined by the <a class="reference internal" href="#locations"><em>Locations</em></a> class.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="annotation_obj.page">
+<tt class="descclassname">annotation_obj.</tt><tt class="descname">page</tt><a class="headerlink" href="#annotation_obj.page" title="Permalink to this definition">¶</a></dt>
+<dd><p>The page where the annotation appears.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="annotation_obj.title">
+<tt class="descclassname">annotation_obj.</tt><tt class="descname">title</tt><a class="headerlink" href="#annotation_obj.title" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the annotation, which appears in the table of contents and above the highlighted text when published by DocumentCloud.</p>
+</dd></dl>
+
 <hr></div>
 <div class="section" id="entities">
 <span id="id2"></span><h2>Entities<a class="headerlink" href="#entities" title="Permalink to this headline">¶</a></h2>
 <p>Keywords extracted from <a class="reference internal" href="documents.html"><em>documents</em></a> with OpenCalais.</p>
 <hr></div>
+<div class="section" id="locations">
+<span id="id3"></span><h2>Locations<a class="headerlink" href="#locations" title="Permalink to this headline">¶</a></h2>
+<p>The location where <a class="reference internal" href="#annotations"><em>Annotations</em></a> are placed within a document.</p>
+<hr></div>
 <div class="section" id="sections">
-<span id="id3"></span><h2>Sections<a class="headerlink" href="#sections" title="Permalink to this headline">¶</a></h2>
+<span id="id4"></span><h2>Sections<a class="headerlink" href="#sections" title="Permalink to this headline">¶</a></h2>
 <p>Sections of the <a class="reference internal" href="documents.html"><em>documents</em></a> earmarked by users.</p>
 <dl class="attribute">
 <dt id="section_obj.title">
@@ -83,6 +123,7 @@
 <li><a class="reference internal" href="#">Other data</a><ul>
 <li><a class="reference internal" href="#annotations">Annotations</a></li>
 <li><a class="reference internal" href="#entities">Entities</a></li>
+<li><a class="reference internal" href="#locations">Locations</a></li>
 <li><a class="reference internal" href="#sections">Sections</a></li>
 </ul>
 </li>
