@@ -100,7 +100,7 @@ Metadata
         >>> obj.document_list
         [<Document: Times Columnist Ruben Salazar Slain by Tear-gas Missile>, <Document: Salazar's Legacy Lives On>, <Document: Cub Reporter Catches Attention of El Paso FBI>, ...
 
-    method:: project_obj.get_document(id)
+..  method:: project_obj.get_document(id)
 
         Retrieves a particular document from the project using the provided DocumentCloud identifer.
 
