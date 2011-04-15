@@ -61,6 +61,22 @@ Locations
 
 The location where :ref:`annotations` are placed within a document.
 
+.. attribute:: location_obj.bottom
+
+    The value of the bottom edge of an annotation.
+
+.. attribute:: location_obj.left
+
+    The value of the left edge of an annotation.
+
+.. attribute:: location_obj.right
+
+    The value of the right edge of an annotation.
+
+.. attribute:: location_obj.top
+
+    The value of the top edge of an annotation.
+
 .. raw:: html
 
    <hr>
