@@ -46,6 +46,7 @@ a:hover {
 hr {
     width:100%;
     border: 1px solid #CCC;
+    margin-top:15px;
 }
 
 div.banner {
@@ -104,7 +105,7 @@ div.body {
   
 div.footer {
     width: 100%;
-    padding: 13px 10px;
+    padding: 13px 0px 13px 0;
     text-align: left;
     font-size: 75%;
     background-color: white;
@@ -119,11 +120,14 @@ div.footer a {
 div.smalllogo {
     display:block;
     margin-bottom:5px;
+    margin-left:5px;
 }
 div.smalllogo img {
     width:200px;
 }
-
+div.credits {
+    margin-left:5px;
+}
 div.sphinxsidebar {
     font-size: 0.75em;
     line-height: 1.5em;
@@ -232,6 +236,7 @@ a.headerlink:hover {
  
 div.body p, div.body dd, div.body li {
     line-height: 1.5em;
+    padding-bottom:2px;
 }
  
 div.admonition p.admonition-title + p {
@@ -284,7 +289,7 @@ pre {
     line-height: 1.2em;
     border: 1px solid #C6C9CB;
     font-size: 1.1em;
-    margin: 1.5em 0 1.5em 0;
+    margin: 1.0em 0 1.0em 0;
     -webkit-box-shadow: 1px 1px 1px #d8d8d8;
     -moz-box-shadow: 1px 1px 1px #d8d8d8;
 }
@@ -309,7 +314,7 @@ div.viewcode-block:target {
 
 div.section ul {
     margin: 5px 0 10px 0;
-    padding-left:30px;
+    padding-left:22px;
 }
 
 div.section {

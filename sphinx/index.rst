@@ -33,6 +33,6 @@ Documentation
 Other resources
 ===============
 
-* `Source code <https://www.github.com/datadesk/python-documentcloud/>`_
+* `Source code <https://www.github.com/datadesk/python-documentcloud/>`_  
 * `DocumentCloud's API documentation <http://www.documentcloud.org/>`_
 * `The Times' Google App Engine publishing tool for DocumentCloud data <https://github.com/datadesk/latimes-document-stacker>`_
