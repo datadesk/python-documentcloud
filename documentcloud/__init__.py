@@ -144,6 +144,7 @@ class DocumentClient(BaseDocumentCloudClient):
             'q': query,
             'page': page,
             'per_page': per_page,
+            'mentions': 3,
         }
         data = self.fetch(u'search.json', params)
         return data.get("documents")
@@ -370,6 +371,7 @@ class Document(BaseAPIObject):
     def __init__(self, d):
         self.__dict__ = d
         self.resources = Resource(d.get("resources"))
+        self.mentions = [Mention(i) for i in d.get("mentions", [])] or None
         self.created_at = dateparser(d.get("created_at"))
         self.updated_at = dateparser(d.get("updated_at"))
     
@@ -738,6 +740,16 @@ class Location(object):
         self.right = right
         self.bottom = bottom
         self.left = left
+
+
+class Mention(BaseAPIObject):
+    """
+    A mention of a search found in the document.
+    """
+    def __unicode__(self):
+        return unicode("%s: %s" % (self.page, self.text[:50]))
+
+
 
 
 class Project(BaseAPIObject):

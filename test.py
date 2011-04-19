@@ -17,7 +17,7 @@ import unittest
 from documentcloud import DocumentCloud
 from documentcloud import CredentialsMissingError, DuplicateObjectError
 from documentcloud import CredentialsFailedError, DoesNotExistError
-from documentcloud import Annotation, Document, Project, Section, Entity
+from documentcloud import Annotation, Document, Project, Section, Entity, Mention
 from private_settings import DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD
 
 #
@@ -156,6 +156,13 @@ class DocumentSearchTest(BaseTest):
         """
         obj = self.public_client.documents.get(self.test_id)
         self.assertEqual(type(obj.entities[0]), Entity)
+    
+    def test_get_mentions(self):
+        """
+        Test whether mentions exist.
+        """
+        obj = self.public_client.documents.search(self.test_search)[0]
+        self.assertEqual(type(obj.mentions[0]), Mention)
     
     def test_get_put(self):
         """
