@@ -476,7 +476,7 @@ class Document(BaseAPIObject):
             obj_list = []
             for type, entity_list in data.items():
                 for entity in entity_list:
-                    entity['type'] = entity
+                    entity['type'] = type
                     obj = Entity(entity)
                     obj_list.append(obj)
             self.__dict__[u'entities'] = obj_list
