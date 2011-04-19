@@ -206,6 +206,20 @@ class DocumentSearchTest(BaseTest):
         # Delete it
         obj.delete()
         self.assertRaises(DoesNotExistError, self.private_client.documents.get, new_id)
+    
+    def test_resources(self):
+        """
+        Makes sure the canonical url is a top-level attribute on the Document.
+        """
+        obj = self.public_client.documents.get(self.test_id)
+        # Test that they come out the same
+        self.assertEqual(obj.published_url, obj.resources.published_url)
+        self.assertEqual(obj.related_article, obj.resources.related_article)
+        # Then test that they setattr the same
+        obj.published_url = 'http://latimes.com'
+        obj.related_article = 'http://palewire.com'
+        self.assertEqual(obj.published_url, obj.resources.published_url)
+        self.assertEqual(obj.related_article, obj.resources.related_article)
 
 
 class ProjectTest(BaseTest):

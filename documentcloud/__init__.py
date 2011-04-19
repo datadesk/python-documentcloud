@@ -659,6 +659,38 @@ class Document(BaseAPIObject):
         response = urllib2.urlopen(req)
         return response.read()
     large_image = property(get_large_image)
+    
+    #
+    # Etc.
+    #
+    
+    def set_related_article(self, string):
+        """
+        Updates the related article back in the resources object so your changes
+        can be property reflected in any future "puts."
+        """
+        self.resources.related_article = string
+    
+    def get_related_article(self):
+        """
+        Returns a related article, if one has been provided.
+        """
+        return self.resources.related_article
+    related_article = property(get_related_article, set_related_article)
+    
+    def set_published_url(self, string):
+        """
+        Updates the published url back in the resources object so your changes
+        can be property reflected in any future "puts."
+        """
+        self.resources.published_url = string
+
+    def get_published_url(self):
+        """
+        Returns the url where the record is published, if one has been provided.
+        """
+        return self.resources.published_url
+    published_url = property(get_published_url, set_published_url)
 
 
 class DocumentSet(list):
