@@ -562,6 +562,17 @@ class Document(BaseAPIObject):
         return url
     thumbnail_image_url = property(get_thumbnail_image_url)
     
+    def get_normal_image_url(self, page=1):
+        """
+        Returns the URL for the "normal" sized image of a single page.
+        
+        The page kwarg specifies which page to return. One is the default.
+        """
+        template = self.resources.page.get('image')
+        url = template.replace("{page}", str(page)).replace("{size}", "normal")
+        return url
+    normal_image_url = property(get_normal_image_url)
+
     def get_large_image_url(self, page=1):
         """
         Returns the URL for the large sized image of a single page.
@@ -586,6 +597,13 @@ class Document(BaseAPIObject):
         """
         return [self.get_thumbnail_image_url(i) for i in range(1, self.pages +1)]
     thumbnail_image_url_list = property(get_thumbnail_image_url_list)
+    
+    def get_normal_image_url_list(self):
+        """
+        Returns a list of the URLs for the normal sized image of every page.
+        """
+        return [self.get_normal_image_url(i) for i in range(1, self.pages +1)]
+    normal_image_url_list = property(get_normal_image_url_list)
     
     def get_large_image_url_list(self):
         """
@@ -617,6 +635,18 @@ class Document(BaseAPIObject):
         response = urllib2.urlopen(req)
         return response.read()
     thumbnail_image = property(get_thumbnail_image)
+    
+    def get_normal_image(self, page=1):
+        """
+        Downloads and returns the normal sized image of a single page.
+        
+        The page kwarg specifies which page to return. One is the default.
+        """
+        url = self.get_normal_image_url(page=page)
+        req = urllib2.Request(url)
+        response = urllib2.urlopen(req)
+        return response.read()
+    normal_image = property(get_normal_image)
     
     def get_large_image(self, page=1):
         """
