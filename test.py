@@ -242,11 +242,15 @@ class ProjectTest(BaseTest):
     
     def test_get(self):
         """
-        Test a `get` request for a particular project
+        Test a `get` methods for a particular project
         """
         obj = self.private_client.projects.get('934')
         self.assertEqual(type(obj), Project)
-    
+        obj2 = self.private_client.projects.get_by_id('934')
+        self.assertEqual(obj.id, obj2.id)
+        obj3 = self.private_client.projects.get_by_title(obj2.title)
+        self.assertEqual(obj2.id, obj3.id)
+
     def test_document_list(self):
         """
         Verify that a project can pull back all if its associated documents.
@@ -313,12 +317,11 @@ class ProjectTest(BaseTest):
         """
         # Create it
         title = "00 - (%s) - This is only a test" % get_random_string()
-        new_id = self.private_client.projects.create(title)
-        proj = self.private_client.projects.get(new_id)
+        proj = self.private_client.projects.create(title)
         self.assertEqual(type(proj), Project)
         # Delete it
         proj.delete()
-        self.assertRaises(DoesNotExistError, self.private_client.projects.get, new_id)
+        self.assertRaises(DoesNotExistError, self.private_client.projects.get, proj.id)
 
 
 class ErrorTest(BaseTest):

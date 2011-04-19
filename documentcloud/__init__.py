@@ -263,19 +263,48 @@ class ProjectClient(BaseDocumentCloudClient):
             obj_list.append(proj)
         return obj_list
     
-    def get(self, id):
+    def get(self, id=None, title=None):
         """
-        Retrieve a particular project using its unique identifier.
+        Retrieve a particular project using its unique identifier or it's title.
+        
+        But not both.
         
         Example usage:
         
             >> documentcloud.projects.get(u'arizona-shootings')
         
         """
+        # Make sure the kwargs are kosher
+        if id and title:
+            raise ValueError("You can only retrieve a Project by id or title, not by both")
+        elif not id and not title:
+            raise ValueError("You must provide an id or a title to make a request.")
+        # Pull the hits
+        if id:
+            hit_list = [i for i in self.all() if str(i.id) == str(id)]
+        elif title:
+            hit_list = [i for i in self.all() if i.title.lower().strip() == title.lower().strip()]
+        # Throw an error if there's more than one hit.
+        if len(hit_list) > 1:
+            raise DuplicateObjectError("There is more than one project that matches your request.")
+        # Try to pull the first hit
         try:
-            return [i for i in self.all() if str(i.id) == str(id)][0]
+            return hit_list[0]
         except IndexError:
+            # If it's not there, you know to throw this error.
             raise DoesNotExistError("The resource you've requested does not exist or is unavailable without the proper credentials.")
+    
+    def get_by_id(self, id):
+        """
+         A reader-friendly shortcut to retrieve projects based on their ID. 
+        """
+        return self.get(id=id)
+    
+    def get_by_title(self, title):
+        """
+        A reader-friendly shortcut to retrieve projects based on their title. 
+        """
+        return self.get(title=title)
     
     @credentials_required
     def create(self, title, description=None, document_ids=None):
@@ -304,7 +333,8 @@ class ProjectClient(BaseDocumentCloudClient):
         # If it doesn't exist, that suggests the project already exists
         if not new_id:
             raise DuplicateObjectError("The Project title you tried to create already exists")
-        return new_id
+        # Fetch the actual project object from the API and return that.
+        return self.get(new_id)
     
     @credentials_required
     def delete(self, id):
