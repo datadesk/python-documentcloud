@@ -660,7 +660,7 @@ class Entity(BaseAPIObject):
 
 class Location(object):
     """
-    The location of a 
+    The location of an Annotation.
     """
     def __repr__(self):
         return '<%s>' % self.__class__.__name__
