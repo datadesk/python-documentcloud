@@ -21,8 +21,6 @@ body {
     margin: 0;
     padding: 0;
 }
-
-
 div.documentwrapper {
     float: left;
     width: 100%;
@@ -32,6 +30,27 @@ div.documentwrapper {
 div.bodywrapper {
     margin: 10px 0 0 230px;
     background-color:white;
+}
+div.document {
+    background-color: white;
+    padding-bottom:1px;
+    border-bottom:4px solid black;
+}
+div.body {
+    background-color: #ffffff;
+    color: black;
+    padding: 0 30px 30px 20px;
+    font-size: 0.9em;
+}
+div.footer {
+    width: 100%;
+    padding: 13px 0px 13px 0;
+    text-align: left;
+    font-size: 75%;
+    background-color: white;
+    color:black;
+    margin-top: 4px;
+    border-top: 1px solid black;
 }
 
 a {
@@ -90,30 +109,6 @@ div.banner-underline {
     background-color:#CCC;
 }
 
-div.document {
-    background-color: white;
-    padding-bottom:1px;
-    border-bottom:4px solid black;
-}
- 
-div.body {
-    background-color: #ffffff;
-    color: black;
-    padding: 0 30px 30px 20px;
-    font-size: 0.9em;
-}
-  
-div.footer {
-    width: 100%;
-    padding: 13px 0px 13px 0;
-    text-align: left;
-    font-size: 75%;
-    background-color: white;
-    color:black;
-    margin-top: 4px;
-    border-top: 1px solid black;
-}
- 
 div.footer a {
     text-decoration: underlines;
 }
