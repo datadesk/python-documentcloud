@@ -220,7 +220,7 @@ class DocumentClient(BaseDocumentCloudClient):
         if project: params['project'] = project
         # Make the request
         response = self._make_request(self.BASE_URI + 'upload.json', params, MultipartPostHandler)
-        return json.loads(response)['id']
+        return self.get(json.loads(response)['id'])
     
     @credentials_required
     def delete(self, id):
@@ -887,7 +887,5 @@ class Section(BaseAPIObject):
     A section earmarked inside of a Document
     """
     pass
-
-
 
 

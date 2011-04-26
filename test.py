@@ -204,15 +204,14 @@ class DocumentSearchTest(BaseTest):
         """
         # Create it
         title = '001 - Test upload (%s)' % get_random_string()
-        new_id = self.private_client.documents.upload(
+        obj = self.private_client.documents.upload(
             os.path.join(os.path.dirname(__file__), "test.pdf"),
             title,
         )
-        obj = self.private_client.documents.get(new_id)
         self.assertEqual(type(obj), Document)
         # Delete it
         obj.delete()
-        self.assertRaises(DoesNotExistError, self.private_client.documents.get, new_id)
+        self.assertRaises(DoesNotExistError, self.private_client.documents.get, obj.id)
     
     def test_resources(self):
         """

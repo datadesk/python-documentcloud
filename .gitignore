@@ -1,3 +1,6 @@
+groucho_marx/*
+examples.py
+build/*
 *.egg-info/*
 dist/*
 *.pyc
