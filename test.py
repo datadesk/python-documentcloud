@@ -213,6 +213,20 @@ class DocumentSearchTest(BaseTest):
         obj.delete()
         self.assertRaises(DoesNotExistError, self.private_client.documents.get, obj.id)
     
+    def test_upload_directory(self):
+        """
+        Makes sure you can upload all the pdfs in a directory.
+        """
+        # Upload everything in this directory.
+        obj_list = self.private_client.documents.upload_directory('./')
+        # Which should only be one document
+        self.assertEqual(len(obj_list), 1)
+        self.assertEqual(type(obj_list[0]), Document)
+        # And which we should be able to delete
+        obj = obj_list[0]
+        obj.delete()
+        self.assertRaises(DoesNotExistError, self.private_client.documents.get, obj.id)
+    
     def test_resources(self):
         """
         Makes sure the canonical url is a top-level attribute on the Document.
