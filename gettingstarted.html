@@ -99,6 +99,32 @@
 <span class="gp">...</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="uploading-a-document">
+<h2>Uploading a document<a class="headerlink" href="#uploading-a-document" title="Permalink to this headline">¶</a></h2>
+<p>You can upload a PDF document from your local machine to documentcloud.org. Here&#8217;s how:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">documentcloud</span> <span class="kn">import</span> <span class="n">DocumentCloud</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">DocumentCloud</span><span class="p">(</span><span class="n">DOCUMENTCLOUD_USERNAME</span><span class="p">,</span> <span class="n">DOCUMENTCLOUD_PASSWORD</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="s">&quot;/home/ben/pdfs/myfile.pdf&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="uploading-a-directory-of-documents-as-a-project">
+<h2>Uploading a directory of documents as a project<a class="headerlink" href="#uploading-a-directory-of-documents-as-a-project" title="Permalink to this headline">¶</a></h2>
+<p>Here&#8217;s how to how to upload a directory full of documents and add them all to a new project.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># Connect to documentcloud</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">documentcloud</span> <span class="kn">import</span> <span class="n">DocumentCloud</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">DocumentCloud</span><span class="p">(</span><span class="n">DOCUMENTCLOUD_USERNAME</span><span class="p">,</span> <span class="n">DOCUMENTCLOUD_PASSWORD</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Create the project</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span><span class="p">,</span> <span class="n">created</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">projects</span><span class="o">.</span><span class="n">get_or_create_by_title</span><span class="p">(</span><span class="s">&quot;Groucho Marx&#39;s FBI file&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Upload all the pdfs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj_list</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">upload_directory</span><span class="p">(</span><span class="s">&#39;/home/ben/pdfs/groucho_marx/&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Add the newly created documents to the project</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span><span class="o">.</span><span class="n">document_list</span> <span class="o">=</span> <span class="n">obj_list</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Save the changes to the project</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span><span class="o">.</span><span class="n">put</span><span class="p">()</span>
+</pre></div>
+</div>
 <p>Move ahead to the sections focused on <a class="reference internal" href="documents.html"><em>documents</em></a>, or <a class="reference internal" href="projects.html"><em>projects</em></a> for greater detail.</p>
 </div>
 </div>
@@ -116,6 +142,8 @@
 <li><a class="reference internal" href="#creating-a-client">Creating a client</a></li>
 <li><a class="reference internal" href="#searching-for-documents">Searching for documents</a></li>
 <li><a class="reference internal" href="#interacting-with-a-document">Interacting with a document</a></li>
+<li><a class="reference internal" href="#uploading-a-document">Uploading a document</a></li>
+<li><a class="reference internal" href="#uploading-a-directory-of-documents-as-a-project">Uploading a directory of documents as a project</a></li>
 </ul>
 </li>
 </ul>

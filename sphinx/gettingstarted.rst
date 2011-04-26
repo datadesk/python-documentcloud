@@ -75,6 +75,32 @@ You can even download the PDF, page images and full text. ::
     >>> obj.pdf
     ...
 
+Uploading a document
+--------------------
+
+You can upload a PDF document from your local machine to documentcloud.org. Here's how: ::
+
+    >>> from documentcloud import DocumentCloud
+    >>> client = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
+    >>> obj = client.documents.upload("/home/ben/pdfs/myfile.pdf")
+
+Uploading a directory of documents as a project
+-----------------------------------------------
+
+Here's how to how to upload a directory full of documents and add them all to a new project. ::
+
+    >>> # Connect to documentcloud
+    >>> from documentcloud import DocumentCloud
+    >>> client = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
+    >>> # Create the project
+    >>> project, created = client.projects.get_or_create_by_title("Groucho Marx's FBI file")
+    >>> # Upload all the pdfs
+    >>> obj_list = client.documents.upload_directory('/home/ben/pdfs/groucho_marx/')
+    >>> # Add the newly created documents to the project
+    >>> project.document_list = obj_list
+    >>> # Save the changes to the project
+    >>> project.put()
+
 Move ahead to the sections focused on :doc:`documents </documents>`, or :doc:`projects </projects>` for greater detail.
 
 
