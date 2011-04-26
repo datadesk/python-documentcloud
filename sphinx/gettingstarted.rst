@@ -95,7 +95,7 @@ You can upload a PDF document from your local machine to documentcloud.org. Here
 Uploading a directory of documents as a project
 -----------------------------------------------
 
-Here's how to how to upload a directory full of documents and add them all to a new project. ::
+Here's how to upload a directory full of documents and add them all to a new project. ::
 
     >>> # Connect to documentcloud
     >>> from documentcloud import DocumentCloud
