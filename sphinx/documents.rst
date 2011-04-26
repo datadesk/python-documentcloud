@@ -160,7 +160,7 @@ Metadata
         >>> obj_list = client.documents.search('Christopher Wallace')
         >>> obj = obj_list[0]
         >>> obj.mentions
-        [<Mention: Page 2>, <Mention: Page 3> ...
+        [<Mention: Page 2>, <Mention: Page 3> ....
 
 .. attribute:: document_obj.normal_image
 

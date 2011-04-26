@@ -93,6 +93,25 @@ The location where :ref:`annotations` are placed within a document.
 
    <hr>
 
+.. _mentions:
+
+Mentions
+--------
+
+Mentions of a search keyword found in one of the :doc:`documents </documents>`.
+
+.. attribute:: mention_obj.page
+
+    The page where the mention occurs.
+
+.. attribute:: mention_obj.text
+
+    The text surrounding the mention of the keyword.
+
+.. raw:: html
+
+   <hr>
+
 .. _sections:
 
 Sections
