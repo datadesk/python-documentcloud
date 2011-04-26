@@ -223,6 +223,31 @@ class DocumentClient(BaseDocumentCloudClient):
         return self.get(json.loads(response)['id'])
     
     @credentials_required
+    def upload_directory(self, path):
+        """
+        Uploads all the PDFs in the provided directory.
+        
+        Example usage:
+        
+            >> documentcloud.documents.upload_directory("/home/ben/pdfs/")
+        
+        Returns a list of the documents created during the upload.
+        
+        Based on code developed by Mitchell Kotler and refined by Christopher Groskopf.
+        """
+        # Loop through the path and get all the files
+        path_list = []
+        for (dirpath, dirname, filenames) in os.walk(path):
+            path_list.extend([os.path.join(dirpath, i) for i in filenames if i.endswith(".pdf")])
+        # Upload all the pdfs
+        obj_list = []
+        for pdf_path in path_list:
+            obj = self.upload(pdf_path)
+            obj_list.append(obj)
+        # Pass back the list of documents
+        return obj_list
+    
+    @credentials_required
     def delete(self, id):
         """
         Deletes a Document.
