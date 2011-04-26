@@ -793,9 +793,7 @@ class Mention(BaseAPIObject):
     A mention of a search found in the document.
     """
     def __unicode__(self):
-        return unicode("%s: %s" % (self.page, self.text[:50]))
-
-
+        return unicode("Page %s" % (self.page))
 
 
 class Project(BaseAPIObject):
