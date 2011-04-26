@@ -337,6 +337,22 @@ class ProjectClient(BaseDocumentCloudClient):
         return self.get(new_id)
     
     @credentials_required
+    def get_or_create_by_title(self, title):
+        """
+        Fetch a title, if it exists. Create it if it doesn't.
+        
+        Returns a tuple with the object first, and then a boolean that indicates
+        whether or not the object was created fresh. True means it's brand new.
+        """
+        try:
+            obj = self.get_by_title(title)
+            created = False
+        except DoesNotExistError:
+            obj = self.create(title=title)
+            created = True
+        return obj, created
+    
+    @credentials_required
     def delete(self, id):
         """
         Deletes a Project.

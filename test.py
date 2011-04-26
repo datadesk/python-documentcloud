@@ -321,6 +321,23 @@ class ProjectTest(BaseTest):
         # Delete it
         proj.delete()
         self.assertRaises(DoesNotExistError, self.private_client.projects.get, proj.id)
+    
+    def test_get_or_create(self):
+        """
+        Test whether get_or_create methods are working.
+        """
+        # Create it
+        title = "00 - (%s) - This is only a test" % get_random_string()
+        proj, c = self.private_client.projects.get_or_create_by_title(title)
+        self.assertEqual(type(proj), Project)
+        self.assertEqual(c, True)
+        # Get it
+        proj, c = self.private_client.projects.get_or_create_by_title(title)
+        self.assertEqual(type(proj), Project)
+        self.assertEqual(c, False)
+        # Delete it
+        proj.delete()
+        self.assertRaises(DoesNotExistError, self.private_client.projects.get, proj.id)
 
 
 class ErrorTest(BaseTest):
