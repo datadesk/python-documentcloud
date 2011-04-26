@@ -177,6 +177,14 @@ Metadata
 
     Returns a URL containing the binary data for document's original PDF file.
 
+.. attribute:: document_obj.published_url
+
+    Returns an URL outside of documentcloud.org where this document has been published.
+
+.. attribute:: document_obj.related_article
+
+    Returns an URL for a news story related to this document.
+
 .. attribute:: document_obj.sections
 
     A list of the sections earmarked in the text by a user. The data are modeled by their own Python class, defined in the :ref:`sections` section.
