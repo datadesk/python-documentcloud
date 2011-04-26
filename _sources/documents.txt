@@ -153,6 +153,15 @@ Metadata
 
     Returns a list of URLs for the "large" sized image of every page in the document.
 
+.. attribute:: document_obj.mentions
+
+    When the document has been retrieved via a search, this returns a list of places the search keywords appear in the text. The data are modeled by their own Python class, defined in the :ref:`mentions` section.
+
+        >>> obj_list = client.documents.search('Christopher Wallace')
+        >>> obj = obj_list[0]
+        >>> obj.mentions
+        [<Mention: Page 2>, <Mention: Page 3> ...
+
 .. attribute:: document_obj.normal_image
 
     Returns the binary data for the "normal" sized image of the document's first page. If you would like the data for some other page, pass the page number into ``document_obj.get_normal_image(page)``.

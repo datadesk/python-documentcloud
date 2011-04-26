@@ -224,6 +224,18 @@
 </dd></dl>
 
 <dl class="attribute">
+<dt id="document_obj.mentions">
+<tt class="descclassname">document_obj.</tt><tt class="descname">mentions</tt><a class="headerlink" href="#document_obj.mentions" title="Permalink to this definition">¶</a></dt>
+<dd><p>When the document has been retrieved via a search, this returns a list of places the search keywords appear in the text. The data are modeled by their own Python class, defined in the <em class="xref std std-ref">mentions</em> section.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">obj_list</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">&#39;Christopher Wallace&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">obj_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">mentions</span>
+<span class="go">[&lt;Mention: Page 2&gt;, &lt;Mention: Page 3&gt; ...</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="document_obj.normal_image">
 <tt class="descclassname">document_obj.</tt><tt class="descname">normal_image</tt><a class="headerlink" href="#document_obj.normal_image" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the binary data for the &#8220;normal&#8221; sized image of the document&#8217;s first page. If you would like the data for some other page, pass the page number into <tt class="docutils literal"><span class="pre">document_obj.get_normal_image(page)</span></tt>.</p>
