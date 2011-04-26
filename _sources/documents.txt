@@ -69,7 +69,7 @@ Uploading
 
 .. method:: client.documents.upload(path, title=None, source=None, description=None, related_article=None, published_url=None, access='private', project=None)
 
-   Upload a PDF to DocumentCloud. You must be authorized to do this. Returns the DocumentCloud identifer of the new record you've created.
+   Upload a PDF to DocumentCloud. You must be authorized to do this. Returns the object representing the new record you've created.
 
         >>> from documentcloud import DocumentCloud
         >>> client = DocumentCloud(USERNAME, PASSWORD)

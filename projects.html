@@ -121,12 +121,11 @@
 <dl class="method">
 <dt id="client.projects.create">
 <tt class="descclassname">client.projects.</tt><tt class="descname">create</tt><big>(</big><em>title=None</em>, <em>description=None</em>, <em>document_ids=None</em><big>)</big><a class="headerlink" href="#client.projects.create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new project on DocumentCloud. You must be authorized to do this. Returns the DocumentCloud identifer of the new record you&#8217;ve created.</p>
+<dd><p>Create a new project on DocumentCloud. You must be authorized to do this. Returns the object representing the new record you&#8217;ve created.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">documentcloud</span> <span class="kn">import</span> <span class="n">DocumentCloud</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">DocumentCloud</span><span class="p">(</span><span class="n">USERNAME</span><span class="p">,</span> <span class="n">PASSWORD</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">new_id</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">projects</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="s">&quot;New project&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c"># Now fetch it</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">projects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">new_id</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">projects</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="s">&quot;New project&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span>
 <span class="go">&lt;Project: New project&gt;</span>
 </pre></div>
 </div>
