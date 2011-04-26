@@ -6,7 +6,11 @@
 
 A simple python wrapper for the DocumentCloud API.
 
-This code is in early stages of development, but it mostly works. Try it out and "let me know what sucks":https://github.com/datadesk/python-documentcloud/issues.
+h2. Features
+
+* Retrieve and edit documents and projects, both public and private, from documentcloud.org
+* Upload PDFs into your documentcloud.org account and organize them into projects
+* Download text, images and entities extracted from your PDFs by DocumentCloud
 
 Documentation is available at "http://datadesk.github.com/python-documentcloud/":http://datadesk.github.com/python-documentcloud/
 
