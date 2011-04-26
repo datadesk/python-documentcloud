@@ -79,9 +79,24 @@ Creation
 
         >>> from documentcloud import DocumentCloud
         >>> client = DocumentCloud(USERNAME, PASSWORD)
-        >>> obj = client.projects.upload("New project")
+        >>> obj = client.projects.create("New project")
         >>> obj
         <Project: New project>
+
+.. method:: client.projects.get_or_create_by_title(title=None)
+
+   Fetch the project with provided name, or create it if it does not exist. You must be authorized to do this. Returns a tuple. An object representing the record comes first. A boolean that reports whether or not the objects was created fresh comes second. It is true when the record was created, false when it was found on the site already.
+
+        >>> from documentcloud import DocumentCloud
+        >>> client = DocumentCloud(USERNAME, PASSWORD)
+        >>> # The first time it will be created and added to documentcloud.org
+        >>> obj, created = client.projects.get_or_create_by_title("New project")
+        >>> obj, created
+        <Project: New project>, True
+        >>> # The second time it will be fetched from documentcloud.org
+        >>> obj, created = client.projects.get_or_create_by_title("New project")
+        >>> obj, created
+        <Project: New project>, False
 
 .. raw:: html
 
