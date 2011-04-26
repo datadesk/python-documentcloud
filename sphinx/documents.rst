@@ -67,7 +67,7 @@ Editing
 Uploading
 ---------
 
-.. method:: client.documents.upload(path, title=None, source=None, description=None, related_article=None, published_url=None, access='private', project=None)
+.. function:: client.documents.upload(path, title=None, source=None, description=None, related_article=None, published_url=None, access='private', project=None)
 
    Upload a PDF to DocumentCloud. You must be authorized to do this. Returns the object representing the new record you've created.
 
@@ -77,6 +77,14 @@ Uploading
         >>> # Now fetch it
         >>> client.documents.get(new_id)
         <Document: Test PDF>
+
+.. function:: client.documents.upload_directory(path)
+
+   Searches through the provided path and attempts to upload all the PDFs it can find. Returns a list of document objects that are created.
+
+        >>> from documentcloud import DocumentCloud
+        >>> client = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
+        >>> obj_list = client.documents.upload_directory('/home/ben/pdfs/groucho_marx/')
 
 .. raw:: html
 

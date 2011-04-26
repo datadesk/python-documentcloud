@@ -8,13 +8,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Documents &mdash; python-documentcloud v0.12 documentation</title>
+    <title>Documents &mdash; python-documentcloud v0.13 documentation</title>
     <link rel="stylesheet" href="_static/latimes.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.12',
+        VERSION:     '0.13',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="python-documentcloud v0.12 documentation" href="index.html" />
+    <link rel="top" title="python-documentcloud v0.13 documentation" href="index.html" />
     <link rel="next" title="Projects" href="projects.html" />
     <link rel="prev" title="Getting started" href="gettingstarted.html" /> 
   </head>
@@ -33,7 +33,7 @@
 </a>
 <div class="banner">
     <h1><a href="index.html"><img src="_static/banner.png"></a></h1>
-    <h2>Version 0.12 :: <a href="http://github.com/datadesk">http://github.com/datadesk</a></h2>
+    <h2>Version 0.13 :: <a href="http://github.com/datadesk">http://github.com/datadesk</a></h2>
 </div>
 <div class="banner-underline"></div> 
   
@@ -107,7 +107,7 @@
 <hr></div>
 <div class="section" id="uploading">
 <h2>Uploading<a class="headerlink" href="#uploading" title="Permalink to this headline">¶</a></h2>
-<dl class="method">
+<dl class="function">
 <dt id="client.documents.upload">
 <tt class="descclassname">client.documents.</tt><tt class="descname">upload</tt><big>(</big><em>path</em>, <em>title=None</em>, <em>source=None</em>, <em>description=None</em>, <em>related_article=None</em>, <em>published_url=None</em>, <em>access='private'</em>, <em>project=None</em><big>)</big><a class="headerlink" href="#client.documents.upload" title="Permalink to this definition">¶</a></dt>
 <dd><p>Upload a PDF to DocumentCloud. You must be authorized to do this. Returns the object representing the new record you&#8217;ve created.</p>
@@ -117,6 +117,17 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Now fetch it</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">new_id</span><span class="p">)</span>
 <span class="go">&lt;Document: Test PDF&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="client.documents.upload_directory">
+<tt class="descclassname">client.documents.</tt><tt class="descname">upload_directory</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#client.documents.upload_directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Searches through the provided path and attempts to upload all the PDFs it can find. Returns a list of document objects that are created.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">documentcloud</span> <span class="kn">import</span> <span class="n">DocumentCloud</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">DocumentCloud</span><span class="p">(</span><span class="n">DOCUMENTCLOUD_USERNAME</span><span class="p">,</span> <span class="n">DOCUMENTCLOUD_PASSWORD</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj_list</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">upload_directory</span><span class="p">(</span><span class="s">&#39;/home/ben/pdfs/groucho_marx/&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>

@@ -2,6 +2,11 @@
 Changelog
 =========
 
+0.13
+----
+
+* ``upload_directory`` method for documents
+
 0.12
 ----
 
