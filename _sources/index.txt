@@ -24,6 +24,7 @@ Documentation
    documents
    projects
    otherdata
+   changelog
    credits
 
 .. raw:: html
