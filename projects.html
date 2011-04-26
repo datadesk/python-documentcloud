@@ -50,17 +50,32 @@
 <h2>Retrieval<a class="headerlink" href="#retrieval" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="client.projects.get">
-<tt class="descclassname">client.projects.</tt><tt class="descname">get</tt><big>(</big><em>id</em><big>)</big><a class="headerlink" href="#client.projects.get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the project with the provided DocumentCloud identifer.</p>
+<tt class="descclassname">client.projects.</tt><tt class="descname">get</tt><big>(</big><em>id=None</em>, <em>title=None</em><big>)</big><a class="headerlink" href="#client.projects.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the project with the provided DocumentCloud identifer. You can retrieve projects using either the <cite>id</cite> or <cite>title</cite>.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">documentcloud</span> <span class="kn">import</span> <span class="n">DocumentCloud</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">DocumentCloud</span><span class="p">(</span><span class="n">USERNAME</span><span class="p">,</span> <span class="n">PASSWORD</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">projects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;816&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Fetch using the id</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">projects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s">&#39;816&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span>
 <span class="go">&lt;Project: The Ruben Salazar Files&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">document_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="go">&lt;Document: Times Columnist Ruben Salazar Slain by Tear-gas Missile&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Fetch using the title</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">projects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">&#39;The Ruben Salazar Files&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span>
+<span class="go">&lt;Project: The Ruben Salazar Files&gt;</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="function">
+<dt id="client.projects.get_by_id">
+<tt class="descclassname">client.projects.</tt><tt class="descname">get_by_id</tt><big>(</big><em>id</em><big>)</big><a class="headerlink" href="#client.projects.get_by_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the project with the provided id. Operates the same as <cite>client.projects.get</cite>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="client.projects.get_by_title">
+<tt class="descclassname">client.projects.</tt><tt class="descname">get_by_title</tt><big>(</big><em>title</em><big>)</big><a class="headerlink" href="#client.projects.get_by_title" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the project with the provided title. Operates the same as <cite>client.projects.get</cite>.</p>
 </dd></dl>
 
 <dl class="function">

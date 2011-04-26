@@ -11,17 +11,28 @@ Methods for drawing down, editing and uploading data about DocumentCloud project
 Retrieval
 ---------
 
-.. function:: client.projects.get(id)
+.. function:: client.projects.get(id=None, title=None)
 
-   Return the project with the provided DocumentCloud identifer.  ::
+   Return the project with the provided DocumentCloud identifer. You can retrieve projects using either the `id` or `title`. ::
 
         >>> from documentcloud import DocumentCloud
         >>> client = DocumentCloud(USERNAME, PASSWORD)
-        >>> obj = client.projects.get('816')
+        >>> # Fetch using the id
+        >>> obj = client.projects.get(id='816')
         >>> obj
         <Project: The Ruben Salazar Files>
-        >>> obj.document_list[0]
-        <Document: Times Columnist Ruben Salazar Slain by Tear-gas Missile>
+        >>> # Fetch using the title
+        >>> obj = client.projects.get(title='The Ruben Salazar Files')
+        >>> obj
+        <Project: The Ruben Salazar Files>
+
+.. function:: client.projects.get_by_id(id)
+
+   Return the project with the provided id. Operates the same as `client.projects.get`.
+
+.. function:: client.projects.get_by_title(title)
+
+   Return the project with the provided title. Operates the same as `client.projects.get`.
 
 .. function:: client.projects.all()
 
