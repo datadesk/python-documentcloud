@@ -1,2 +1,9 @@
+private_settings.py
+*.pyc
+build/*
+documentcloud/*
 dist/*
+examples.py
+groucho_marx/*
+tests.py
 *.egg-*

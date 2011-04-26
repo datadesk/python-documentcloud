@@ -153,6 +153,18 @@ Metadata
 
     Returns a list of URLs for the "large" sized image of every page in the document.
 
+.. attribute:: document_obj.normal_image
+
+    Returns the binary data for the "normal" sized image of the document's first page. If you would like the data for some other page, pass the page number into ``document_obj.get_normal_image(page)``.
+
+.. attribute:: document_obj.normal_image_url
+
+    Returns a URL containing the "normal" sized image of the document's first page. If you would like the URL for some other page, pass the page number into ``document_obj.get_normal_image_url(page)``.
+
+.. attribute:: document_obj.normal_image_url_list
+
+    Returns a list of URLs for the "normal" sized image of every page in the document.
+
 .. attribute:: document_obj.pages
 
     The number of pages in the document.

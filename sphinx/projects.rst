@@ -104,11 +104,11 @@ Metadata
 
         Retrieves a particular document from the project using the provided DocumentCloud identifer.
 
-.. attribute:: document_obj.id
+.. attribute:: project_obj.id
 
     The unique identifer of the project in DocumentCloud's system. Typically this is a number.
 
-.. attribute:: document_obj.title
+.. attribute:: project_obj.title
 
     The name of the project. Can be edited and saved with a put command.
 
