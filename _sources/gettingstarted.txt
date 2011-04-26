@@ -75,6 +75,10 @@ You can even download the PDF, page images and full text. ::
     >>> obj.pdf
     ...
 
+.. raw:: html
+
+   <hr>
+
 Uploading a document
 --------------------
 
@@ -83,6 +87,10 @@ You can upload a PDF document from your local machine to documentcloud.org. Here
     >>> from documentcloud import DocumentCloud
     >>> client = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
     >>> obj = client.documents.upload("/home/ben/pdfs/myfile.pdf")
+
+.. raw:: html
+
+   <hr>
 
 Uploading a directory of documents as a project
 -----------------------------------------------
