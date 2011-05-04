@@ -190,7 +190,7 @@ class DocumentClient(BaseDocumentCloudClient):
         return Document(data)
     
     @credentials_required
-    def upload(self, path, title=None, source=None,description=None,
+    def upload(self, path, title=None, source=None, description=None,
         related_article=None, published_url=None,
         access='private', project=None):
         """
@@ -223,7 +223,9 @@ class DocumentClient(BaseDocumentCloudClient):
         return self.get(json.loads(response)['id'])
     
     @credentials_required
-    def upload_directory(self, path):
+    def upload_directory(self, path, source=None, description=None,
+        related_article=None, published_url=None,
+        access='private', project=None):
         """
         Uploads all the PDFs in the provided directory.
         
@@ -242,7 +244,9 @@ class DocumentClient(BaseDocumentCloudClient):
         # Upload all the pdfs
         obj_list = []
         for pdf_path in path_list:
-            obj = self.upload(pdf_path)
+            obj = self.upload(pdf_path, source=source, description=description,
+                related_article=related_article, published_url=published_url,
+                access=access, project=project)
             obj_list.append(obj)
         # Pass back the list of documents
         return obj_list

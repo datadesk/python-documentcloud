@@ -207,8 +207,12 @@ class DocumentSearchTest(BaseTest):
         obj = self.private_client.documents.upload(
             os.path.join(os.path.dirname(__file__), "test.pdf"),
             title,
+            description='Blah blah',
+            related_article='http://www.latimes.com',
         )
         self.assertEqual(type(obj), Document)
+        self.assertEqual(obj.description, 'Blah blah')
+        self.assertEqual(obj.related_article, 'http://www.latimes.com')
         # Delete it
         obj.delete()
         self.assertRaises(DoesNotExistError, self.private_client.documents.get, obj.id)
@@ -218,10 +222,13 @@ class DocumentSearchTest(BaseTest):
         Makes sure you can upload all the pdfs in a directory.
         """
         # Upload everything in this directory.
-        obj_list = self.private_client.documents.upload_directory('./')
+        obj_list = self.private_client.documents.upload_directory('./',
+            source='Los Angeles Times', published_url='http://www.latimes.com')
         # Which should only be one document
         self.assertEqual(len(obj_list), 1)
         self.assertEqual(type(obj_list[0]), Document)
+        self.assertEqual(obj_list[0].source, 'Los Angeles Times')
+        self.assertEqual(obj_list[0].published_url, 'http://www.latimes.com')
         # And which we should be able to delete
         obj = obj_list[0]
         obj.delete()
