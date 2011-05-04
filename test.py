@@ -330,8 +330,16 @@ class ProjectTest(BaseTest):
         """
         # Create it
         title = "00 - (%s) - This is only a test" % get_random_string()
-        proj = self.private_client.projects.create(title)
+        doc = self.private_client.documents.get("15144-mitchrpt")
+        proj = self.private_client.projects.create(
+            title,
+            description='Blah blah',
+            document_ids=[doc.id]
+        )
         self.assertEqual(type(proj), Project)
+        self.assertEqual(proj.title, title)
+        self.assertEqual(proj.description, 'Blah blah')
+        self.assertEqual(proj.document_list[0].id, doc.id)
         # Delete it
         proj.delete()
         self.assertRaises(DoesNotExistError, self.private_client.projects.get, proj.id)
