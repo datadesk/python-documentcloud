@@ -91,7 +91,7 @@ class BaseDocumentCloudClient(object):
             params += "".join(['&document_ids[]=%s' % id for id in document_ids])
         else:
             # Otherwise, we can just use the vanilla urllib prep method
-            params = urllib.urlencode(params)
+            params = urllib.urlencode(params,doseq=True)
         # Make the request
         content = self._make_request(
             self.BASE_URI + method,
