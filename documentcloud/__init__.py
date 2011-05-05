@@ -84,14 +84,14 @@ class BaseDocumentCloudClient(object):
             # Pull the document_ids out of the params
             document_ids = params.get("document_ids")
             del params['document_ids']
-            params = urllib.urlencode(params)
+            params = urllib.urlencode(params, doseq=True)
             # These need to be specially formatted in the style documentcloud
             # expects arrays. The example they provide is:
             # ?document_ids[]=28-boumediene&document_ids[]=207-academy&document_ids[]=30-insider-trading
             params += "".join(['&document_ids[]=%s' % id for id in document_ids])
         else:
             # Otherwise, we can just use the vanilla urllib prep method
-            params = urllib.urlencode(params,doseq=True)
+            params = urllib.urlencode(params, doseq=True)
         # Make the request
         content = self._make_request(
             self.BASE_URI + method,
@@ -104,7 +104,7 @@ class BaseDocumentCloudClient(object):
         """
         # Encode params if they exist
         if params:
-            params = urllib.urlencode(params)
+            params = urllib.urlencode(params, doseq=True)
         content = self._make_request(
             self.BASE_URI + method,
             params,
@@ -351,7 +351,7 @@ class ProjectClient(BaseDocumentCloudClient):
             'title': title,
         }
         if description: params['description'] = description
-        params = urllib.urlencode(params)
+        params = urllib.urlencode(params, doseq=True)
         if document_ids:
             # These need to be specially formatted in the style documentcloud
             # expects arrays. The example they provide is:

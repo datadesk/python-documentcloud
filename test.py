@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+# -*- coding: utf-8 -*-
 """
 Tests out the DocumentCloud API.
 
@@ -14,6 +15,7 @@ import random
 import string
 import textwrap
 import unittest
+from copy import copy
 from documentcloud import DocumentCloud
 from documentcloud import CredentialsMissingError, DuplicateObjectError
 from documentcloud import CredentialsFailedError, DoesNotExistError
@@ -197,6 +199,24 @@ class DocumentSearchTest(BaseTest):
         self.assertEqual(obj.description, description)
         self.assertEqual(obj.resources.related_article, related_article)
         self.assertEqual(obj.resources.published_url, published_url)
+    
+    def test_put_with_weird_encoding(self):
+        """
+        Test whether you can save an attribute with some weird encoding
+        in the title.
+        """
+        # Pull the object we'll deface
+        obj = self.private_client.documents.get("15144-mitchrpt")
+        before = copy(obj.title)
+        # Add something weird to the title and save it
+        after = copy(obj.title + u'’')
+        obj.title =  after
+        obj.put()
+        self.assertEqual(obj.title, after)
+        # Switch it back
+        obj.title = before
+        obj.put()
+        self.assertEqual(obj.title, before)
     
     def test_upload_and_delete(self):
         """
