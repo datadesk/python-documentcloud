@@ -480,6 +480,12 @@ class Document(BaseAPIObject):
         )
         self._connection.put('documents/%s.json' % self.id, params)
     
+    def save(self):
+        """
+        An alias to `'put` that post changes back to DocumentCloud
+        """
+        self.put()
+
     def delete(self):
         """
         Deletes this object from documentcloud.org.
@@ -867,6 +873,12 @@ class Project(BaseAPIObject):
             document_ids=[str(i.id) for i in self.document_list]
         )
         self._connection.put('projects/%s.json' % self.id, params)
+    
+    def save(self):
+        """
+        An alias to `'put` that post changes back to DocumentCloud
+        """
+        self.put()
     
     def delete(self):
         """

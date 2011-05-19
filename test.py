@@ -200,6 +200,21 @@ class DocumentSearchTest(BaseTest):
         self.assertEqual(obj.resources.related_article, related_article)
         self.assertEqual(obj.resources.published_url, published_url)
     
+    def test_save(self):
+        """
+        Test whether the save method properly aliases `put`.
+        """
+        # Pull the object we'll deface
+        obj = self.private_client.documents.get("15144-mitchrpt")
+        # Create random strings we will save to the editable attributes
+        title = 'The Mitchell Report (%s)' % get_random_string()
+        obj.title = title
+        # Save the changes up to DocumentCloud with the alias
+        obj.save()
+        # Pull the object again and verify the changes stuck
+        obj = self.private_client.documents.get("15144-mitchrpt")
+        self.assertEqual(obj.title, title)
+    
     def test_put_with_weird_encoding(self):
         """
         Test whether you can save an attribute with some weird encoding
@@ -343,6 +358,21 @@ class ProjectTest(BaseTest):
         obj.put()
         obj = self.private_client.projects.get("703")
         self.assertEqual(len(obj.document_list), len(proj_ids))
+    
+    def test_save(self):
+        """
+        Test whether the save method properly aliases `put`.
+        """
+        # Pull the object we'll deface
+        obj = self.private_client.projects.get("703")
+        # Create random strings we will save to the editable attributes
+        title = 'The Klee Report (%s)' % get_random_string()
+        # Save the changes up to DocumentCloud with the alias
+        obj.title = title
+        obj.save()
+        # Pull the object again and verify the changes stuck
+        obj = self.private_client.projects.get("703")
+        self.assertEqual(obj.title, title)
     
     def test_document_list_type_restrictions(self):
         """
