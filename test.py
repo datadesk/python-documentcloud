@@ -269,6 +269,27 @@ class DocumentSearchTest(BaseTest):
         obj.delete()
         self.assertRaises(DoesNotExistError, self.private_client.documents.get, obj.id)
     
+    def test_secure_upload_and_delete(self):
+        """
+        Make sure you can create and delete a document using the secure
+        parameter that hides your data from OpenCalais.
+        
+        Currently I don't know a way to test whether the parameter is properly
+        applied. It seems to work in the UI, but, as far as I know, the API
+        doesn't return an indicator that I have figured out how to test.
+        """
+        # Create it
+        title = '001 - Test upload (%s)' % get_random_string()
+        obj = self.private_client.documents.upload(
+            os.path.join(os.path.dirname(__file__), "test.pdf"),
+            title,
+            secure=True,
+        )
+        self.assertEqual(type(obj), Document)
+        # Delete it
+        obj.delete()
+        self.assertRaises(DoesNotExistError, self.private_client.documents.get, obj.id)
+    
     def test_upload_directory(self):
         """
         Makes sure you can upload all the pdfs in a directory.
