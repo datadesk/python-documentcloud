@@ -89,6 +89,15 @@ class BaseDocumentCloudClient(object):
             # expects arrays. The example they provide is:
             # ?document_ids[]=28-boumediene&document_ids[]=207-academy&document_ids[]=30-insider-trading
             params += "".join(['&document_ids[]=%s' % id for id in document_ids])
+        # More special case handler of key/value data tags, if they exist
+        elif params.get("data", None):
+            # Pull them out of the dict
+            data = params.get("data")
+            del params['data']
+            params = urllib.urlencode(params, doseq=True)
+            # Format them in the style documentcloud expects
+            # ?data['foo']=bar&data['tit']=tat
+            params += "".join(['&data[%s]=%s' % (key, value) for key, value in data.items()])
         else:
             # Otherwise, we can just use the vanilla urllib prep method
             params = urllib.urlencode(params, doseq=True)
@@ -192,7 +201,7 @@ class DocumentClient(BaseDocumentCloudClient):
     @credentials_required
     def upload(self, path, title=None, source=None, description=None,
         related_article=None, published_url=None,
-        access='private', project=None):
+        access='private', project=None, data=None):
         """
         Upload a PDF or other image file to DocumentCloud.
         
@@ -218,6 +227,9 @@ class DocumentClient(BaseDocumentCloudClient):
         if published_url: params['published_url'] = published_url
         if access: params['access'] = access
         if project: params['project'] = project
+        if data:
+            for key, value in data.items():
+                params['data[%s]' % key] = value
         # Make the request
         response = self._make_request(self.BASE_URI + 'upload.json', params, MultipartPostHandler)
         return self.get(json.loads(response)['id'])
@@ -225,7 +237,7 @@ class DocumentClient(BaseDocumentCloudClient):
     @credentials_required
     def upload_directory(self, path, source=None, description=None,
         related_article=None, published_url=None,
-        access='private', project=None):
+        access='private', project=None, data=None):
         """
         Uploads all the PDFs in the provided directory.
         
@@ -246,7 +258,7 @@ class DocumentClient(BaseDocumentCloudClient):
         for pdf_path in path_list:
             obj = self.upload(pdf_path, source=source, description=description,
                 related_article=related_article, published_url=published_url,
-                access=access, project=project)
+                access=access, project=project, data=data)
             obj_list.append(obj)
         # Pass back the list of documents
         return obj_list
@@ -467,6 +479,7 @@ class Document(BaseAPIObject):
             * related_article
             * access
             * published_url
+            * data key/value pairs
         
         Returns nothing.
         """
@@ -477,6 +490,7 @@ class Document(BaseAPIObject):
             related_article=self.resources.related_article,
             published_url=self.resources.published_url,
             access=self.access,
+            data=self.data,
         )
         self._connection.put('documents/%s.json' % self.id, params)
     
@@ -519,6 +533,23 @@ class Document(BaseAPIObject):
             self.__dict__[u'contributor_organization'] = obj.contributor_organization
             return obj.contributor_organization
     contributor_organization = property(get_contributor_organization)
+    
+    def set_data(self, data):
+        if type(data) != type({}):
+            raise ValueError("This attribute must be a dictionary.")
+        self.__dict__[u'data'] = data
+    
+    def get_data(self):
+        """
+        Fetch the data field if it does not exist.
+        """
+        try:
+            return self.__dict__[u'data']
+        except KeyError:
+            obj = self._connection.documents.get(id=self.id)
+            self.__dict__[u'data'] = obj.data
+            return obj.data
+    data = property(get_data, set_data)
     
     def get_annotations(self):
         """

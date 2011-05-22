@@ -83,6 +83,7 @@ class DocumentSearchTest(BaseTest):
             'source',
             'title',
             'updated_at',
+            'data',
         ]
         for attr in attr_list:
             self.assertTrue(hasattr(obj, attr))
@@ -135,6 +136,7 @@ class DocumentSearchTest(BaseTest):
             'source',
             'title',
             'updated_at',
+            'data',
         ]
         [self.assertTrue(hasattr(obj, attr)) for attr in attr_list]
     
@@ -176,6 +178,7 @@ class DocumentSearchTest(BaseTest):
         title = 'The Mitchell Report (%s)' % get_random_string()
         source = 'DLA Piper (%s)' % get_random_string()
         description = get_random_string()
+        data = {get_random_string(): get_random_string()}
         if obj.resources.related_article == 'http://documents.latimes.com':
             related_article = 'http://documentcloud.org'
         else:
@@ -188,6 +191,7 @@ class DocumentSearchTest(BaseTest):
         obj.title = title
         obj.source = source
         obj.description = description
+        obj.data = data
         obj.resources.related_article = related_article
         obj.resources.published_url = published_url
         # Save the changes up to DocumentCloud
@@ -197,6 +201,7 @@ class DocumentSearchTest(BaseTest):
         self.assertEqual(obj.title, title)
         self.assertEqual(obj.source, source)
         self.assertEqual(obj.description, description)
+        self.assertEqual(obj.data, data)
         self.assertEqual(obj.resources.related_article, related_article)
         self.assertEqual(obj.resources.published_url, published_url)
     
@@ -244,10 +249,12 @@ class DocumentSearchTest(BaseTest):
             title,
             description='Blah blah',
             related_article='http://www.latimes.com',
+            data=dict(like='this', boom='bap'),
         )
         self.assertEqual(type(obj), Document)
         self.assertEqual(obj.description, 'Blah blah')
         self.assertEqual(obj.related_article, 'http://www.latimes.com')
+        self.assertEqual(obj.data, {'like': 'this', 'boom': 'bap'})
         # Delete it
         obj.delete()
         self.assertRaises(DoesNotExistError, self.private_client.documents.get, obj.id)
@@ -258,7 +265,9 @@ class DocumentSearchTest(BaseTest):
         """
         # Upload everything in this directory.
         obj_list = self.private_client.documents.upload_directory('./',
-            source='Los Angeles Times', published_url='http://www.latimes.com')
+            source='Los Angeles Times',
+            published_url='http://www.latimes.com',
+        )
         # Which should only be one document
         self.assertEqual(len(obj_list), 1)
         self.assertEqual(type(obj_list[0]), Document)
