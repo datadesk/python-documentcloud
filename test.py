@@ -168,6 +168,16 @@ class DocumentSearchTest(BaseTest):
         obj = self.public_client.documents.search(self.test_search)[0]
         self.assertEqual(type(obj.mentions[0]), Mention)
     
+    def test_set_data_type_restrictions(self):
+        """
+        Make sure `data` attribute will only accept a dictionary.
+        """
+        obj = self.private_client.documents.get(self.test_id)
+        obj.data = dict(foo='bar')
+        self.assertRaises(TypeError, obj.set_data, "string")
+        self.assertRaises(TypeError, obj.set_data, 666)
+        self.assertRaises(TypeError, obj.set_data, obj)
+    
     def test_get_put(self):
         """
         Test whether we can put random noise to all the editable fields.

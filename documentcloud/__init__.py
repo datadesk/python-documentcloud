@@ -535,8 +535,11 @@ class Document(BaseAPIObject):
     contributor_organization = property(get_contributor_organization)
     
     def set_data(self, data):
+        """
+        Update the data attribute, making sure it's a dictionary.
+        """
         if type(data) != type({}):
-            raise ValueError("This attribute must be a dictionary.")
+            raise TypeError("This attribute must be a dictionary.")
         self.__dict__[u'data'] = data
     
     def get_data(self):
