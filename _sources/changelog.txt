@@ -2,6 +2,14 @@
 Changelog
 =========
 
+0.14
+----
+* Added ``data`` attribute on Document for storing dictionaries of arbitrary metadata
+* Added ``secure`` option for Document uploads to prevent data from being sent to OpenCalais
+* Added ``save`` alias on Document and Project objects that uses the pre-existing ``put`` command
+* Fixed to url encoding to makes the system more unicode friendly
+* Added all Document upload arguments to ``upload_directory`` method
+
 0.13
 ----
 

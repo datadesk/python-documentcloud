@@ -109,6 +109,20 @@ Here's how to upload a directory full of documents and add them all to a new pro
     >>> # Save the changes to the project
     >>> project.put()
 
+
+Securely uploading a document
+-----------------------------
+
+How to upload a document, but prevent it from being sent to DocumentCloud's third-party services like OpenCalais.
+
+    >>> from documentcloud import DocumentCloud
+    >>> client = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
+    >>> obj = client.documents.upload("/home/ben/pdfs/myfile.pdf", secure=True)
+
+.. raw:: html
+
+   <hr>
+
 Move ahead to the sections focused on :doc:`documents </documents>`, or :doc:`projects </projects>` for greater detail.
 
 

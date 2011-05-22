@@ -40,7 +40,7 @@ Editing
 
 .. method:: document_obj.put()
 
-   Save changes to a document back to DocumentCloud. You must be authorized to make these changes. Only the ``title``, ``source``, ``description``, ``related_article``, ``published_url`` and ``access`` attributes may be edited. ::
+   Save changes to a document back to DocumentCloud. You must be authorized to make these changes. Only the ``title``, ``source``, ``description``, ``related_article``, ``published_url``, ``access`` and ``data`` attributes may be edited. ::
 
         >>> # Grab a document
         >>> obj = client.documents.get('71072-oir-final-report')
@@ -60,6 +60,10 @@ Editing
         >>> obj = client.documents.get('71072-oir-final-report')
         >>> obj.delete()
 
+.. method:: document_obj.save()
+
+    An alias for ``put`` that saves changes back to DocumentCloud.
+
 .. raw:: html
 
    <hr>
@@ -67,7 +71,7 @@ Editing
 Uploading
 ---------
 
-.. function:: client.documents.upload(path, title=None, source=None, description=None, related_article=None, published_url=None, access='private', project=None)
+.. function:: client.documents.upload(path, title=None, source=None, description=None, related_article=None, published_url=None, access='private', project=None, data=None, secure=False)
 
    Upload a PDF to DocumentCloud. You must be authorized to do this. Returns the object representing the new record you've created.
 
@@ -78,7 +82,7 @@ Uploading
         >>> client.documents.get(new_id)
         <Document: Test PDF>
 
-.. function:: client.documents.upload_directory(path, source=None, description=None, related_article=None, published_url=None, access='private', project=None)
+.. function:: client.documents.upload_directory(path, source=None, description=None, related_article=None, published_url=None, access='private', project=None, data=None, secure=False)
 
    Searches through the provided path and attempts to upload all the PDFs it can find. Metadata provided to the other keyword arguments will be recorded for all uploads. Returns a list of document objects that are created.
 
@@ -120,6 +124,14 @@ Metadata
 .. attribute:: document_obj.created_at
 
     The date and time that the document was created, in Python's datetime format.
+
+.. attribute:: document_obj.data
+
+    A dictionary containing supplementary data linked to the document. This can any old thing. It's useful if you'd like to store additional metadata. Can be edited and saved with a put command.
+
+        >>> obj = client.documents.get('83251-fbi-file-on-christopher-biggie-smalls-wallace')
+        >>> obj.data
+        {'category': 'hip-hop', 'byline': 'Ben Welsh', 'pub_date': datetime.date(2011, 3, 1)}
 
 .. attribute:: document_obj.description
 

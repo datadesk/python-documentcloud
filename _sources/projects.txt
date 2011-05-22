@@ -66,6 +66,10 @@ Editing
         >>> obj = client.projects.get('816')
         >>> obj.delete()
 
+.. method:: project_obj.save()
+
+    An alias for ``put`` that saves changes back to DocumentCloud.
+
 .. raw:: html
 
    <hr>
