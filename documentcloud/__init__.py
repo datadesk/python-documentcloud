@@ -511,6 +511,31 @@ class Document(BaseAPIObject):
     # Lazy loaded attributes
     #
     
+    def _lazy_load(self):
+        """
+        Fetch metadata if it was overlooked during the object's creation.
+        
+        This can happen when you retrieve documents via search, because
+        the JSON response does not include complete meta data for all 
+        results. 
+        """
+        obj = self._connection.documents.get(id=self.id)
+        self.__dict__['contributor'] = obj.contributor
+        self.__dict__['contributor_organization'] = obj.contributor_organization
+        self.__dict__['data'] = obj.data
+        self.__dict__['annotations'] = obj.__dict__['annotations']
+        self.__dict__['sections'] = obj.__dict__['sections']
+        entities = self._connection.fetch(
+                "documents/%s/entities.json" % self.id
+            ).get("entities")
+        obj_list = []
+        for type, entity_list in entities.items():
+            for entity in entity_list:
+                entity['type'] = type
+                obj = Entity(entity)
+                obj_list.append(obj)
+        self.__dict__['entities'] = obj_list
+    
     def get_contributor(self):
         """
         Fetch the contributor field if it does not exist.
@@ -518,8 +543,7 @@ class Document(BaseAPIObject):
         try:
             return self.__dict__['contributor']
         except KeyError:
-            obj = self._connection.documents.get(id=self.id)
-            self.__dict__['contributor'] = obj.contributor
+            self._lazy_load()
             return obj.contributor
     contributor = property(get_contributor)
     
@@ -550,8 +574,7 @@ class Document(BaseAPIObject):
         try:
             return self.__dict__['data']
         except KeyError:
-            obj = self._connection.documents.get(id=self.id)
-            self.__dict__['data'] = obj.data
+            self._lazy_load()
             return obj.data
     data = property(get_data, set_data)
     
@@ -563,10 +586,9 @@ class Document(BaseAPIObject):
             obj_list = self.__dict__['annotations']
             return [Annotation(i) for i in obj_list]
         except KeyError:
-            obj = self._connection.documents.get(id=self.id)
-            obj_list = [Annotation(i) for i in obj.__dict__['annotations']]
-            self.__dict__['annotations'] =obj.__dict__['annotations']
-            return obj_list
+            self._lazy_load()
+            obj_list = self.__dict__['annotations']
+            return [Annotation(i) for i in obj_list]
     annotations = property(get_annotations)
     
     def get_sections(self):
@@ -577,10 +599,9 @@ class Document(BaseAPIObject):
             obj_list = self.__dict__['sections']
             return [Section(i) for i in obj_list]
         except KeyError:
-            obj = self._connection.documents.get(id=self.id)
-            obj_list = [Section(i) for i in obj.__dict__['sections']]
-            self.__dict__['sections'] = obj.__dict__['sections']
-            return obj_list
+            self._lazy_load()
+            obj_list = self.__dict__['sections']
+            return [Section(i) for i in obj_list]
     sections = property(get_sections)
     
     def get_entities(self):
@@ -590,15 +611,8 @@ class Document(BaseAPIObject):
         try:
             return self.__dict__['entities']
         except KeyError:
-            data = self._connection.fetch("documents/%s/entities.json" % self.id).get("entities")
-            obj_list = []
-            for type, entity_list in data.items():
-                for entity in entity_list:
-                    entity['type'] = type
-                    obj = Entity(entity)
-                    obj_list.append(obj)
-            self.__dict__['entities'] = obj_list
-            return obj_list
+            self._lazy_load()
+            return self.__dict__['entities']
     entities = property(get_entities)
     
     #
