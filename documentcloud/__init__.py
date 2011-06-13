@@ -544,7 +544,7 @@ class Document(BaseAPIObject):
             return self.__dict__['contributor']
         except KeyError:
             self._lazy_load()
-            return obj.contributor
+            return self.__dict__['contributor']
     contributor = property(get_contributor)
     
     def get_contributor_organization(self):
@@ -554,9 +554,8 @@ class Document(BaseAPIObject):
         try:
             return self.__dict__['contributor_organization']
         except KeyError:
-            obj = self._connection.documents.get(id=self.id)
-            self.__dict__['contributor_organization'] = obj.contributor_organization
-            return obj.contributor_organization
+            self._lazy_load()
+            return self.__dict__['contributor_organization']
     contributor_organization = property(get_contributor_organization)
     
     def set_data(self, data):
@@ -575,7 +574,7 @@ class Document(BaseAPIObject):
             return self.__dict__['data']
         except KeyError:
             self._lazy_load()
-            return obj.data
+            return self.__dict__['data']
     data = property(get_data, set_data)
     
     def get_annotations(self):
