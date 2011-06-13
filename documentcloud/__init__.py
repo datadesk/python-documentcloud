@@ -32,7 +32,7 @@ class BaseDocumentCloudClient(object):
     """
     Patterns common to all of the different API methods.
     """
-    BASE_URI = u'https://www.documentcloud.org/api/'
+    BASE_URI = 'https://www.documentcloud.org/api/'
     
     def __init__(self, username, password):
         self.username = username
@@ -155,7 +155,7 @@ class DocumentClient(BaseDocumentCloudClient):
             'per_page': per_page,
             'mentions': 3,
         }
-        data = self.fetch(u'search.json', params)
+        data = self.fetch('search.json', params)
         return data.get("documents")
     
     def search(self, query):
@@ -191,7 +191,7 @@ class DocumentClient(BaseDocumentCloudClient):
         
         Example usage:
         
-            >> documentcloud.documents.get(u'71072-oir-final-report')
+            >> documentcloud.documents.get('71072-oir-final-report')
         
         """
         data = self.fetch('documents/%s.json' % id).get("document")
@@ -313,7 +313,7 @@ class ProjectClient(BaseDocumentCloudClient):
         
         Example usage:
         
-            >> documentcloud.projects.get(u'arizona-shootings')
+            >> documentcloud.projects.get('arizona-shootings')
         
         """
         # Make sure the kwargs are kosher
@@ -516,10 +516,10 @@ class Document(BaseAPIObject):
         Fetch the contributor field if it does not exist.
         """
         try:
-            return self.__dict__[u'contributor']
+            return self.__dict__['contributor']
         except KeyError:
             obj = self._connection.documents.get(id=self.id)
-            self.__dict__[u'contributor'] = obj.contributor
+            self.__dict__['contributor'] = obj.contributor
             return obj.contributor
     contributor = property(get_contributor)
     
@@ -528,10 +528,10 @@ class Document(BaseAPIObject):
         Fetch the contributor_organization field if it does not exist.
         """
         try:
-            return self.__dict__[u'contributor_organization']
+            return self.__dict__['contributor_organization']
         except KeyError:
             obj = self._connection.documents.get(id=self.id)
-            self.__dict__[u'contributor_organization'] = obj.contributor_organization
+            self.__dict__['contributor_organization'] = obj.contributor_organization
             return obj.contributor_organization
     contributor_organization = property(get_contributor_organization)
     
@@ -541,17 +541,17 @@ class Document(BaseAPIObject):
         """
         if type(data) != type({}):
             raise TypeError("This attribute must be a dictionary.")
-        self.__dict__[u'data'] = data
+        self.__dict__['data'] = data
     
     def get_data(self):
         """
         Fetch the data field if it does not exist.
         """
         try:
-            return self.__dict__[u'data']
+            return self.__dict__['data']
         except KeyError:
             obj = self._connection.documents.get(id=self.id)
-            self.__dict__[u'data'] = obj.data
+            self.__dict__['data'] = obj.data
             return obj.data
     data = property(get_data, set_data)
     
@@ -560,12 +560,12 @@ class Document(BaseAPIObject):
         Fetch the annotations field if it does not exist.
         """
         try:
-            obj_list = self.__dict__[u'annotations']
+            obj_list = self.__dict__['annotations']
             return [Annotation(i) for i in obj_list]
         except KeyError:
             obj = self._connection.documents.get(id=self.id)
             obj_list = [Annotation(i) for i in obj.__dict__['annotations']]
-            self.__dict__[u'annotations'] =obj.__dict__['annotations']
+            self.__dict__['annotations'] =obj.__dict__['annotations']
             return obj_list
     annotations = property(get_annotations)
     
@@ -574,12 +574,12 @@ class Document(BaseAPIObject):
         Fetch the sections field if it does not exist.
         """
         try:
-            obj_list = self.__dict__[u'sections']
+            obj_list = self.__dict__['sections']
             return [Section(i) for i in obj_list]
         except KeyError:
             obj = self._connection.documents.get(id=self.id)
             obj_list = [Section(i) for i in obj.__dict__['sections']]
-            self.__dict__[u'sections'] = obj.__dict__['sections']
+            self.__dict__['sections'] = obj.__dict__['sections']
             return obj_list
     sections = property(get_sections)
     
@@ -588,7 +588,7 @@ class Document(BaseAPIObject):
         Fetch the entities extracted from this document by OpenCalais.
         """
         try:
-            return self.__dict__[u'entities']
+            return self.__dict__['entities']
         except KeyError:
             data = self._connection.fetch("documents/%s/entities.json" % self.id).get("entities")
             obj_list = []
@@ -597,7 +597,7 @@ class Document(BaseAPIObject):
                     entity['type'] = type
                     obj = Entity(entity)
                     obj_list.append(obj)
-            self.__dict__[u'entities'] = obj_list
+            self.__dict__['entities'] = obj_list
             return obj_list
     entities = property(get_entities)
     
@@ -877,9 +877,9 @@ class Project(BaseAPIObject):
         # Allow document_list to be zeroed out with [] or None
         if attr == 'document_list':
             if value == None:
-                self.__dict__[u'document_list'] = DocumentSet([])
+                self.__dict__['document_list'] = DocumentSet([])
             elif isinstance(value, list):
-                self.__dict__[u'document_list'] = DocumentSet(value)
+                self.__dict__['document_list'] = DocumentSet(value)
             else:
                 raise TypeError
         else:
@@ -930,10 +930,10 @@ class Project(BaseAPIObject):
         Retrieves all documents included in this project.
         """
         try:
-            return self.__dict__[u'document_list']
+            return self.__dict__['document_list']
         except KeyError:
             obj_list = DocumentSet([self._connection.documents.get(i) for i in self.document_ids])
-            self.__dict__[u'document_list'] = obj_list
+            self.__dict__['document_list'] = obj_list
             return obj_list
     document_list = property(get_document_list)
     
