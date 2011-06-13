@@ -269,6 +269,23 @@ class DocumentSearchTest(BaseTest):
         obj.delete()
         self.assertRaises(DoesNotExistError, self.private_client.documents.get, obj.id)
     
+    def test_file_obj_upload_and_delete(self):
+        """
+        Test that uploading works when you provide a file object instead of a 
+        path.
+        """
+        # Create it
+        title = '001 - Test upload (%s)' % get_random_string()
+        obj = self.private_client.documents.upload(
+            open(os.path.join(os.path.dirname(__file__), "test.pdf"), "rb"),
+            title,
+        )
+        self.assertEqual(type(obj), Document)
+        self.assertEqual(obj.title, title)
+        # Delete it
+        obj.delete()
+        self.assertRaises(DoesNotExistError, self.private_client.documents.get, obj.id)
+    
     def test_secure_upload_and_delete(self):
         """
         Make sure you can create and delete a document using the secure

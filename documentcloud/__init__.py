@@ -199,28 +199,41 @@ class DocumentClient(BaseDocumentCloudClient):
         return Document(data)
     
     @credentials_required
-    def upload(self, path, title=None, source=None, description=None,
+    def upload(self, pdf, title=None, source=None, description=None,
         related_article=None, published_url=None, access='private',
         project=None, data=None, secure=False):
         """
         Upload a PDF or other image file to DocumentCloud.
         
+        You can submit either a pdf opened as a file object or a path to a pdf file.
+        
         Example usage:
         
-            >> documentcloud.documents.upload("/home/ben/sample.pdf", "sample")
+            # From a file path
+            >> documentcloud.documents.upload("/home/ben/sample.pdf", "sample title")
         
-        Returns the documentcloud id of the document that's created.
+            # From a file object
+            >> pdf = open(path, 'rb')
+            >> documentcloud.documents.upload(pdf, "sample title")
+
+        Returns the document that's created as a Document object.
         
         Based on code developed by Mitchell Kotler and refined by Christopher Groskopf.
         """
         # Required parameters
-        params = {'file': open(path, 'rb')}
+        if hasattr(pdf, 'read'):
+            params = {'file': pdf}
+        else:
+            params = {'file': open(pdf, 'rb')}
         # Optional parameters
         if title:
             params['title'] = title
         else:
             # Set it to the file name
-            params['title'] = path.split(os.sep)[-1].split(".")[0]
+            if hasattr(data, 'read'):
+                params['title'] = pdf.name.split(os.sep)[-1].split(".")[0]
+            else:
+                params['title'] = pdf.split(os.sep)[-1].split(".")[0]
         if source: params['source'] = source
         if description: params['description'] = description
         if related_article: params['related_article'] = related_article
