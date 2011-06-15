@@ -311,7 +311,6 @@ class DocumentSearchTest(BaseTest):
         path = os.path.join(os.path.dirname(__file__), "espanol.pdf")
         real_file = open(path, 'rb')
         virtual_file = StringIO.StringIO(real_file.read())
-        virtual_file.name = 'Espanola!'
         obj = self.private_client.documents.upload(virtual_file, title='Espanola!')
         self.assertEqual(type(obj), Document)
         # Delete it
