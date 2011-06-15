@@ -13,6 +13,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
 #
+# 7/26/07 Slightly modified by Brian Schneider  
+# in order to support unicode files ( multipart_encode function )
 """
 Usage:
   Enables the use of multipart/form-data for posting forms
@@ -42,6 +44,7 @@ import urllib
 import urllib2
 import mimetools, mimetypes
 import os, stat
+from cStringIO import StringIO
 
 class Callable:
     def __init__(self, anycallable):
@@ -61,7 +64,7 @@ class MultipartPostHandler(urllib2.BaseHandler):
             v_vars = []
             try:
                  for(key, value) in data.items():
-                     if type(value) == file:
+                     if hasattr(value, 'read'):
                          v_files.append((key, value))
                      else:
                          v_vars.append((key, value))
@@ -73,6 +76,7 @@ class MultipartPostHandler(urllib2.BaseHandler):
                 data = urllib.urlencode(v_vars, doseq)
             else:
                 boundary, data = self.multipart_encode(v_vars, v_files)
+
                 contenttype = 'multipart/form-data; boundary=%s' % boundary
                 if(request.has_header('Content-Type')
                    and request.get_header('Content-Type').find('multipart/form-data') != 0):
@@ -80,32 +84,51 @@ class MultipartPostHandler(urllib2.BaseHandler):
                 request.add_unredirected_header('Content-Type', contenttype)
 
             request.add_data(data)
+        
         return request
 
-    def multipart_encode(vars, files, boundary = None, buffer = None):
+    def multipart_encode(vars, files, boundary = None, buf = None):
         if boundary is None:
             boundary = mimetools.choose_boundary()
-        if buffer is None:
-            buffer = ''
+        if buf is None:
+            buf = StringIO()
         for(key, value) in vars:
-            buffer += '--%s\r\n' % boundary
-            buffer += 'Content-Disposition: form-data; name="%s"' % key
-            buffer += '\r\n\r\n' + value + '\r\n'
+            buf.write('--%s\r\n' % boundary)
+            buf.write('Content-Disposition: form-data; name="%s"' % key)
+            buf.write('\r\n\r\n' + value + '\r\n')
         for(key, fd) in files:
-            file_size = os.fstat(fd.fileno())[stat.ST_SIZE]
-            filename = fd.name.split('/')[-1]
+            file_size = getsize(fd)
+            try:
+                filename = fd.name.split('/')[-1]
+            except AttributeError:
+                # Spoof a file name if the object doesn't have one.
+                # This is designed to catch when the user submits a StringIO object
+                filename = 'temp.pdf'
             contenttype = mimetypes.guess_type(filename)[0] or 'application/octet-stream'
-            buffer += '--%s\r\n' % boundary
-            buffer += 'Content-Disposition: form-data; name="%s"; filename="%s"\r\n' % (key, filename)
-            buffer += 'Content-Type: %s\r\n' % contenttype
+            buf.write('--%s\r\n' % boundary)
+            buf.write('Content-Disposition: form-data; name="%s"; filename="%s"\r\n' % (key, filename))
+            buf.write('Content-Type: %s\r\n' % contenttype)
             # buffer += 'Content-Length: %s\r\n' % file_size
             fd.seek(0)
-            buffer += '\r\n' + fd.read() + '\r\n'
-        buffer += '--%s--\r\n\r\n' % boundary
-        return boundary, buffer
+            buf.write('\r\n' + fd.read() + '\r\n')
+        buf.write('--' + boundary + '--\r\n\r\n')
+        buf = buf.getvalue()
+        return boundary, buf
     multipart_encode = Callable(multipart_encode)
 
     https_request = http_request
+
+def getsize(o_file):
+    """
+    get the size, either by seeeking to the end.
+    """
+    from os import SEEK_END
+    startpos=o_file.tell()
+    o_file.seek(0)
+    o_file.seek(0,SEEK_END)
+    size=o_file.tell()
+    o_file.seek(startpos)
+    return size
 
 def main():
     import tempfile, sys
@@ -130,3 +153,5 @@ def main():
 
 if __name__=="__main__":
     main()
+
+

@@ -15,6 +15,7 @@ import random
 import string
 import textwrap
 import unittest
+import StringIO
 from copy import copy
 from documentcloud import DocumentCloud
 from documentcloud import CredentialsMissingError, DuplicateObjectError
@@ -286,6 +287,37 @@ class DocumentSearchTest(BaseTest):
         obj.delete()
         self.assertRaises(DoesNotExistError, self.private_client.documents.get, obj.id)
     
+    def test_unicode_upload_and_delete(self):
+        """
+        Ensure that documents with non-english characters can be uploaded
+        """
+        path = os.path.join(os.path.dirname(__file__), "espanol.pdf")
+        obj = self.private_client.documents.upload(
+            open(path, 'rb'),
+            'Espanola!',
+        )
+        self.assertEqual(type(obj), Document)
+        # Delete it
+        obj.delete()
+        self.assertRaises(DoesNotExistError, self.private_client.documents.get, obj.id)
+    
+    def test_virtual_file_upload_and_delete(self):
+        """
+        Proxy test case for files stored in memory, for instance, django-storages
+        these tests are difficult to create as the class used to represent a file
+        object is determined at runtime by the DEFAULT_FILE_STORAGE var (django)
+        anyway, the main point is to show the MultipartPostHandler can handle unicode
+        """
+        path = os.path.join(os.path.dirname(__file__), "espanol.pdf")
+        real_file = open(path, 'rb')
+        virtual_file = StringIO.StringIO(real_file.read())
+        virtual_file.name = 'Espanola!'
+        obj = self.private_client.documents.upload(virtual_file, title='Espanola!')
+        self.assertEqual(type(obj), Document)
+        # Delete it
+        obj.delete()
+        self.assertRaises(DoesNotExistError, self.private_client.documents.get, obj.id)
+
     def test_secure_upload_and_delete(self):
         """
         Make sure you can create and delete a document using the secure
@@ -317,14 +349,14 @@ class DocumentSearchTest(BaseTest):
             published_url='http://www.latimes.com',
         )
         # Which should only be one document
-        self.assertEqual(len(obj_list), 1)
+        self.assertEqual(len(obj_list), 2)
         self.assertEqual(type(obj_list[0]), Document)
         self.assertEqual(obj_list[0].source, 'Los Angeles Times')
         self.assertEqual(obj_list[0].published_url, 'http://www.latimes.com')
         # And which we should be able to delete
-        obj = obj_list[0]
-        obj.delete()
-        self.assertRaises(DoesNotExistError, self.private_client.documents.get, obj.id)
+        [i.delete() for i in obj_list]
+        [self.assertRaises(DoesNotExistError, self.private_client.documents.get, obj.id)
+            for obj in obj_list]
     
     def test_resources(self):
         """
