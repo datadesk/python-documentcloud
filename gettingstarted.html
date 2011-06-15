@@ -8,13 +8,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Getting started &mdash; python-documentcloud v0.14 documentation</title>
+    <title>Getting started &mdash; python-documentcloud v0.15 documentation</title>
     <link rel="stylesheet" href="_static/latimes.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.14',
+        VERSION:     '0.15',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="python-documentcloud v0.14 documentation" href="index.html" />
+    <link rel="top" title="python-documentcloud v0.15 documentation" href="index.html" />
     <link rel="next" title="Documents" href="documents.html" />
     <link rel="prev" title="Features" href="index.html" /> 
   </head>
@@ -33,7 +33,7 @@
 </a>
 <div class="banner">
     <h1><a href="index.html"><img src="_static/banner.png"></a></h1>
-    <h2>Version 0.14 :: <a href="http://github.com/datadesk">http://github.com/datadesk</a></h2>
+    <h2>Version 0.15 :: <a href="http://github.com/datadesk">http://github.com/datadesk</a></h2>
 </div>
 <div class="banner-underline"></div> 
   
@@ -106,6 +106,13 @@
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">documentcloud</span> <span class="kn">import</span> <span class="n">DocumentCloud</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">DocumentCloud</span><span class="p">(</span><span class="n">DOCUMENTCLOUD_USERNAME</span><span class="p">,</span> <span class="n">DOCUMENTCLOUD_PASSWORD</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="s">&quot;/home/ben/pdfs/myfile.pdf&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And you don&#8217;t have to provide a path, you can also upload a file object.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">documentcloud</span> <span class="kn">import</span> <span class="n">DocumentCloud</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">DocumentCloud</span><span class="p">(</span><span class="n">DOCUMENTCLOUD_USERNAME</span><span class="p">,</span> <span class="n">DOCUMENTCLOUD_PASSWORD</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pdf_</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&quot;/home/ben/pdfs/myfile.pdf&quot;</span><span class="p">,</span> <span class="s">&quot;rb&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="n">pdf</span><span class="p">)</span>
 </pre></div>
 </div>
 <hr></div>

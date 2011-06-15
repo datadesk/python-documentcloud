@@ -88,6 +88,13 @@ You can upload a PDF document from your local machine to documentcloud.org. Here
     >>> client = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
     >>> obj = client.documents.upload("/home/ben/pdfs/myfile.pdf")
 
+And you don't have to provide a path, you can also upload a file object. ::
+
+    >>> from documentcloud import DocumentCloud
+    >>> client = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
+    >>> pdf_ = open("/home/ben/pdfs/myfile.pdf", "rb")
+    >>> obj = client.documents.upload(pdf)
+
 .. raw:: html
 
    <hr>

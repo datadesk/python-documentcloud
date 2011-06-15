@@ -2,6 +2,13 @@
 Changelog
 =========
 
+0.15
+----
+
+* File objects can now be submitted for uploading
+* Added more support for unicode data thanks to contributions by `Shane Shifflet <https://twitter.com/#!/shaneshifflett>`_.
+* Smarter lazy loading of Document attributes missing from a search
+
 0.14
 ----
 * Added ``data`` attribute on Document for storing dictionaries of arbitrary metadata
