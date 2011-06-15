@@ -538,16 +538,6 @@ class Document(BaseAPIObject):
         self.__dict__['data'] = obj.data
         self.__dict__['annotations'] = obj.__dict__['annotations']
         self.__dict__['sections'] = obj.__dict__['sections']
-        entities = self._connection.fetch(
-                "documents/%s/entities.json" % self.id
-            ).get("entities")
-        obj_list = []
-        for type, entity_list in entities.items():
-            for entity in entity_list:
-                entity['type'] = type
-                obj = Entity(entity)
-                obj_list.append(obj)
-        self.__dict__['entities'] = obj_list
     
     def get_contributor(self):
         """
@@ -623,7 +613,16 @@ class Document(BaseAPIObject):
         try:
             return self.__dict__['entities']
         except KeyError:
-            self._lazy_load()
+            entities = self._connection.fetch(
+                    "documents/%s/entities.json" % self.id
+                ).get("entities")
+            obj_list = []
+            for type, entity_list in entities.items():
+                for entity in entity_list:
+                    entity['type'] = type
+                    obj = Entity(entity)
+                    obj_list.append(obj)
+            self.__dict__['entities'] = obj_list
             return self.__dict__['entities']
     entities = property(get_entities)
     
