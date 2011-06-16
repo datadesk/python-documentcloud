@@ -316,11 +316,8 @@ class DocumentSearchTest(BaseTest):
         """
         Ensure that documents with non-english characters can be uploaded
         """
-        path = os.path.join(os.path.dirname(__file__), "espanol.pdf")
-        obj = self.private_client.documents.upload(
-            open(path, 'rb'),
-            'Espanola!',
-        )
+        pdf = os.path.join(os.path.dirname(__file__), "español.pdf")
+        obj = self.private_client.documents.upload(open(pdf, 'rb'))
         self.assertEqual(type(obj), Document)
         # Delete it
         obj.delete()
@@ -333,7 +330,7 @@ class DocumentSearchTest(BaseTest):
         object is determined at runtime by the DEFAULT_FILE_STORAGE var (django)
         anyway, the main point is to show the MultipartPostHandler can handle unicode
         """
-        path = os.path.join(os.path.dirname(__file__), "espanol.pdf")
+        path = os.path.join(os.path.dirname(__file__), "español.pdf")
         real_file = open(path, 'rb')
         virtual_file = StringIO.StringIO(real_file.read())
         obj = self.private_client.documents.upload(virtual_file, title='Espanola!')

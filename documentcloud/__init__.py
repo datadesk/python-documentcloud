@@ -230,7 +230,7 @@ class DocumentClient(BaseDocumentCloudClient):
             params['title'] = title
         else:
             # Set it to the file name
-            if hasattr(data, 'read'):
+            if hasattr(pdf, 'read'):
                 params['title'] = pdf.name.split(os.sep)[-1].split(".")[0]
             else:
                 params['title'] = pdf.split(os.sep)[-1].split(".")[0]
