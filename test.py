@@ -33,6 +33,25 @@ def get_random_string(length=6):
     """
     return ''.join(random.choice(string.letters + string.digits) for i in xrange(length))
 
+PANGRAMS = {
+    'en': 'The quick brown fox jumps over the lazy dog.',
+    'da': 'Quizdeltagerne spiste jordbær med fløde, mens cirkusklovnen Wolther spillede på xylofon.',
+    'de': 'Falsches Üben von Xylophonmusik quält jeden größeren Zwerg.',
+    'el': 'Γαζέες καὶ μυρτιὲς δὲν θὰ βρῶ πιὰ στὸ χρυσαφὶ ξέφωτο.',
+    'es': 'El pingüino Wenceslao hizo kilómetros bajo exhaustiva lluvia y frío, añoraba a su querido cachorro.',
+    'fr': "Portez ce vieux whisky au juge blond qui fume sur son île intérieure, à côté de l'alcôve ovoïde, où les bûches se consument dans l'âtre, ce qui lui permet de penser à la cænogenèse de l'être dont il est question dans la cause ambiguë entendue à Moÿ, dans un capharnaüm qui, pense-t-il, diminue çà et là la qualité de son œuvre.",
+    'ga': "D'fhuascail Íosa, Úrmhac na hÓighe Beannaithe, pór Éava agus Ádhaimh.",
+    'hu': 'Árvíztűrő tükörfúrógép.',
+    'is': 'Kæmi ný öxi hér ykist þjófum nú bæði víl og ádrepa.',
+    'jp': """'いろはにほへとちりぬるを
+      わかよたれそつねならむ
+      うゐのおくやまけふこえて
+      あさきゆめみしゑひもせす""",
+    'iw': '? דג סקרן שט בים מאוכזב ולפתע מצא לו חברה איך הקליטה.',
+    'pl': 'Pchnąć w tę łódź jeża lub ośm skrzyń fig.',
+    'ru': 'чащах юга жил бы цитрус? Да, но фальшивый экземпляр!'
+}
+
 #
 # Tests
 #
@@ -238,16 +257,22 @@ class DocumentSearchTest(BaseTest):
         """
         # Pull the object we'll deface
         obj = self.private_client.documents.get("15144-mitchrpt")
-        before = copy(obj.title)
+        before_title = copy(obj.title)
+        before_description = copy(obj.description)
         # Add something weird to the title and save it
-        after = copy(obj.title + u'’')
-        obj.title =  after
+        after_title = copy(PANGRAMS['iw'])
+        after_description = copy(PANGRAMS['jp'])
+        obj.title =  after_title
+        obj.description = after_description
         obj.put()
-        self.assertEqual(obj.title, after)
+        self.assertEqual(obj.title, after_title)
+        self.assertEqual(obj.description, after_description)
         # Switch it back
-        obj.title = before
+        obj.title = before_title
+        obj.description = before_description
         obj.put()
-        self.assertEqual(obj.title, before)
+        self.assertEqual(obj.title, before_title)
+        self.assertEqual(obj.description, before_description)
     
     def test_upload_and_delete(self):
         """
