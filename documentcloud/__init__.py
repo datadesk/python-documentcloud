@@ -641,9 +641,13 @@ class Document(BaseAPIObject):
         """
         Downloads and returns the full text of the document.
         """
-        req = urllib2.Request(self.full_text_url)
-        response = urllib2.urlopen(req)
-        return response.read()
+        if self.access == 'public':
+            req = urllib2.Request(self.full_text_url)
+            return urllib2.urlopen(req).read()
+        elif self.access in ['organization', 'private']:
+            raise NotImplementedError()
+        elif self.access == 'pending':
+            return None
     full_text = property(get_full_text)
     
     def get_page_text_url(self, page):
@@ -659,9 +663,14 @@ class Document(BaseAPIObject):
         Downloads and returns the full text of a particular page in the document.
         """
         url = self.get_page_text_url(page)
-        req = urllib2.Request(url)
-        response = urllib2.urlopen(req)
-        return response.read()
+        print url
+        if self.access == 'public':
+            req = urllib2.Request(url)
+            return urllib2.urlopen(req).read()
+        elif self.access in ['organization', 'private']:
+            raise NotImplementedError()
+        elif self.access == 'pending':
+            return None
     
     #
     # Images
@@ -678,9 +687,14 @@ class Document(BaseAPIObject):
         """
         Downloads and returns the full PDF of the document.
         """
-        req = urllib2.Request(self.pdf_url)
-        response = urllib2.urlopen(req)
-        return response.read()
+        url = self.pdf_url
+        if self.access == 'public':
+            req = urllib2.Request(url)
+            return urllib2.urlopen(req).read()
+        elif self.access in ['organization', 'private']:
+            raise NotImplementedError()
+        elif self.access == 'pending':
+            return None
     pdf = property(get_pdf)
     
     def get_small_image_url(self, page=1):
@@ -762,9 +776,13 @@ class Document(BaseAPIObject):
         The page kwarg specifies which page to return. One is the default.
         """
         url = self.get_small_image_url(page=page)
-        req = urllib2.Request(url)
-        response = urllib2.urlopen(req)
-        return response.read()
+        if self.access == 'public':
+            req = urllib2.Request(url)
+            return urllib2.urlopen(req).read()
+        elif self.access in ['organization', 'private']:
+            raise NotImplementedError()
+        elif self.access == 'pending':
+            return None
     small_image = property(get_small_image)
     
     def get_thumbnail_image(self, page=1):
@@ -774,9 +792,13 @@ class Document(BaseAPIObject):
         The page kwarg specifies which page to return. One is the default.
         """
         url = self.get_thumbnail_image_url(page=page)
-        req = urllib2.Request(url)
-        response = urllib2.urlopen(req)
-        return response.read()
+        if self.access == 'public':
+            req = urllib2.Request(url)
+            return urllib2.urlopen(req).read()
+        elif self.access in ['organization', 'private']:
+            raise NotImplementedError()
+        elif self.access == 'pending':
+            return None
     thumbnail_image = property(get_thumbnail_image)
     
     def get_normal_image(self, page=1):
@@ -786,9 +808,13 @@ class Document(BaseAPIObject):
         The page kwarg specifies which page to return. One is the default.
         """
         url = self.get_normal_image_url(page=page)
-        req = urllib2.Request(url)
-        response = urllib2.urlopen(req)
-        return response.read()
+        if self.access == 'public':
+            req = urllib2.Request(url)
+            return urllib2.urlopen(req).read()
+        elif self.access in ['organization', 'private']:
+            raise NotImplementedError()
+        elif self.access == 'pending':
+            return None
     normal_image = property(get_normal_image)
     
     def get_large_image(self, page=1):
@@ -798,9 +824,13 @@ class Document(BaseAPIObject):
         The page kwarg specifies which page to return. One is the default.
         """
         url = self.get_large_image_url(page=page)
-        req = urllib2.Request(url)
-        response = urllib2.urlopen(req)
-        return response.read()
+        if self.access == 'public':
+            req = urllib2.Request(url)
+            return urllib2.urlopen(req).read()
+        elif self.access in ['organization', 'private']:
+            raise NotImplementedError()
+        elif self.access == 'pending':
+            return None
     large_image = property(get_large_image)
     
     #
