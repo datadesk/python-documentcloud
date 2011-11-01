@@ -160,6 +160,33 @@ class DocumentSearchTest(BaseTest):
         ]
         [self.assertTrue(hasattr(obj, attr)) for attr in attr_list]
     
+    def test_get_pdf(self):
+        """
+        Test if you can pull the PDF
+        """
+        obj = self.public_client.documents.get(self.test_id)
+        self.assertTrue(len(obj.pdf) > 0, True)
+    
+#    def test_get_full_text(self):
+#        """
+#        Test if you can pull the full text
+#        """
+#        obj = self.public_client.documents.get(self.test_id)
+#        try:
+#            self.assertTrue(len(obj.full_text) > 0, True)
+#        except:
+#            self.assertRaises(obj.full_text, NotImplementedError)
+    
+    def test_get_images(self):
+        """
+        Test if you can pull the images
+        """
+        obj = self.public_client.documents.get(self.test_id)
+        self.assertTrue(len(obj.small_image) > 0, True)
+        self.assertTrue(len(obj.thumbnail_image) > 0, True)
+        self.assertTrue(len(obj.normal_image) > 0, True)
+        self.assertTrue(len(obj.large_image) > 0, True)
+    
     def test_get_annotations(self):
         """
         Test whether annotations exist.

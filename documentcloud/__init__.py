@@ -630,6 +630,20 @@ class Document(BaseAPIObject):
     # Text
     #
     
+    def _get_url(self, url):
+        if self.access == 'public':
+            req = urllib2.Request(url)
+            try:
+                return urllib2.urlopen(req).read()
+            except urllib2.HTTPError:
+                raise NotImplementedError(
+                    "Currently, DocumentCloud only allows you to access this resource on public documents."
+                )
+        else:
+            raise NotImplementedError(
+                "Currently, DocumentCloud only allows you to access this resource on public documents."
+            )
+    
     def get_full_text_url(self):
         """
         Returns the URL that contains the full text of the document.
@@ -641,13 +655,7 @@ class Document(BaseAPIObject):
         """
         Downloads and returns the full text of the document.
         """
-        if self.access == 'public':
-            req = urllib2.Request(self.full_text_url)
-            return urllib2.urlopen(req).read()
-        elif self.access in ['organization', 'private']:
-            raise NotImplementedError()
-        elif self.access == 'pending':
-            return None
+        return self._get_url(self.full_text_url)
     full_text = property(get_full_text)
     
     def get_page_text_url(self, page):
@@ -656,21 +664,14 @@ class Document(BaseAPIObject):
         """
         template = self.resources.page.get('text')
         url = template.replace("{page}", str(page))
-        return url
+        return self._get_url(url)
     
     def get_page_text(self, page):
         """
         Downloads and returns the full text of a particular page in the document.
         """
         url = self.get_page_text_url(page)
-        print url
-        if self.access == 'public':
-            req = urllib2.Request(url)
-            return urllib2.urlopen(req).read()
-        elif self.access in ['organization', 'private']:
-            raise NotImplementedError()
-        elif self.access == 'pending':
-            return None
+        return self._get_url(url)
     
     #
     # Images
@@ -687,14 +688,7 @@ class Document(BaseAPIObject):
         """
         Downloads and returns the full PDF of the document.
         """
-        url = self.pdf_url
-        if self.access == 'public':
-            req = urllib2.Request(url)
-            return urllib2.urlopen(req).read()
-        elif self.access in ['organization', 'private']:
-            raise NotImplementedError()
-        elif self.access == 'pending':
-            return None
+        return self._get_url(self.pdf_url)
     pdf = property(get_pdf)
     
     def get_small_image_url(self, page=1):
@@ -704,8 +698,7 @@ class Document(BaseAPIObject):
         The page kwarg specifies which page to return. One is the default.
         """
         template = self.resources.page.get('image')
-        url = template.replace("{page}", str(page)).replace("{size}", "small")
-        return url
+        return template.replace("{page}", str(page)).replace("{size}", "small")
     small_image_url = property(get_small_image_url)
     
     def get_thumbnail_image_url(self, page=1):
@@ -715,8 +708,7 @@ class Document(BaseAPIObject):
         The page kwarg specifies which page to return. One is the default.
         """
         template = self.resources.page.get('image')
-        url = template.replace("{page}", str(page)).replace("{size}", "thumbnail")
-        return url
+        return template.replace("{page}", str(page)).replace("{size}", "thumbnail")
     thumbnail_image_url = property(get_thumbnail_image_url)
     
     def get_normal_image_url(self, page=1):
@@ -726,8 +718,7 @@ class Document(BaseAPIObject):
         The page kwarg specifies which page to return. One is the default.
         """
         template = self.resources.page.get('image')
-        url = template.replace("{page}", str(page)).replace("{size}", "normal")
-        return url
+        return template.replace("{page}", str(page)).replace("{size}", "normal")
     normal_image_url = property(get_normal_image_url)
 
     def get_large_image_url(self, page=1):
@@ -737,8 +728,7 @@ class Document(BaseAPIObject):
         The page kwarg specifies which page to return. One is the default.
         """
         template = self.resources.page.get('image')
-        url = template.replace("{page}", str(page)).replace("{size}", "large")
-        return url
+        return template.replace("{page}", str(page)).replace("{size}", "large")
     large_image_url = property(get_large_image_url)
     
     def get_small_image_url_list(self):
@@ -776,13 +766,7 @@ class Document(BaseAPIObject):
         The page kwarg specifies which page to return. One is the default.
         """
         url = self.get_small_image_url(page=page)
-        if self.access == 'public':
-            req = urllib2.Request(url)
-            return urllib2.urlopen(req).read()
-        elif self.access in ['organization', 'private']:
-            raise NotImplementedError()
-        elif self.access == 'pending':
-            return None
+        return self._get_url(url)
     small_image = property(get_small_image)
     
     def get_thumbnail_image(self, page=1):
@@ -792,13 +776,7 @@ class Document(BaseAPIObject):
         The page kwarg specifies which page to return. One is the default.
         """
         url = self.get_thumbnail_image_url(page=page)
-        if self.access == 'public':
-            req = urllib2.Request(url)
-            return urllib2.urlopen(req).read()
-        elif self.access in ['organization', 'private']:
-            raise NotImplementedError()
-        elif self.access == 'pending':
-            return None
+        return self._get_url(url)
     thumbnail_image = property(get_thumbnail_image)
     
     def get_normal_image(self, page=1):
@@ -808,13 +786,7 @@ class Document(BaseAPIObject):
         The page kwarg specifies which page to return. One is the default.
         """
         url = self.get_normal_image_url(page=page)
-        if self.access == 'public':
-            req = urllib2.Request(url)
-            return urllib2.urlopen(req).read()
-        elif self.access in ['organization', 'private']:
-            raise NotImplementedError()
-        elif self.access == 'pending':
-            return None
+        return self._get_url(url)
     normal_image = property(get_normal_image)
     
     def get_large_image(self, page=1):
@@ -824,13 +796,7 @@ class Document(BaseAPIObject):
         The page kwarg specifies which page to return. One is the default.
         """
         url = self.get_large_image_url(page=page)
-        if self.access == 'public':
-            req = urllib2.Request(url)
-            return urllib2.urlopen(req).read()
-        elif self.access in ['organization', 'private']:
-            raise NotImplementedError()
-        elif self.access == 'pending':
-            return None
+        return self._get_url(url)
     large_image = property(get_large_image)
     
     #
