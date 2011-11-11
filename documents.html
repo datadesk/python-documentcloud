@@ -213,7 +213,7 @@
 <dl class="attribute">
 <dt id="document_obj.full_text">
 <tt class="descclassname">document_obj.</tt><tt class="descname">full_text</tt><a class="headerlink" href="#document_obj.full_text" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the full text of the document, as extracted from the original PDF by DocumentCloud. Results may vary, but this will give you what they got.</p>
+<dd><p>Returns the full text of the document, as extracted from the original PDF by DocumentCloud. Results may vary, but this will give you what they got. Currently, DocumentCloud only makes this available for public documents.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;71072-oir-final-report&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">full_text</span>
 <span class="go">&quot;Review of the Los Angeles County Sheriff&#39;s\nDepartment&#39;s Investigation into the\nHomicide of Ruben Salazar\nA Special Report by the\nLos Angeles County Office of Independent Review\n ...</span>
@@ -236,7 +236,7 @@
 <dl class="attribute">
 <dt id="document_obj.large_image">
 <tt class="descclassname">document_obj.</tt><tt class="descname">large_image</tt><a class="headerlink" href="#document_obj.large_image" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the binary data for the &#8220;large&#8221; sized image of the document&#8217;s first page. If you would like the data for some other page, pass the page number into <tt class="docutils literal"><span class="pre">document_obj.get_large_image(page)</span></tt>.</p>
+<dd><p>Returns the binary data for the &#8220;large&#8221; sized image of the document&#8217;s first page. If you would like the data for some other page, pass the page number into <tt class="docutils literal"><span class="pre">document_obj.get_large_image(page)</span></tt>. Currently, DocumentCloud only makes this available for public documents.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -266,7 +266,7 @@
 <dl class="attribute">
 <dt id="document_obj.normal_image">
 <tt class="descclassname">document_obj.</tt><tt class="descname">normal_image</tt><a class="headerlink" href="#document_obj.normal_image" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the binary data for the &#8220;normal&#8221; sized image of the document&#8217;s first page. If you would like the data for some other page, pass the page number into <tt class="docutils literal"><span class="pre">document_obj.get_normal_image(page)</span></tt>.</p>
+<dd><p>Returns the binary data for the &#8220;normal&#8221; sized image of the document&#8217;s first page. If you would like the data for some other page, pass the page number into <tt class="docutils literal"><span class="pre">document_obj.get_normal_image(page)</span></tt>. Currently, DocumentCloud only makes this available for public documents.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -290,7 +290,7 @@
 <dl class="attribute">
 <dt id="document_obj.pdf">
 <tt class="descclassname">document_obj.</tt><tt class="descname">pdf</tt><a class="headerlink" href="#document_obj.pdf" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the binary data for document&#8217;s original PDF file.</p>
+<dd><p>Returns the binary data for document&#8217;s original PDF file. Currently, DocumentCloud only makes this available for public documents.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -325,7 +325,7 @@
 <dl class="attribute">
 <dt id="document_obj.small_image">
 <tt class="descclassname">document_obj.</tt><tt class="descname">small_image</tt><a class="headerlink" href="#document_obj.small_image" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the binary data for the &#8220;small&#8221; sized image of the document&#8217;s first page. If you would like the data for some other page, pass the page number into <tt class="docutils literal"><span class="pre">document_obj.get_small_image(page)</span></tt>.</p>
+<dd><p>Returns the binary data for the &#8220;small&#8221; sized image of the document&#8217;s first page. If you would like the data for some other page, pass the page number into <tt class="docutils literal"><span class="pre">document_obj.get_small_image(page)</span></tt>. Currently, DocumentCloud only makes this available for public documents.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -349,7 +349,7 @@
 <dl class="attribute">
 <dt id="document_obj.thumbnail_image">
 <tt class="descclassname">document_obj.</tt><tt class="descname">thumbnail_image</tt><a class="headerlink" href="#document_obj.thumbnail_image" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the binary data for the &#8220;thumbnail&#8221; sized image of the document&#8217;s first page. If you would like the data for some other page, pass the page number into <tt class="docutils literal"><span class="pre">document_obj.get_thumbnail_image(page)</span></tt>.</p>
+<dd><p>Returns the binary data for the &#8220;thumbnail&#8221; sized image of the document&#8217;s first page. If you would like the data for some other page, pass the page number into <tt class="docutils literal"><span class="pre">document_obj.get_thumbnail_image(page)</span></tt>. Currently, DocumentCloud only makes this available for public documents.</p>
 </dd></dl>
 
 <dl class="attribute">

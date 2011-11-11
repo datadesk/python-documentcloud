@@ -147,7 +147,7 @@ Metadata
 
 .. attribute:: document_obj.full_text
 
-    Returns the full text of the document, as extracted from the original PDF by DocumentCloud. Results may vary, but this will give you what they got.
+    Returns the full text of the document, as extracted from the original PDF by DocumentCloud. Results may vary, but this will give you what they got. Currently, DocumentCloud only makes this available for public documents.
 
         >>> obj = client.documents.get('71072-oir-final-report')
         >>> obj.full_text
@@ -163,7 +163,7 @@ Metadata
 
 .. attribute:: document_obj.large_image
 
-    Returns the binary data for the "large" sized image of the document's first page. If you would like the data for some other page, pass the page number into ``document_obj.get_large_image(page)``.
+    Returns the binary data for the "large" sized image of the document's first page. If you would like the data for some other page, pass the page number into ``document_obj.get_large_image(page)``. Currently, DocumentCloud only makes this available for public documents.
 
 .. attribute:: document_obj.large_image_url
 
@@ -184,7 +184,7 @@ Metadata
 
 .. attribute:: document_obj.normal_image
 
-    Returns the binary data for the "normal" sized image of the document's first page. If you would like the data for some other page, pass the page number into ``document_obj.get_normal_image(page)``.
+    Returns the binary data for the "normal" sized image of the document's first page. If you would like the data for some other page, pass the page number into ``document_obj.get_normal_image(page)``. Currently, DocumentCloud only makes this available for public documents.
 
 .. attribute:: document_obj.normal_image_url
 
@@ -200,7 +200,7 @@ Metadata
 
 .. attribute:: document_obj.pdf
 
-    Returns the binary data for document's original PDF file.
+    Returns the binary data for document's original PDF file. Currently, DocumentCloud only makes this available for public documents.
 
 .. attribute:: document_obj.pdf_url
 
@@ -224,7 +224,7 @@ Metadata
 
 .. attribute:: document_obj.small_image
 
-    Returns the binary data for the "small" sized image of the document's first page. If you would like the data for some other page, pass the page number into ``document_obj.get_small_image(page)``.
+    Returns the binary data for the "small" sized image of the document's first page. If you would like the data for some other page, pass the page number into ``document_obj.get_small_image(page)``. Currently, DocumentCloud only makes this available for public documents.
 
 .. attribute:: document_obj.small_image_url
 
@@ -240,7 +240,7 @@ Metadata
 
 .. attribute:: document_obj.thumbnail_image
 
-    Returns the binary data for the "thumbnail" sized image of the document's first page. If you would like the data for some other page, pass the page number into ``document_obj.get_thumbnail_image(page)``.
+    Returns the binary data for the "thumbnail" sized image of the document's first page. If you would like the data for some other page, pass the page number into ``document_obj.get_thumbnail_image(page)``. Currently, DocumentCloud only makes this available for public documents.
 
 .. attribute:: document_obj.thumbnail_image_url
 
