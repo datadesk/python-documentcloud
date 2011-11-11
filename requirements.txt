@@ -1,5 +1,7 @@
-Jinja2==2.5.5
+Jinja2==2.6
 Pygments==1.4
-Sphinx==1.0.7
-docutils==0.7
+Sphinx==1.1.2
+distribute==0.6.19
+docutils==0.8.1
+python-dateutil==1.5
 wsgiref==0.1.2
