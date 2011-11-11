@@ -116,6 +116,9 @@ Here's how to upload a directory full of documents and add them all to a new pro
     >>> # Save the changes to the project
     >>> project.put()
 
+.. raw:: html
+
+   <hr>
 
 Securely uploading a document
 -----------------------------
