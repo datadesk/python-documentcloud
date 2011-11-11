@@ -266,7 +266,8 @@ class DocumentClient(BaseDocumentCloudClient):
         # Loop through the path and get all the files
         path_list = []
         for (dirpath, dirname, filenames) in os.walk(path):
-            path_list.extend([os.path.join(dirpath, i) for i in filenames if i.endswith(".pdf")])
+            path_list.extend([os.path.join(dirpath, i) for i in filenames
+                if i.lower().endswith(".pdf")])
         # Upload all the pdfs
         obj_list = []
         for pdf_path in path_list:
