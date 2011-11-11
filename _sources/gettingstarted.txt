@@ -102,7 +102,7 @@ And you don't have to provide a path, you can also upload a file object. ::
 Uploading a directory of documents as a project
 -----------------------------------------------
 
-Here's how to upload a directory full of documents and add them all to a new project. ::
+Here's how to upload a directory full of documents and add them all to a new project. Be warned, this will upload any documents in directories inside the path you specify. ::
 
     >>> # Connect to documentcloud
     >>> from documentcloud import DocumentCloud

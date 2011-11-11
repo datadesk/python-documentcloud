@@ -84,7 +84,7 @@ Uploading
 
 .. function:: client.documents.upload_directory(pdf, source=None, description=None, related_article=None, published_url=None, access='private', project=None, data=None, secure=False)
 
-   Searches through the provided path and attempts to upload all the PDFs it can find. Metadata provided to the other keyword arguments will be recorded for all uploads. Returns a list of document objects that are created.
+   Searches through the provided path and attempts to upload all the PDFs it can find. Metadata provided to the other keyword arguments will be recorded for all uploads. Returns a list of document objects that are created. Be warned, this will upload any documents in directories inside the path you specify.
 
         >>> from documentcloud import DocumentCloud
         >>> client = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
