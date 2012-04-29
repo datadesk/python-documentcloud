@@ -71,18 +71,15 @@ class MultipartPostHandler(urllib2.BaseHandler):
             except TypeError:
                 systype, value, traceback = sys.exc_info()
                 raise TypeError, "not a valid non-string sequence or mapping object", traceback
-
             if len(v_files) == 0:
                 data = urllib.urlencode(v_vars, doseq)
             else:
                 boundary, data = self.multipart_encode(v_vars, v_files)
-
                 contenttype = 'multipart/form-data; boundary=%s' % boundary
                 if(request.has_header('Content-Type')
                    and request.get_header('Content-Type').find('multipart/form-data') != 0):
                     print "Replacing %s with %s" % (request.get_header('content-type'), 'multipart/form-data')
                 request.add_unredirected_header('Content-Type', contenttype)
-
             request.add_data(data)
         
         return request
@@ -115,8 +112,8 @@ class MultipartPostHandler(urllib2.BaseHandler):
         buf = buf.getvalue()
         return boundary, buf
     multipart_encode = Callable(multipart_encode)
-
     https_request = http_request
+
 
 def getsize(o_file):
     """
@@ -130,12 +127,13 @@ def getsize(o_file):
     o_file.seek(startpos)
     return size
 
+
 def main():
     import tempfile, sys
 
     validatorURL = "http://validator.w3.org/check"
     opener = urllib2.build_opener(MultipartPostHandler)
-
+    
     def validateFile(url):
         temp = tempfile.mkstemp(suffix=".html")
         os.write(temp[0], opener.open(url).read())

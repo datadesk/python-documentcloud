@@ -38,6 +38,7 @@ class BaseDocumentCloudClient(object):
         self.username = username
         self.password = password
     
+    @retry(Exception, tries=4)
     def _make_request(self, url, params=None, opener=None):
         """
         Configure a HTTP request, fire it off and return the response.

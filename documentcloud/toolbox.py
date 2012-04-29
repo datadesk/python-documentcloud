@@ -69,6 +69,7 @@ def retry(ExceptionToCheck, tries=4, delay=3, backoff=2):
                     try_one_last_time = False
                     break
                 except ExceptionToCheck, e:
+                    print "Retrying in %s seconds" % str(mdelay)
                     time.sleep(mdelay)
                     mtries -= 1
                     mdelay *= backoff
