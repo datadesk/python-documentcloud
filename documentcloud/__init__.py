@@ -567,8 +567,22 @@ class Document(BaseAPIObject):
         """
         Update the data attribute, making sure it's a dictionary.
         """
+        # Make sure a dict got passed it
         if type(data) != type({}):
             raise TypeError("This attribute must be a dictionary.")
+        # Disallow namespaces blocked by DocumentCloud
+        # See: https://github.com/documentcloud/documentcloud/blob/master/config/initializers/entity_map.rb#L22
+        # And: https://github.com/datadesk/python-documentcloud/issues/81
+        black_list = [
+            'person', 'organization', 'place', 'term', 'email', 'phone',
+            'city', 'state', 'country', 'title', 'description', 'source',
+            'account', 'group', 'project', 'projectid', 'document', 'access',
+            'filter',
+        ]
+        for key in data.keys():
+            if key in black_list:
+                raise ValueError("The key %s is reserved by DocumentCloud. You can't use it in 'data'" % key)
+        # Set the attribute
         self.__dict__['data'] = data
     
     def get_data(self):

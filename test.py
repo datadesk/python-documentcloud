@@ -262,6 +262,24 @@ class DocumentSearchTest(BaseTest):
         self.assertEqual(obj.resources.related_article, related_article)
         self.assertEqual(obj.resources.published_url, published_url)
     
+    def test_reserved_data_namespace(self):
+        """
+        Make sure the wrapper doesn't let you try to save
+        reserved data namespaces.
+        """
+        # Pull the object we'll deface
+        obj = self.private_client.documents.get("15144-mitchrpt")
+        black_list = [
+            'person', 'organization', 'place', 'term', 'email', 'phone',
+            'city', 'state', 'country', 'title', 'description', 'source',
+            'account', 'group', 'project', 'projectid', 'document', 'access',
+            'filter',
+        ]
+        with self.assertRaises(ValueError):
+            for key in black_list:
+                obj.data = {key: 'foo'}
+        obj.data = dict(boom='bap')
+        
     def test_save(self):
         """
         Test whether the save method properly aliases `put`.
