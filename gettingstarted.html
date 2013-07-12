@@ -141,6 +141,22 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="s">&quot;/home/ben/pdfs/myfile.pdf&quot;</span><span class="p">,</span> <span class="n">secure</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </pre></div>
 </div>
+<hr></div>
+<div class="section" id="uploading-a-pdf-from-a-url">
+<h2>Uploading a PDF from a URL<a class="headerlink" href="#uploading-a-pdf-from-a-url" title="Permalink to this headline">¶</a></h2>
+<p>How to read a PDF document from a URL on the World Wide Web and upload it to DocumentCloud without saving it to your local hard drive.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">documentcloud</span> <span class="kn">import</span> <span class="n">DocumentCloud</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">urllib</span><span class="o">,</span> <span class="nn">cStringIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Download the URL with urllib</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">url</span> <span class="o">=</span> <span class="s">&quot;http://myhost.org/interesting-doc.pdf&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Stuff it in a file object with cStringIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">file_obj</span> <span class="o">=</span> <span class="n">cStringIO</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Upload that to DocumentCloud</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">DocumentCloud</span><span class="p">(</span><span class="n">DOCUMENTCLOUD_USERNAME</span><span class="p">,</span> <span class="n">DOCUMENTCLOUD_PASSWORD</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="n">file_obj</span><span class="p">)</span>
+</pre></div>
+</div>
 <hr><p>Move ahead to the sections focused on <a class="reference internal" href="documents.html"><em>documents</em></a>, or <a class="reference internal" href="projects.html"><em>projects</em></a> for greater detail.</p>
 </div>
 </div>
@@ -161,6 +177,7 @@
 <li><a class="reference internal" href="#uploading-a-document">Uploading a document</a></li>
 <li><a class="reference internal" href="#uploading-a-directory-of-documents-as-a-project">Uploading a directory of documents as a project</a></li>
 <li><a class="reference internal" href="#securely-uploading-a-document">Securely uploading a document</a></li>
+<li><a class="reference internal" href="#uploading-a-pdf-from-a-url">Uploading a PDF from a URL</a></li>
 </ul>
 </li>
 </ul>
@@ -195,7 +212,7 @@
         <div class="smalllogo"><a href="http://www.latimes.com"><img src="_static/logo.png" alt="latimes.com"></a></div>
         <div class="credits">
             &copy; Copyright 2011, Los Angeles Times.
-          Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+          Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
         </div>     
     </div>
   </body>
