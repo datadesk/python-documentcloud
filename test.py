@@ -340,6 +340,22 @@ class DocumentSearchTest(BaseTest):
         obj.delete()
         self.assertRaises(DoesNotExistError, self.private_client.documents.get, obj.id)
     
+    def test_upload_with_bad_data_keyword(self):
+        """
+        Test to make sure an error is thrown if someone tries to upload 
+        a document with a reserved keyword in the 'data' attribute.
+        """
+        title = '001 - Test upload (%s)' % get_random_string()
+        with self.assertRaises(ValueError):
+            obj = self.private_client.documents.upload(
+                os.path.join(os.path.dirname(__file__), "test.pdf"),
+                title,
+                description='Blah blah',
+                related_article='http://www.latimes.com',
+                # Access is an reserved keyword
+                data=dict(access='this', boom='bap'),
+            )
+    
     def test_file_obj_upload_and_delete(self):
         """
         Test that uploading works when you provide a file object instead of a 
