@@ -7,6 +7,7 @@ authorization is required to interact with private documents.
 
 Further documentation:
 
+    http://datadesk.github.io/python-documentcloud/
     https://www.documentcloud.org/help/api
 
 """
