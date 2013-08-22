@@ -842,7 +842,7 @@ class Document(BaseAPIObject):
 
 class DocumentSet(list):
     """
-    A custom class for project lists associated with projects.
+    A custom class for document lists associated with projects.
     
     Allows some tweaks, like preventing duplicate documents
     from getting into the list and ensuring that only Document
