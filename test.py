@@ -21,7 +21,6 @@ from documentcloud import DocumentCloud
 from documentcloud import CredentialsMissingError, DuplicateObjectError
 from documentcloud import CredentialsFailedError, DoesNotExistError
 from documentcloud import Annotation, Document, Project, Section, Entity, Mention
-from private_settings import DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD
 
 #
 # Odds and ends
@@ -62,7 +61,10 @@ class BaseTest(unittest.TestCase):
         self.test_search = 'Calpers special review'
         self.test_id = '74103-report-of-the-calpers-special-review'
         self.public_client = DocumentCloud()
-        self.private_client = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
+        self.private_client = DocumentCloud(
+            os.environ['DOCUMENTCLOUD_TEST_USERNAME'], 
+            os.environ['DOCUMENTCLOUD_TEST_PASSWORD']
+        )
         self.fake_client = DocumentCloud("John Doe", "TK")
 
 

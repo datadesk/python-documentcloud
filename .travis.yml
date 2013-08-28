@@ -1,0 +1,14 @@
+language: python
+python:
+- '2.5'
+- '2.6'
+- '2.7'
+install:
+- pip install -r requirements.txt --use-mirrors
+script: python test.py
+env:
+  global:
+    # Encrypted DOCUMENTCLOUD_TEST_USERNAME
+    secure: "bbuMeSp6YIdDGn4UOdu0j44a+90WMpwPgrzDXt6uOyvH59Tidxndhpg5ykMqYW6J6TDw5tO1U1QXFudr+5bN2lS0rTOjnRumjLyz+QycRBRE1356WI2kNGARjtPeAlA5YTqThIWgDQQUSKqN/36wmhiWyfCC0or//BHUrrrobLI="
+    # Encrypted DOCUMENTCLOUD_TEST_PASSWORD
+    secure: "ZoGrJ9lPyDPDRwMcL5Wx+t+BNPnwpuRy2d4c6z/lTYhdyGwHycoQJCMcvgMkKm/VQP76iLR2efuwV4GUGPRD4YkIBqEgYrLtEvxHUAoLQoo3+uylPrmfZDQtLTmXN5ZKR+dSGFLs9mMQhU0zARpdgSIMFlz2xgFKMpjvzN3lHmc="
