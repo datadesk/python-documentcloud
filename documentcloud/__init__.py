@@ -501,11 +501,11 @@ class Document(BaseAPIObject):
         Returns nothing.
         """
         params = dict(
-            title=self.title,
-            source=self.source,
-            description=self.description,
-            related_article=self.resources.related_article,
-            published_url=self.resources.published_url,
+            title=self.title or '',
+            source=self.source or '',
+            description=self.description or '',
+            related_article=self.resources.related_article or '',
+            published_url=self.resources.published_url or '',
             access=self.access,
             data=self.data,
         )
@@ -932,8 +932,8 @@ class Project(BaseAPIObject):
         Returns nothing.
         """
         params = dict(
-            title=self.title,
-            description=self.description,
+            title=self.title or '',
+            description=self.description or '',
             document_ids=[str(i.id) for i in self.document_list]
         )
         self._connection.put('projects/%s.json' % self.id, params)
