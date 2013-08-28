@@ -10,7 +10,7 @@ this test suite will only work on my computer, which seems like a problem.
 
 If you know how I ought to sort this sort of thing out, please let me know.
 """
-from future import with_statement
+from __future__ import with_statement
 import os
 import random
 import string
