@@ -26,7 +26,7 @@ def get_random_string(length=6):
     """
     Generate a random string of letters and numbers
     """
-    return ''.join(random.choice(string.letters + string.digits) for i in xrange(length))
+    return unicode(''.join(random.choice(string.letters + string.digits) for i in xrange(length)))
 
 PANGRAMS = {
     'en': 'The quick brown fox jumps over the lazy dog.',
