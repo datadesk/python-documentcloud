@@ -9,6 +9,6 @@ script: python test.py
 env:
   global:
     # Encrypted DOCUMENTCLOUD_TEST_USERNAME
-    secure: "bbuMeSp6YIdDGn4UOdu0j44a+90WMpwPgrzDXt6uOyvH59Tidxndhpg5ykMqYW6J6TDw5tO1U1QXFudr+5bN2lS0rTOjnRumjLyz+QycRBRE1356WI2kNGARjtPeAlA5YTqThIWgDQQUSKqN/36wmhiWyfCC0or//BHUrrrobLI="
+    secure: "mt7PbdPrHREewNkZE+hV/HILK+67IYVl2F/SZi57VZYx7zBX2+jwZbAAbiWwGrOG9zqgqGiovH+Bx1NAPDm6V0vdlEaXzxhqpKxd4KKWCocL5tZP+6mXbN36Cifm04TIvFUBG0auCR2OMoewxgaY0a/vr6+KYYj37uAlUPhfBcA="
     # Encrypted DOCUMENTCLOUD_TEST_PASSWORD
     secure: "ZoGrJ9lPyDPDRwMcL5Wx+t+BNPnwpuRy2d4c6z/lTYhdyGwHycoQJCMcvgMkKm/VQP76iLR2efuwV4GUGPRD4YkIBqEgYrLtEvxHUAoLQoo3+uylPrmfZDQtLTmXN5ZKR+dSGFLs9mMQhU0zARpdgSIMFlz2xgFKMpjvzN3lHmc="
