@@ -6,7 +6,7 @@
 
 A simple python wrapper for the DocumentCloud API.
 
-!https://travis-ci.org/datadesk/python-documentcloud.png!:https://travis-ci.org/datadesk/python-documentcloud
+[![Build Status](https://travis-ci.org/datadesk/python-documentcloud.png?branch=master)](https://travis-ci.org/datadesk/python-documentcloud)
 
 Features
 --------
