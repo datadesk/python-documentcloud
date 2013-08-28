@@ -230,18 +230,18 @@ class DocumentSearchTest(BaseTest):
         # Pull the object we'll deface
         obj = self.private_client.documents.get("15144-mitchrpt")
         # Create random strings we will save to the editable attributes
-        title = 'The Mitchell Report (%s)' % get_random_string()
-        source = 'DLA Piper (%s)' % get_random_string()
+        title = u'The Mitchell Report (%s)' % get_random_string()
+        source = u'DLA Piper (%s)' % get_random_string()
         description = get_random_string()
         data = {get_random_string(): get_random_string()}
-        if obj.resources.related_article == 'http://documents.latimes.com':
-            related_article = 'http://documentcloud.org'
+        if obj.resources.related_article == u'http://documents.latimes.com':
+            related_article = u'http://documentcloud.org'
         else:
-            related_article = 'http://documents.latimes.com'
-        if obj.resources.published_url == 'http://documents.latimes.com':
-            published_url = 'http://documentcloud.org'
+            related_article = u'http://documents.latimes.com'
+        if obj.resources.published_url == u'http://documents.latimes.com':
+            published_url = u'http://documentcloud.org'
         else:
-            published_url = 'http://documents.latimes.com'
+            published_url = u'http://documents.latimes.com'
         # Set the random strings our local object's attributes
         obj.title = title
         obj.source = source
@@ -496,8 +496,8 @@ class ProjectTest(BaseTest):
         # Pull the object we'll deface
         obj = self.private_client.projects.get("703")
         # Create random strings we will save to the editable attributes
-        title = 'The Klee Report (%s)' % get_random_string()
-        description = textwrap.dedent("""
+        title = u'The Klee Report (%s)' % get_random_string()
+        description = textwrap.dedent(u"""
         An independent probe into Sam Zell\'s purchase of Tribune Company by 
         investigator Kenneth Klee. Released at the end of July 2010. (%s)
         """)
