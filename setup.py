@@ -76,7 +76,7 @@ if len(sys.argv) > 1 and sys.argv[1] == 'bdist_wininst':
 
 setup(
       name='python-documentcloud',
-      version='0.1.6',
+      version='0.1.61',
       description='A simple python wrapper for the DocumentCloud API.',
       author='Ben Welsh',
       author_email='ben.welsh@gmail.com',
