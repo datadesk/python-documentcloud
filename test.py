@@ -278,9 +278,8 @@ class DocumentSearchTest(BaseTest):
             'account', 'group', 'project', 'projectid', 'document', 'access',
             'filter',
         ]
-        with self.assertRaises(ValueError):
-            for key in black_list:
-                obj.data = {key: 'foo'}
+        for key in black_list:
+            self.assertRaises(ValueError, setattr, obj, "data", {key: 'foo'})
         obj.data = dict(boom='bap')
         
     def test_save(self):
@@ -349,15 +348,14 @@ class DocumentSearchTest(BaseTest):
         a document with a reserved keyword in the 'data' attribute.
         """
         title = '001 - Test upload (%s)' % get_random_string()
-        with self.assertRaises(ValueError):
-            obj = self.private_client.documents.upload(
-                os.path.join(os.path.dirname(__file__), "test.pdf"),
-                title,
-                description='Blah blah',
-                related_article='http://www.latimes.com',
-                # Access is an reserved keyword
-                data=dict(access='this', boom='bap'),
-            )
+        self.assertRaises(ValueError, self.private_client.documents.upload,
+            os.path.join(os.path.dirname(__file__), "test.pdf"),
+            title,
+            description='Blah blah',
+            related_article='http://www.latimes.com',
+            # Access is an reserved keyword
+            data=dict(access='this', boom='bap'),
+        )
     
     def test_file_obj_upload_and_delete(self):
         """
