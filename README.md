@@ -6,7 +6,10 @@
 
 A simple python wrapper for the DocumentCloud API.
 
-h2. Features
+!https://travis-ci.org/datadesk/python-documentcloud.png!:https://travis-ci.org/datadesk/python-documentcloud
+
+Features
+--------
 
 * Retrieve and edit documents and projects, both public and private, from documentcloud.org
 * Upload PDFs into your documentcloud.org account and organize them into projects
@@ -14,8 +17,10 @@ h2. Features
 
 h2. Getting started
 
-Documentation is available at "http://datadesk.github.com/python-documentcloud/":http://datadesk.github.com/python-documentcloud/
+Documentation is available at [http://datadesk.github.com/python-documentcloud/](http://datadesk.github.com/python-documentcloud/)
 
 Getting started is as easy as...
 
-<pre><code>$ pip install python-documentcloud</code></pre>
+```bash
+$ pip install python-documentcloud
+```
