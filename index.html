@@ -8,13 +8,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Features &mdash; python-documentcloud 0.15 documentation</title>
+    <title>Features &mdash; python-documentcloud 0.162 documentation</title>
     <link rel="stylesheet" href="_static/latimes.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.15',
+        VERSION:     '0.162',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="python-documentcloud 0.15 documentation" href="#" /> 
+    <link rel="top" title="python-documentcloud 0.162 documentation" href="#" /> 
   </head>
   <body>              
 <a href="http://www.github.com/datadesk/python-documentcloud/">
@@ -31,7 +31,7 @@
 </a>
 <div class="banner">
     <h1><a href="#"><img src="_static/banner.png"></a></h1>
-    <h2>Version 0.15 :: <a href="http://github.com/datadesk">http://github.com/datadesk</a></h2>
+    <h2>Version 0.162 :: <a href="http://github.com/datadesk">http://github.com/datadesk</a></h2>
 </div>
 <div class="banner-underline"></div> 
   
@@ -794,15 +794,27 @@
 <div class="section" id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id9">
-<h2>0.15<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
+<h2>0.16<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Continuous integration testing with TravisCI</li>
+<li>Fixed bug with empty strings in Document descriptions</li>
+<li>Raise errors when a user tries to save a data keyword reserved by DocumentCloud</li>
+<li>Allow all-caps file extensions</li>
+<li>Retry requests that fail with an increasing backoff delay</li>
+<li>Fixed a bug in how titles are assigned to a file object</li>
+<li>Added access checks when retrieving txt, pdf, img about a document</li>
+</ul>
+</div>
+<div class="section" id="id10">
+<h2>0.15<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>File objects can now be submitted for uploading</li>
 <li>Added more support for unicode data thanks to contributions by <a class="reference external" href="https://twitter.com/#!/shaneshifflett">Shane Shifflet</a>.</li>
 <li>Smarter lazy loading of Document attributes missing from a search</li>
 </ul>
 </div>
-<div class="section" id="id10">
-<h2>0.14<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id11">
+<h2>0.14<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>Added <tt class="docutils literal"><span class="pre">data</span></tt> attribute on Document for storing dictionaries of arbitrary metadata</li>
 <li>Added <tt class="docutils literal"><span class="pre">secure</span></tt> option for Document uploads to prevent data from being sent to OpenCalais</li>
@@ -811,22 +823,22 @@
 <li>Added all Document upload arguments to <tt class="docutils literal"><span class="pre">upload_directory</span></tt> method</li>
 </ul>
 </div>
-<div class="section" id="id11">
-<h2>0.13<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id12">
+<h2>0.13<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">upload_directory</span></tt> method for documents</li>
 </ul>
 </div>
-<div class="section" id="id12">
-<h2>0.12<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id13">
+<h2>0.12<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">get_or_create_by_title</span></tt> method for projects</li>
 <li>Document and project creation methods now return an object, not the new id.</li>
 <li>Projects can pulled by id or by title</li>
 </ul>
 </div>
-<div class="section" id="id13">
-<h2>0.11<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id14">
+<h2>0.11<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>Document search now returns <tt class="docutils literal"><span class="pre">mentions</span></tt> of the keyword in the documents</li>
 <li><tt class="docutils literal"><span class="pre">related_url</span></tt> and <tt class="docutils literal"><span class="pre">published_url</span></tt> attributes now more easily accessible</li>
@@ -840,7 +852,7 @@
 <ul class="simple">
 <li><a class="reference external" href="https://www.documentcloud.org/about">The DocumentCloud team</a> and particularly <a class="reference external" href="https://github.com/jashkenas">Jeremy Ashkenas</a>.</li>
 <li><a class="reference external" href="https://github.com/eyeseast">Chris Amico</a>, <a class="reference external" href="https://github.com/onyxfish/">Christopher Groskopf</a> and <a class="reference external" href="http://www.muckrock.com/blog/using-the-documentcloud-api/">Mitchell Kotler</a>, who broke ground with great code that I&#8217;ve shamelessly lifted and adapted for this module.</li>
-<li>Fixes from friendly people like <a class="reference external" href="https://github.com/JoeGermuska">Joe Germuska</a>.</li>
+<li>Fixes from friendly people like <a class="reference external" href="https://github.com/JoeGermuska">Joe Germuska</a> and <cite>Shane Shifflet &lt;https://twitter.com/#!/shaneshifflett&gt;</cite>.</li>
 </ul>
 </div>
 
@@ -887,11 +899,12 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#changelog">Changelog</a><ul>
-<li><a class="reference internal" href="#id9">0.15</a></li>
-<li><a class="reference internal" href="#id10">0.14</a></li>
-<li><a class="reference internal" href="#id11">0.13</a></li>
-<li><a class="reference internal" href="#id12">0.12</a></li>
-<li><a class="reference internal" href="#id13">0.11</a></li>
+<li><a class="reference internal" href="#id9">0.16</a></li>
+<li><a class="reference internal" href="#id10">0.15</a></li>
+<li><a class="reference internal" href="#id11">0.14</a></li>
+<li><a class="reference internal" href="#id12">0.13</a></li>
+<li><a class="reference internal" href="#id13">0.12</a></li>
+<li><a class="reference internal" href="#id14">0.11</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#credits">Credits</a></li>

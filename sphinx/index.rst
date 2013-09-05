@@ -696,6 +696,17 @@ Sections of the :doc:`documents </documents>` earmarked by users.
 Changelog
 =========
 
+0.16
+----
+
+- Continuous integration testing with TravisCI
+- Fixed bug with empty strings in Document descriptions
+- Raise errors when a user tries to save a data keyword reserved by DocumentCloud
+- Allow all-caps file extensions
+- Retry requests that fail with an increasing backoff delay
+- Fixed a bug in how titles are assigned to a file object
+- Added access checks when retrieving txt, pdf, img about a document
+
 0.15
 ----
 
@@ -742,4 +753,4 @@ This project would not be possible without the generous work of people like:
 
 * `The DocumentCloud team <https://www.documentcloud.org/about>`_ and particularly `Jeremy Ashkenas <https://github.com/jashkenas>`_.
 * `Chris Amico <https://github.com/eyeseast>`_, `Christopher Groskopf <https://github.com/onyxfish/>`_ and `Mitchell Kotler <http://www.muckrock.com/blog/using-the-documentcloud-api/>`_, who broke ground with great code that I've shamelessly lifted and adapted for this module.
-* Fixes from friendly people like `Joe Germuska <https://github.com/JoeGermuska>`_.
+* Fixes from friendly people like `Joe Germuska <https://github.com/JoeGermuska>`_ and `Shane Shifflet <https://twitter.com/#!/shaneshifflett>`.
