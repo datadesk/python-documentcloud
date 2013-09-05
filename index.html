@@ -310,6 +310,7 @@
 <dt id="document_obj.data">
 <tt class="descclassname">document_obj.</tt><tt class="descname">data</tt><a class="headerlink" href="#document_obj.data" title="Permalink to this definition">¶</a></dt>
 <dd><p>A dictionary containing supplementary data linked to the document. This can any old thing. It&#8217;s useful if you&#8217;d like to store additional metadata. Can be edited and saved with a put command.</p>
+<p>Some keywords are reserved by DocumentCloud and you&#8217;ll get an error if you try to submit them here. They are: person, organization, place, term, email, phone, city, state, country, title, description, source, account, group, project, projectid, document, access, filter.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;83251-fbi-file-on-christopher-biggie-smalls-wallace&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">data</span>
 <span class="go">{&#39;category&#39;: &#39;hip-hop&#39;, &#39;byline&#39;: &#39;Ben Welsh&#39;, &#39;pub_date&#39;: datetime.date(2011, 3, 1)}</span>
