@@ -18,7 +18,7 @@ Features
 Getting started
 ---------------
 
-Documentation is available at [http://datadesk.github.com/python-documentcloud/](http://datadesk.github.com/python-documentcloud/)
+Documentation is available at [http://datadesk.github.io/python-documentcloud/](http://datadesk.github.io/python-documentcloud/)
 
 Getting started is as easy as...
 
