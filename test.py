@@ -308,7 +308,7 @@ class DocumentTest(BaseTest):
         reserved data namespaces.
         """
         # Pull the object we'll deface
-        obj = self.private_client.documents.get((self.editable_document)
+        obj = self.private_client.documents.get(self.editable_document)
         black_list = [
             'person', 'organization', 'place', 'term', 'email', 'phone',
             'city', 'state', 'country', 'title', 'description', 'source',
