@@ -34,11 +34,11 @@ class BaseDocumentCloudClient(object):
     Patterns common to all of the different API methods.
     """
     BASE_URI = 'https://www.documentcloud.org/api/'
-    
+
     def __init__(self, username, password):
         self.username = username
         self.password = password
-    
+
     @retry(Exception, tries=4)
     def _make_request(self, url, params=None, opener=None):
         """
@@ -72,7 +72,7 @@ class BaseDocumentCloudClient(object):
                 raise e
         # Read the response and return it
         return response.read()
-    
+
     @credentials_required
     def put(self, method, params):
         """
@@ -108,7 +108,7 @@ class BaseDocumentCloudClient(object):
             self.BASE_URI + method,
             params,
         )
-    
+
     def fetch(self, method, params=None):
         """
         Fetch an url.
@@ -128,7 +128,6 @@ class DocumentCloud(BaseDocumentCloudClient):
     """
     The public interface for the DocumentCloud API
     """
-    
     def __init__(self, username=None, password=None):
         super(DocumentCloud, self).__init__(username, password)
         self.documents = DocumentClient(self.username, self.password, self)
@@ -146,7 +145,7 @@ class DocumentClient(BaseDocumentCloudClient):
         # this client creates in case the instance needs to hit the API
         # later. Storing it will preserve the credentials.
         self._connection = connection
-    
+
     def _get_search_page(self, query, page, per_page):
         """
         Retrieve one page of search results from the DocumentCloud API.
@@ -159,15 +158,15 @@ class DocumentClient(BaseDocumentCloudClient):
         }
         data = self.fetch('search.json', params)
         return data.get("documents")
-    
+
     def search(self, query):
         """
         Retrieve all objects that make a search query.
-        
+
         Example usage:
-        
+
             >> documentcloud.documents.search('salazar')
-        
+
         Based on code by Chris Amico
         """
         page = 1
@@ -186,40 +185,39 @@ class DocumentClient(BaseDocumentCloudClient):
             obj = Document(doc)
             obj_list.append(obj)
         return obj_list
-    
+
     def get(self, id):
         """
         Retrieve a particular document using it's unique identifier.
-        
+
         Example usage:
-        
+
             >> documentcloud.documents.get('71072-oir-final-report')
-        
         """
         data = self.fetch('documents/%s.json' % id).get("document")
         data['_connection'] = self._connection
         return Document(data)
-    
+
     @credentials_required
     def upload(self, pdf, title=None, source=None, description=None,
         related_article=None, published_url=None, access='private',
         project=None, data=None, secure=False):
         """
         Upload a PDF or other image file to DocumentCloud.
-        
+
         You can submit either a pdf opened as a file object or a path to a pdf file.
-        
+
         Example usage:
-        
+
             # From a file path
             >> documentcloud.documents.upload("/home/ben/sample.pdf", "sample title")
-        
+
             # From a file object
             >> pdf = open(path, 'rb')
             >> documentcloud.documents.upload(pdf, "sample title")
 
         Returns the document that's created as a Document object.
-        
+
         Based on code developed by Mitchell Kotler and refined by Christopher Groskopf.
         """
         # Required parameters
@@ -250,20 +248,20 @@ class DocumentClient(BaseDocumentCloudClient):
         # Make the request
         response = self._make_request(self.BASE_URI + 'upload.json', params, MultipartPostHandler)
         return self.get(json.loads(response)['id'])
-    
+
     @credentials_required
     def upload_directory(self, path, source=None, description=None,
         related_article=None, published_url=None, access='private',
         project=None, data=None, secure=False):
         """
         Uploads all the PDFs in the provided directory.
-        
+
         Example usage:
-        
+
             >> documentcloud.documents.upload_directory("/home/ben/pdfs/")
-        
+
         Returns a list of the documents created during the upload.
-        
+
         Based on code developed by Mitchell Kotler and refined by Christopher Groskopf.
         """
         # Loop through the path and get all the files
@@ -280,7 +278,7 @@ class DocumentClient(BaseDocumentCloudClient):
             obj_list.append(obj)
         # Pass back the list of documents
         return obj_list
-    
+
     @credentials_required
     def delete(self, id):
         """
@@ -303,16 +301,15 @@ class ProjectClient(BaseDocumentCloudClient):
         # this client creates in case the instance needs to hit the API
         # later. Storing it will preserve the credentials.
         self._connection = connection
-    
+
     @credentials_required
     def all(self):
         """
         Retrieve all your projects. Requires authentication.
-        
+
         Example usage:
-        
+
             >> documentcloud.projects.all()
-        
         """
         project_list = self.fetch('projects.json').get("projects")
         obj_list = []
@@ -321,17 +318,16 @@ class ProjectClient(BaseDocumentCloudClient):
             proj = Project(proj)
             obj_list.append(proj)
         return obj_list
-    
+
     def get(self, id=None, title=None):
         """
         Retrieve a particular project using its unique identifier or it's title.
-        
+
         But not both.
-        
+
         Example usage:
-        
+
             >> documentcloud.projects.get('arizona-shootings')
-        
         """
         # Make sure the kwargs are kosher
         if id and title:
@@ -352,30 +348,30 @@ class ProjectClient(BaseDocumentCloudClient):
         except IndexError:
             # If it's not there, you know to throw this error.
             raise DoesNotExistError("The resource you've requested does not exist or is unavailable without the proper credentials.")
-    
+
     def get_by_id(self, id):
         """
          A reader-friendly shortcut to retrieve projects based on their ID. 
         """
         return self.get(id=id)
-    
+
     def get_by_title(self, title):
         """
         A reader-friendly shortcut to retrieve projects based on their title. 
         """
         return self.get(title=title)
-    
+
     @credentials_required
     def create(self, title, description=None, document_ids=None):
         """
         Creates a new project.
-        
+
         Returns its unique identifer in documentcloud
-        
+
         Example usage:
-        
+
             >> documentcloud.projects.create("The Ruben Salazar Files")
-        
+
         """
         params = {
             'title': title,
@@ -394,12 +390,12 @@ class ProjectClient(BaseDocumentCloudClient):
             raise DuplicateObjectError("The Project title you tried to create already exists")
         # Fetch the actual project object from the API and return that.
         return self.get(new_id)
-    
+
     @credentials_required
     def get_or_create_by_title(self, title):
         """
         Fetch a title, if it exists. Create it if it doesn't.
-        
+
         Returns a tuple with the object first, and then a boolean that indicates
         whether or not the object was created fresh. True means it's brand new.
         """
@@ -410,7 +406,7 @@ class ProjectClient(BaseDocumentCloudClient):
             obj = self.create(title=title)
             created = True
         return obj, created
-    
+
     @credentials_required
     def delete(self, id):
         """
@@ -420,7 +416,6 @@ class ProjectClient(BaseDocumentCloudClient):
             'projects/%s.json' % id,
             {'_method': 'delete'},
         )
-
 
 #
 # API objects
@@ -432,13 +427,13 @@ class BaseAPIObject(object):
     """
     def __init__(self, d):
         self.__dict__ = d
-    
+
     def __repr__(self):
         return '<%s: %s>' % (self.__class__.__name__, self.__str__())
-    
+
     def __str__(self):
         return self.__unicode__().encode("utf-8")
-    
+
     def __unicode__(self):
         return unicode(self.title)
 
@@ -449,16 +444,16 @@ class Annotation(BaseAPIObject):
     """
     def __init__(self, d):
         self.__dict__ = d
-    
+
     def __repr__(self):
         return '<%s>' % self.__class__.__name__
-    
+
     def __str__(self):
         return self.__unicode__().encode("utf-8")
-    
+
     def __unicode__(self):
         return u''
-    
+
     def get_location(self):
         """
         Return the location as a good
@@ -479,15 +474,15 @@ class Document(BaseAPIObject):
         self.mentions = [Mention(i) for i in d.get("mentions", [])] or None
         self.created_at = dateparser(d.get("created_at"))
         self.updated_at = dateparser(d.get("updated_at"))
-    
+
     #
     # Updates and such
     #
-    
+
     def put(self):
         """
         Save changes made to the object to DocumentCloud.
-        
+
         According to DocumentCloud's docs, edits are allowed for the following
         fields:
         
@@ -498,7 +493,7 @@ class Document(BaseAPIObject):
             * access
             * published_url
             * data key/value pairs
-        
+
         Returns nothing.
         """
         params = dict(
@@ -511,7 +506,7 @@ class Document(BaseAPIObject):
             data=self.data,
         )
         self._connection.put('documents/%s.json' % self.id, params)
-    
+
     def save(self):
         """
         An alias to `'put` that post changes back to DocumentCloud
@@ -523,15 +518,15 @@ class Document(BaseAPIObject):
         Deletes this object from documentcloud.org.
         """
         self._connection.documents.delete(self.id)
-    
+
     #
     # Lazy loaded attributes
     #
-    
+
     def _lazy_load(self):
         """
         Fetch metadata if it was overlooked during the object's creation.
-        
+
         This can happen when you retrieve documents via search, because
         the JSON response does not include complete meta data for all 
         results. 
@@ -542,7 +537,7 @@ class Document(BaseAPIObject):
         self.__dict__['data'] = obj.data
         self.__dict__['annotations'] = obj.__dict__['annotations']
         self.__dict__['sections'] = obj.__dict__['sections']
-    
+
     def get_contributor(self):
         """
         Fetch the contributor field if it does not exist.
@@ -553,7 +548,7 @@ class Document(BaseAPIObject):
             self._lazy_load()
             return self.__dict__['contributor']
     contributor = property(get_contributor)
-    
+
     def get_contributor_organization(self):
         """
         Fetch the contributor_organization field if it does not exist.
@@ -564,7 +559,7 @@ class Document(BaseAPIObject):
             self._lazy_load()
             return self.__dict__['contributor_organization']
     contributor_organization = property(get_contributor_organization)
-    
+
     def set_data(self, data):
         """
         Update the data attribute, making sure it's a dictionary.
@@ -577,7 +572,7 @@ class Document(BaseAPIObject):
             is_valid_data_keyword(keyword)
         # Set the attribute
         self.__dict__['data'] = data
-    
+
     def get_data(self):
         """
         Fetch the data field if it does not exist.
@@ -588,7 +583,7 @@ class Document(BaseAPIObject):
             self._lazy_load()
             return self.__dict__['data']
     data = property(get_data, set_data)
-    
+
     def get_annotations(self):
         """
         Fetch the annotations field if it does not exist.
@@ -601,7 +596,7 @@ class Document(BaseAPIObject):
             obj_list = self.__dict__['annotations']
             return [Annotation(i) for i in obj_list]
     annotations = property(get_annotations)
-    
+
     def get_sections(self):
         """
         Fetch the sections field if it does not exist.
@@ -614,7 +609,7 @@ class Document(BaseAPIObject):
             obj_list = self.__dict__['sections']
             return [Section(i) for i in obj_list]
     sections = property(get_sections)
-    
+
     def get_entities(self):
         """
         Fetch the entities extracted from this document by OpenCalais.
@@ -634,11 +629,11 @@ class Document(BaseAPIObject):
             self.__dict__['entities'] = obj_list
             return self.__dict__['entities']
     entities = property(get_entities)
-    
+
     #
     # Text
     #
-    
+
     def _get_url(self, url):
         if self.access == 'public':
             req = urllib2.Request(url)
@@ -652,21 +647,21 @@ class Document(BaseAPIObject):
             raise NotImplementedError(
                 "Currently, DocumentCloud only allows you to access this resource on public documents."
             )
-    
+
     def get_full_text_url(self):
         """
         Returns the URL that contains the full text of the document.
         """
         return self.resources.text
     full_text_url = property(get_full_text_url)
-    
+
     def get_full_text(self):
         """
         Downloads and returns the full text of the document.
         """
         return self._get_url(self.full_text_url)
     full_text = property(get_full_text)
-    
+
     def get_page_text_url(self, page):
         """
         Returns the URL for the full text of a particular page in the document.
@@ -674,32 +669,32 @@ class Document(BaseAPIObject):
         template = self.resources.page.get('text')
         url = template.replace("{page}", str(page))
         return self._get_url(url)
-    
+
     def get_page_text(self, page):
         """
         Downloads and returns the full text of a particular page in the document.
         """
         url = self.get_page_text_url(page)
         return self._get_url(url)
-    
+
     #
     # Images
     #
-    
+
     def get_pdf_url(self):
         """
         Returns the URL that contains the full PDF of the document.
         """
         return self.resources.pdf
     pdf_url = property(get_pdf_url)
-    
+
     def get_pdf(self):
         """
         Downloads and returns the full PDF of the document.
         """
         return self._get_url(self.pdf_url)
     pdf = property(get_pdf)
-    
+
     def get_small_image_url(self, page=1):
         """
         Returns the URL for the small sized image of a single page.
@@ -709,7 +704,7 @@ class Document(BaseAPIObject):
         template = self.resources.page.get('image')
         return template.replace("{page}", str(page)).replace("{size}", "small")
     small_image_url = property(get_small_image_url)
-    
+
     def get_thumbnail_image_url(self, page=1):
         """
         Returns the URL for the thumbnail sized image of a single page.
@@ -719,7 +714,7 @@ class Document(BaseAPIObject):
         template = self.resources.page.get('image')
         return template.replace("{page}", str(page)).replace("{size}", "thumbnail")
     thumbnail_image_url = property(get_thumbnail_image_url)
-    
+
     def get_normal_image_url(self, page=1):
         """
         Returns the URL for the "normal" sized image of a single page.
@@ -739,35 +734,35 @@ class Document(BaseAPIObject):
         template = self.resources.page.get('image')
         return template.replace("{page}", str(page)).replace("{size}", "large")
     large_image_url = property(get_large_image_url)
-    
+
     def get_small_image_url_list(self):
         """
         Returns a list of the URLs for the small sized image of every page.
         """
         return [self.get_small_image_url(i) for i in range(1, self.pages +1)]
     small_image_url_list = property(get_small_image_url_list)
-    
+
     def get_thumbnail_image_url_list(self):
         """
         Returns a list of the URLs for the thumbnail sized image of every page.
         """
         return [self.get_thumbnail_image_url(i) for i in range(1, self.pages +1)]
     thumbnail_image_url_list = property(get_thumbnail_image_url_list)
-    
+
     def get_normal_image_url_list(self):
         """
         Returns a list of the URLs for the normal sized image of every page.
         """
         return [self.get_normal_image_url(i) for i in range(1, self.pages +1)]
     normal_image_url_list = property(get_normal_image_url_list)
-    
+
     def get_large_image_url_list(self):
         """
         Returns a list of the URLs for the large sized image of every page.
         """
         return [self.get_large_image_url(i) for i in range(1, self.pages +1)]
     large_image_url_list = property(get_large_image_url_list)
-    
+
     def get_small_image(self, page=1):
         """
         Downloads and returns the small sized image of a single page.
@@ -777,7 +772,7 @@ class Document(BaseAPIObject):
         url = self.get_small_image_url(page=page)
         return self._get_url(url)
     small_image = property(get_small_image)
-    
+
     def get_thumbnail_image(self, page=1):
         """
         Downloads and returns the thumbnail sized image of a single page.
@@ -787,7 +782,7 @@ class Document(BaseAPIObject):
         url = self.get_thumbnail_image_url(page=page)
         return self._get_url(url)
     thumbnail_image = property(get_thumbnail_image)
-    
+
     def get_normal_image(self, page=1):
         """
         Downloads and returns the normal sized image of a single page.
@@ -797,7 +792,7 @@ class Document(BaseAPIObject):
         url = self.get_normal_image_url(page=page)
         return self._get_url(url)
     normal_image = property(get_normal_image)
-    
+
     def get_large_image(self, page=1):
         """
         Downloads and returns the large sized image of a single page.
@@ -807,25 +802,25 @@ class Document(BaseAPIObject):
         url = self.get_large_image_url(page=page)
         return self._get_url(url)
     large_image = property(get_large_image)
-    
+
     #
     # Etc.
     #
-    
+
     def set_related_article(self, string):
         """
         Updates the related article back in the resources object so your changes
         can be property reflected in any future "puts."
         """
         self.resources.related_article = string
-    
+
     def get_related_article(self):
         """
         Returns a related article, if one has been provided.
         """
         return self.resources.related_article
     related_article = property(get_related_article, set_related_article)
-    
+
     def set_published_url(self, string):
         """
         Updates the published url back in the resources object so your changes
@@ -874,13 +869,13 @@ class Location(object):
     """
     def __repr__(self):
         return '<%s>' % self.__class__.__name__
-    
+
     def __str__(self):
         return self.__unicode__().encode("utf-8")
-    
+
     def __unicode__(self):
         return u''
-    
+
     def __init__(self, top, right, bottom, left):
         self.top = top
         self.right = right
@@ -914,18 +909,18 @@ class Project(BaseAPIObject):
                 raise TypeError
         else:
             object.__setattr__(self, attr, value)
-    
+
     #
     # Updates and such
     #
-    
+
     def put(self):
         """
         Save changes made to the object to documentcloud.org
-        
+
         According to DocumentCloud's docs, edits are allowed for the following
         fields:
-        
+
             * title
             * description
             * document_ids
@@ -938,23 +933,23 @@ class Project(BaseAPIObject):
             document_ids=[str(i.id) for i in self.document_list]
         )
         self._connection.put('projects/%s.json' % self.id, params)
-    
+
     def save(self):
         """
         An alias to `'put` that post changes back to DocumentCloud
         """
         self.put()
-    
+
     def delete(self):
         """
         Deletes this object from documentcloud.org.
         """
         self._connection.projects.delete(self.id)
-    
+
     #
     # Documents
     #
-    
+
     def get_document_list(self):
         """
         Retrieves all documents included in this project.
@@ -966,7 +961,7 @@ class Project(BaseAPIObject):
             self.__dict__['document_list'] = obj_list
             return obj_list
     document_list = property(get_document_list)
-    
+
     def get_document(self, id):
         """
         Retrieves a particular document from this project.
@@ -984,13 +979,13 @@ class Resource(BaseAPIObject):
     """
     def __repr__(self):
         return '<%ss>' % self.__class__.__name__
-    
+
     def __str__(self):
         return self.__unicode__().encode("utf-8")
-    
+
     def __unicode__(self):
         return u''
-    
+
     def __getattr__(self, name):
         # When these attrs don't exist in the DocumentCloud db,
         # they aren't included in the JSON. But we need to them
@@ -1021,9 +1016,9 @@ def is_valid_data_keyword(keyword):
     Accepts a keyword submitted to the Document's "data" attribute and verifies
     that is is safe and not one of the reserved words DocumentCloud does not
     allow. 
-    
+
     Returns True is keyword is safe. Raises ValueError if it is not.
-    
+
     See: https://github.com/documentcloud/documentcloud/blob/master/config/initializers/entity_map.rb#L22
     And: https://github.com/datadesk/python-documentcloud/issues/81
     """
