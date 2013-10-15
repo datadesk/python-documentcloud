@@ -62,9 +62,9 @@ class Callable:
 doseq = 1
 
 
-class MultipartPostHandler(urllib2.request.BaseHandler):
+class MultipartPostHandler(urllib.request.BaseHandler):
     # needs to run first
-    handler_order = urllib2.request.HTTPHandler.handler_order - 10
+    handler_order = urllib.request.HTTPHandler.handler_order - 10
 
     def http_request(self, request):
         data = request.get_data()
@@ -90,7 +90,7 @@ class MultipartPostHandler(urllib2.request.BaseHandler):
                         'multipart/form-data') != 0
                 ):
                     six.print_(
-                            "Replacing %s with %s" % (
+                        "Replacing %s with %s" % (
                             request.get_header('content-type'),
                             'multipart/form-data'
                         )
@@ -146,7 +146,7 @@ def getsize(o_file):
 
 
 def main():
-    opener = urllib2.request.build_opener(MultipartPostHandler)
+    opener = urllib.request.build_opener(MultipartPostHandler)
 
     def validateFile(url):
         temp = tempfile.mkstemp(suffix=".html")

@@ -51,7 +51,7 @@ class BaseDocumentCloudClient(object):
         """
         # Create the request object
         args = [i for i in [url, params] if i]
-        request = urllib2.request.Request(*args)
+        request = urllib.request.Request(*args)
         # If the client has credentials, include them as a header
         if self.username and self.password:
             credentials = '%s:%s' % (self.username, self.password)
@@ -63,14 +63,14 @@ class BaseDocumentCloudClient(object):
         # If the request provides a custom opener, like the upload request,
         # which relies on a multipart request, it is applied here.
         if opener:
-            opener = urllib2.request.build_opener(opener)
+            opener = urllib.request.build_opener(opener)
             request_method = opener.open
         else:
-            request_method = urllib2.request.urlopen
+            request_method = urllib.request.urlopen
         # Make the request
         try:
             response = request_method(request)
-        except urllib2.error.HTTPError as e:
+        except urllib.error.HTTPError as e:
             if e.code == 404:
                 raise DoesNotExistError("The resource you've requested does \
 not exist or is unavailable without the proper credentials.")
@@ -693,10 +693,10 @@ class Document(BaseAPIObject):
 
     def _get_url(self, url):
         if self.access == 'public':
-            req = urllib2.request.Request(url)
+            req = urllib.request.Request(url)
             try:
-                return urllib2.request.urlopen(req).read()
-            except urllib2.error.HTTPError:
+                return urllib.request.urlopen(req).read()
+            except urllib.error.HTTPError:
                 raise NotImplementedError(
                     "Currently, DocumentCloud only allows you to access this \
 resource on public documents."
