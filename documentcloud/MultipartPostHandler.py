@@ -39,14 +39,13 @@ Further Example:
   The main function of this file is a sample which downloads a page and
   then uploads it to the W3C validator.
 """
+import os
 import sys
-import tempfile
 import urllib
 import urllib2
+import tempfile
 import mimetools
 import mimetypes
-import os
-import stat
 from os import SEEK_END
 from cStringIO import StringIO
 
@@ -106,7 +105,6 @@ class MultipartPostHandler(urllib2.BaseHandler):
             buf.write('Content-Disposition: form-data; name="%s"' % key)
             buf.write('\r\n\r\n' + value + '\r\n')
         for(key, fd) in files:
-            file_size = getsize(fd)
             try:
                 filename = fd.name.split('/')[-1]
             except AttributeError:
@@ -143,17 +141,11 @@ def getsize(o_file):
 
 
 def main():
-    validatorURL = "http://validator.w3.org/check"
     opener = urllib2.build_opener(MultipartPostHandler)
 
     def validateFile(url):
         temp = tempfile.mkstemp(suffix=".html")
         os.write(temp[0], opener.open(url).read())
-        params = {
-            "ss": "0",  # show source
-            "doctype": "Inline",
-            "uploaded_file": open(temp[1], "rb")
-        }
         os.remove(temp[1])
 
     if len(sys.argv[1:]) > 0:

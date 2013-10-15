@@ -16,8 +16,11 @@ import copy
 import base64
 import urllib
 import urllib2
-from datetime import datetime
-from toolbox import *
+from toolbox import retry
+from toolbox import DoesNotExistError
+from toolbox import DuplicateObjectError
+from toolbox import credentials_required
+from toolbox import CredentialsFailedError
 from dateutil.parser import parse as dateparser
 from MultipartPostHandler import MultipartPostHandler
 try:
@@ -115,7 +118,7 @@ requires proper credentials.")
             # Otherwise, we can just use the vanilla urllib prep method
             params = urllib.urlencode(params, doseq=True)
         # Make the request
-        content = self._make_request(
+        self._make_request(
             self.BASE_URI + method,
             params,
         )
@@ -320,7 +323,7 @@ class DocumentClient(BaseDocumentCloudClient):
         """
         Deletes a Document.
         """
-        data = self.fetch(
+        self.fetch(
             'documents/%s.json' % id,
             {'_method': 'delete'},
         )
@@ -462,7 +465,7 @@ class ProjectClient(BaseDocumentCloudClient):
         """
         Deletes a Project.
         """
-        data = self.fetch(
+        self.fetch(
             'projects/%s.json' % id,
             {'_method': 'delete'},
         )
