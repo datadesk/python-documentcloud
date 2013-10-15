@@ -86,7 +86,7 @@ setup(
       data_files=data_files,
       include_package_data=True,
       install_requires=[
-        'python-dateutil==1.5',
+        'python-dateutil==2.1',
         'simplejson==3.3.1',
         'six==1.4.1',
       ],
