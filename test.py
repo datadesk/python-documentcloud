@@ -13,9 +13,9 @@ import string
 import textwrap
 import unittest
 try:
-    import io
-except ImportError:
     import cStringIO as io
+except ImportError:
+    import io
 from copy import copy
 from documentcloud import DocumentCloud
 from documentcloud.toolbox import DoesNotExistError

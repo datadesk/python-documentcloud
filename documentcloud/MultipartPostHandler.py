@@ -48,9 +48,9 @@ import mimetypes
 from os import SEEK_END
 from six.moves import urllib
 try:
-    import io
-except ImportError:
     import cStringIO as io
+except ImportError:
+    import io
 
 
 class Callable:

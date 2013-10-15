@@ -13,6 +13,7 @@ Further documentation:
 """
 from __future__ import absolute_import
 import os
+import sys
 import six
 import copy
 import base64
@@ -70,11 +71,12 @@ class BaseDocumentCloudClient(object):
         # Make the request
         try:
             response = request_method(request)
-        except urllib.error.HTTPError, e:
-            if e.code == 404:
+        except:
+            e = sys.exc_info()[1]
+            if getattr(e, 'code', None) == 404:
                 raise DoesNotExistError("The resource you've requested does \
 not exist or is unavailable without the proper credentials.")
-            elif e.code == 401:
+            elif getattr(e, 'code', None) == 401:
                 raise CredentialsFailedError("The resource you've requested \
 requires proper credentials.")
             else:
