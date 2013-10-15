@@ -43,15 +43,16 @@ import os
 import sys
 import six
 import tempfile
-import mimetools
 import mimetypes
 from os import SEEK_END
-from six.moves import urllib
-try:
-    import cStringIO as io
-except ImportError:
+if six.PY3:
     import io
-
+    import urllib
+    from email.generator import _make_boundary as choose_boundary
+else:
+    import cStringIO as io
+    from six.moves import urllib
+    from mimetools import choose_boundary
 
 class Callable:
     def __init__(self, anycallable):
@@ -102,7 +103,7 @@ class MultipartPostHandler(urllib.request.BaseHandler):
 
     def multipart_encode(vars, files, boundary=None, buf=None):
         if boundary is None:
-            boundary = mimetools.choose_boundary()
+            boundary = choose_boundary()
         if buf is None:
             buf = io.StringIO()
         for(key, value) in vars:

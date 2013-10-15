@@ -18,13 +18,16 @@ import six
 import copy
 import base64
 from .toolbox import retry
-from six.moves import urllib
 from .toolbox import DoesNotExistError
 from .toolbox import DuplicateObjectError
 from .toolbox import credentials_required
 from .toolbox import CredentialsFailedError
 from dateutil.parser import parse as dateparser
 from .MultipartPostHandler import MultipartPostHandler
+if six.PY3:
+    import urllib
+else:
+    from six.moves import urllib
 try:
     import json
 except ImportError:
