@@ -15,8 +15,10 @@ import unittest
 import StringIO
 from copy import copy
 from documentcloud import DocumentCloud
-from documentcloud import CredentialsMissingError, DuplicateObjectError
-from documentcloud import CredentialsFailedError, DoesNotExistError
+from documentcloud.toolbox import DoesNotExistError
+from documentcloud.toolbox import DuplicateObjectError
+from documentcloud.toolbox import CredentialsFailedError
+from documentcloud.toolbox import CredentialsMissingError
 from documentcloud import Annotation, Document, Project, Section, Entity, Mention
 
 #
