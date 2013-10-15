@@ -1,2 +1,4 @@
+argparse==1.2.1
+pep8==1.4.6
 python-dateutil==1.5
 simplejson==3.3.1

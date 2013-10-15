@@ -2,18 +2,18 @@
 
 ####
 # 02/2006 Will Holcomb <wholcomb@gmail.com>
-# 
+
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
 # License as published by the Free Software Foundation; either
 # version 2.1 of the License, or (at your option) any later version.
-# 
+
 # This library is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
 #
-# 7/26/07 Slightly modified by Brian Schneider  
+# 7/26/07 Slightly modified by Brian Schneider
 # in order to support unicode files ( multipart_encode function )
 """
 Usage:
@@ -39,23 +39,30 @@ Further Example:
   The main function of this file is a sample which downloads a page and
   then uploads it to the W3C validator.
 """
-
+import sys
+import tempfile
 import urllib
 import urllib2
-import mimetools, mimetypes
-import os, stat
+import mimetools
+import mimetypes
+import os
+import stat
+from os import SEEK_END
 from cStringIO import StringIO
+
 
 class Callable:
     def __init__(self, anycallable):
         self.__call__ = anycallable
 
-# Controls how sequences are uncoded. If true, elements may be given multiple values by
-#  assigning a sequence.
+# Controls how sequences are uncoded. If true, elements
+# may be given multiple values byassigning a sequence.
 doseq = 1
 
+
 class MultipartPostHandler(urllib2.BaseHandler):
-    handler_order = urllib2.HTTPHandler.handler_order - 10 # needs to run first
+    # needs to run first
+    handler_order = urllib2.HTTPHandler.handler_order - 10
 
     def http_request(self, request):
         data = request.get_data()
@@ -63,28 +70,33 @@ class MultipartPostHandler(urllib2.BaseHandler):
             v_files = []
             v_vars = []
             try:
-                 for(key, value) in data.items():
-                     if hasattr(value, 'read'):
-                         v_files.append((key, value))
-                     else:
-                         v_vars.append((key, value))
+                for(key, value) in data.items():
+                    if hasattr(value, 'read'):
+                        v_files.append((key, value))
+                    else:
+                        v_vars.append((key, value))
             except TypeError:
-                systype, value, traceback = sys.exc_info()
-                raise TypeError, "not a valid non-string sequence or mapping object", traceback
+                raise TypeError
             if len(v_files) == 0:
                 data = urllib.urlencode(v_vars, doseq)
             else:
                 boundary, data = self.multipart_encode(v_vars, v_files)
                 contenttype = 'multipart/form-data; boundary=%s' % boundary
-                if(request.has_header('Content-Type')
-                   and request.get_header('Content-Type').find('multipart/form-data') != 0):
-                    print "Replacing %s with %s" % (request.get_header('content-type'), 'multipart/form-data')
+                if (
+                    request.has_header('Content-Type') and
+                    request.get_header('Content-Type').find(
+                        'multipart/form-data') != 0
+                ):
+                    print "Replacing %s with %s" % (
+                        request.get_header('content-type'),
+                        'multipart/form-data'
+                    )
                 request.add_unredirected_header('Content-Type', contenttype)
             request.add_data(data)
-        
+
         return request
 
-    def multipart_encode(vars, files, boundary = None, buf = None):
+    def multipart_encode(vars, files, boundary=None, buf=None):
         if boundary is None:
             boundary = mimetools.choose_boundary()
         if buf is None:
@@ -99,11 +111,14 @@ class MultipartPostHandler(urllib2.BaseHandler):
                 filename = fd.name.split('/')[-1]
             except AttributeError:
                 # Spoof a file name if the object doesn't have one.
-                # This is designed to catch when the user submits a StringIO object
+                # This is designed to catch when the user submits
+                # a StringIO object
                 filename = 'temp.pdf'
-            contenttype = mimetypes.guess_type(filename)[0] or 'application/octet-stream'
+            contenttype = mimetypes.guess_type(filename)[0] or \
+                'application/octet-stream'
             buf.write('--%s\r\n' % boundary)
-            buf.write('Content-Disposition: form-data; name="%s"; filename="%s"\r\n' % (key, filename))
+            buf.write('Content-Disposition: form-data; \
+name="%s"; filename="%s"\r\n' % (key, filename))
             buf.write('Content-Type: %s\r\n' % contenttype)
             # buffer += 'Content-Length: %s\r\n' % file_size
             fd.seek(0)
@@ -119,28 +134,26 @@ def getsize(o_file):
     """
     get the size, either by seeeking to the end.
     """
-    from os import SEEK_END
-    startpos=o_file.tell()
+    startpos = o_file.tell()
     o_file.seek(0)
-    o_file.seek(0,SEEK_END)
-    size=o_file.tell()
+    o_file.seek(0, SEEK_END)
+    size = o_file.tell()
     o_file.seek(startpos)
     return size
 
 
 def main():
-    import tempfile, sys
-
     validatorURL = "http://validator.w3.org/check"
     opener = urllib2.build_opener(MultipartPostHandler)
-    
+
     def validateFile(url):
         temp = tempfile.mkstemp(suffix=".html")
         os.write(temp[0], opener.open(url).read())
-        params = { "ss" : "0",            # show source
-                   "doctype" : "Inline",
-                   "uploaded_file" : open(temp[1], "rb") }
-        print opener.open(validatorURL, params).read()
+        params = {
+            "ss": "0",  # show source
+            "doctype": "Inline",
+            "uploaded_file": open(temp[1], "rb")
+        }
         os.remove(temp[1])
 
     if len(sys.argv[1:]) > 0:
@@ -149,7 +162,5 @@ def main():
     else:
         validateFile("http://www.google.com")
 
-if __name__=="__main__":
+if __name__ == "__main__":
     main()
-
-
