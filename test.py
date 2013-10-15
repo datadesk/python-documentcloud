@@ -12,7 +12,10 @@ import random
 import string
 import textwrap
 import unittest
-import StringIO
+try:
+    import io
+except ImportError:
+    import cStringIO as io
 from copy import copy
 from documentcloud import DocumentCloud
 from documentcloud.toolbox import DoesNotExistError
@@ -435,7 +438,7 @@ class DocumentTest(BaseTest):
         """
         path = os.path.join(os.path.dirname(__file__), "español.pdf")
         real_file = open(path, 'rb')
-        virtual_file = StringIO.StringIO(real_file.read())
+        virtual_file = io.StringIO(real_file.read())
         obj = self.private_client.documents.upload(virtual_file, title='Espanola!')
         self.assertEqual(type(obj), Document)
         # Delete it
