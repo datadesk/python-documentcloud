@@ -70,7 +70,7 @@ class BaseDocumentCloudClient(object):
         # Make the request
         try:
             response = request_method(request)
-        except urllib.error.HTTPError as e:
+        except urllib.error.HTTPError, e:
             if e.code == 404:
                 raise DoesNotExistError("The resource you've requested does \
 not exist or is unavailable without the proper credentials.")
