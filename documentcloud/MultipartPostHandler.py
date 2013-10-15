@@ -41,13 +41,16 @@ Further Example:
 """
 import os
 import sys
-import urllib
-import urllib2
+import six
 import tempfile
 import mimetools
 import mimetypes
 from os import SEEK_END
-from cStringIO import StringIO
+from six.moves import urllib
+try:
+    import io
+except ImportError:
+    import cStringIO as io
 
 
 class Callable:
@@ -59,9 +62,9 @@ class Callable:
 doseq = 1
 
 
-class MultipartPostHandler(urllib2.BaseHandler):
+class MultipartPostHandler(urllib2.request.BaseHandler):
     # needs to run first
-    handler_order = urllib2.HTTPHandler.handler_order - 10
+    handler_order = urllib2.request.HTTPHandler.handler_order - 10
 
     def http_request(self, request):
         data = request.get_data()
@@ -69,7 +72,7 @@ class MultipartPostHandler(urllib2.BaseHandler):
             v_files = []
             v_vars = []
             try:
-                for(key, value) in data.items():
+                for(key, value) in list(data.items()):
                     if hasattr(value, 'read'):
                         v_files.append((key, value))
                     else:
@@ -77,7 +80,7 @@ class MultipartPostHandler(urllib2.BaseHandler):
             except TypeError:
                 raise TypeError
             if len(v_files) == 0:
-                data = urllib.urlencode(v_vars, doseq)
+                data = urllib.parse.urlencode(v_vars, doseq)
             else:
                 boundary, data = self.multipart_encode(v_vars, v_files)
                 contenttype = 'multipart/form-data; boundary=%s' % boundary
@@ -86,9 +89,11 @@ class MultipartPostHandler(urllib2.BaseHandler):
                     request.get_header('Content-Type').find(
                         'multipart/form-data') != 0
                 ):
-                    print "Replacing %s with %s" % (
-                        request.get_header('content-type'),
-                        'multipart/form-data'
+                    six.print_(
+                            "Replacing %s with %s" % (
+                            request.get_header('content-type'),
+                            'multipart/form-data'
+                        )
                     )
                 request.add_unredirected_header('Content-Type', contenttype)
             request.add_data(data)
@@ -99,7 +104,7 @@ class MultipartPostHandler(urllib2.BaseHandler):
         if boundary is None:
             boundary = mimetools.choose_boundary()
         if buf is None:
-            buf = StringIO()
+            buf = io.StringIO()
         for(key, value) in vars:
             buf.write('--%s\r\n' % boundary)
             buf.write('Content-Disposition: form-data; name="%s"' % key)
@@ -141,7 +146,7 @@ def getsize(o_file):
 
 
 def main():
-    opener = urllib2.build_opener(MultipartPostHandler)
+    opener = urllib2.request.build_opener(MultipartPostHandler)
 
     def validateFile(url):
         temp = tempfile.mkstemp(suffix=".html")

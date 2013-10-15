@@ -88,6 +88,7 @@ setup(
       install_requires=[
         'python-dateutil==1.5',
         'simplejson==3.3.1',
+        'six==1.4.1',
       ],
 )
 

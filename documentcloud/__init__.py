@@ -11,18 +11,19 @@ Further documentation:
     https://www.documentcloud.org/help/api
 
 """
+from __future__ import absolute_import
 import os
+import six
 import copy
 import base64
-import urllib
-import urllib2
-from toolbox import retry
-from toolbox import DoesNotExistError
-from toolbox import DuplicateObjectError
-from toolbox import credentials_required
-from toolbox import CredentialsFailedError
+from .toolbox import retry
+from six.moves import urllib
+from .toolbox import DoesNotExistError
+from .toolbox import DuplicateObjectError
+from .toolbox import credentials_required
+from .toolbox import CredentialsFailedError
 from dateutil.parser import parse as dateparser
-from MultipartPostHandler import MultipartPostHandler
+from .MultipartPostHandler import MultipartPostHandler
 try:
     import json
 except ImportError:
@@ -50,7 +51,7 @@ class BaseDocumentCloudClient(object):
         """
         # Create the request object
         args = [i for i in [url, params] if i]
-        request = urllib2.Request(*args)
+        request = urllib2.request.Request(*args)
         # If the client has credentials, include them as a header
         if self.username and self.password:
             credentials = '%s:%s' % (self.username, self.password)
@@ -62,14 +63,14 @@ class BaseDocumentCloudClient(object):
         # If the request provides a custom opener, like the upload request,
         # which relies on a multipart request, it is applied here.
         if opener:
-            opener = urllib2.build_opener(opener)
+            opener = urllib2.request.build_opener(opener)
             request_method = opener.open
         else:
-            request_method = urllib2.urlopen
+            request_method = urllib2.request.urlopen
         # Make the request
         try:
             response = request_method(request)
-        except urllib2.HTTPError, e:
+        except urllib2.error.HTTPError as e:
             if e.code == 404:
                 raise DoesNotExistError("The resource you've requested does \
 not exist or is unavailable without the proper credentials.")
@@ -95,7 +96,7 @@ requires proper credentials.")
             # Pull the document_ids out of the params
             document_ids = params.get("document_ids")
             del params['document_ids']
-            params = urllib.urlencode(params, doseq=True)
+            params = urllib.parse.urlencode(params, doseq=True)
             # These need to be specially formatted in the style documentcloud
             # expects arrays. The example they provide is:
             # ?document_ids[]=28-boumediene&document_ids[]=\
@@ -108,15 +109,16 @@ requires proper credentials.")
             # Pull them out of the dict
             data = params.get("data")
             del params['data']
-            params = urllib.urlencode(params, doseq=True)
+            params = urllib.parse.urlencode(params, doseq=True)
             # Format them in the style documentcloud expects
             # ?data['foo']=bar&data['tit']=tat
             params += "".join([
-                '&data[%s]=%s' % (key, value) for key, value in data.items()
+                '&data[%s]=%s' % (key, value) for key, value in
+                list(data.items())
             ])
         else:
             # Otherwise, we can just use the vanilla urllib prep method
-            params = urllib.urlencode(params, doseq=True)
+            params = urllib.parse.urlencode(params, doseq=True)
         # Make the request
         self._make_request(
             self.BASE_URI + method,
@@ -129,7 +131,7 @@ requires proper credentials.")
         """
         # Encode params if they exist
         if params:
-            params = urllib.urlencode(params, doseq=True)
+            params = urllib.parse.urlencode(params, doseq=True)
         content = self._make_request(
             self.BASE_URI + method,
             params,
@@ -268,7 +270,7 @@ class DocumentClient(BaseDocumentCloudClient):
         if project:
             params['project'] = project
         if data:
-            for key, value in data.items():
+            for key, value in list(data.items()):
                 is_valid_data_keyword(key)
                 params['data[%s]' % key] = value
         if secure:
@@ -425,7 +427,7 @@ class ProjectClient(BaseDocumentCloudClient):
         }
         if description:
             params['description'] = description
-        params = urllib.urlencode(params, doseq=True)
+        params = urllib.parse.urlencode(params, doseq=True)
         if document_ids:
             # These need to be specially formatted in the style documentcloud
             # expects arrays. The example they provide is:
@@ -489,7 +491,7 @@ class BaseAPIObject(object):
         return self.__unicode__().encode("utf-8")
 
     def __unicode__(self):
-        return unicode(self.title)
+        return six.u(self.title)
 
 
 class Annotation(BaseAPIObject):
@@ -506,14 +508,14 @@ class Annotation(BaseAPIObject):
         return self.__unicode__().encode("utf-8")
 
     def __unicode__(self):
-        return u''
+        return six.u('')
 
     def get_location(self):
         """
         Return the location as a good
         """
         image_string = self.__dict__['location']['image']
-        image_ints = map(int, image_string.split(","))
+        image_ints = list(map(int, image_string.split(",")))
         return Location(*image_ints)
     location = property(get_location)
 
@@ -623,7 +625,7 @@ class Document(BaseAPIObject):
         if not isinstance(data, type({})):
             raise TypeError("This attribute must be a dictionary.")
         # Validate keywords
-        for keyword in data.keys():
+        for keyword in list(data.keys()):
             is_valid_data_keyword(keyword)
         # Set the attribute
         self.__dict__['data'] = data
@@ -676,7 +678,7 @@ class Document(BaseAPIObject):
                 "documents/%s/entities.json" % self.id
             ).get("entities")
             obj_list = []
-            for type, entity_list in entities.items():
+            for type, entity_list in list(entities.items()):
                 for entity in entity_list:
                     entity['type'] = type
                     obj = Entity(entity)
@@ -691,10 +693,10 @@ class Document(BaseAPIObject):
 
     def _get_url(self, url):
         if self.access == 'public':
-            req = urllib2.Request(url)
+            req = urllib2.request.Request(url)
             try:
-                return urllib2.urlopen(req).read()
-            except urllib2.HTTPError:
+                return urllib2.request.urlopen(req).read()
+            except urllib2.error.HTTPError:
                 raise NotImplementedError(
                     "Currently, DocumentCloud only allows you to access this \
 resource on public documents."
@@ -931,7 +933,7 @@ class Entity(BaseAPIObject):
     Keywords and such extracted from the document by OpenCalais.
     """
     def __unicode__(self):
-        return unicode(self.value)
+        return six.u(self.value)
 
 
 class Location(object):
@@ -945,7 +947,7 @@ class Location(object):
         return self.__unicode__().encode("utf-8")
 
     def __unicode__(self):
-        return u''
+        return six.u('')
 
     def __init__(self, top, right, bottom, left):
         self.top = top
@@ -959,7 +961,7 @@ class Mention(BaseAPIObject):
     A mention of a search found in the document.
     """
     def __unicode__(self):
-        return unicode("Page %s" % (self.page))
+        return six.u("Page %s" % (self.page))
 
 
 class Project(BaseAPIObject):
@@ -1058,7 +1060,7 @@ class Resource(BaseAPIObject):
         return self.__unicode__().encode("utf-8")
 
     def __unicode__(self):
-        return u''
+        return six.u('')
 
     def __getattr__(self, name):
         # When these attrs don't exist in the DocumentCloud db,
