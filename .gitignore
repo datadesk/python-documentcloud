@@ -1,3 +1,4 @@
+.tox/
 scratch.py
 _sources/*
 sphinx/*

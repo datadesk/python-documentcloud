@@ -25,7 +25,9 @@ from .toolbox import CredentialsFailedError
 from dateutil.parser import parse as dateparser
 from .MultipartPostHandler import MultipartPostHandler
 if six.PY3:
-    import urllib
+    import urllib.parse
+    import urllib.error
+    import urllib.request
 else:
     from six.moves import urllib
 try:
@@ -48,7 +50,7 @@ class BaseDocumentCloudClient(object):
         self.username = username
         self.password = password
 
-    @retry(Exception, tries=4)
+    @retry(Exception, tries=3)
     def _make_request(self, url, params=None, opener=None):
         """
         Configure a HTTP request, fire it off and return the response.
@@ -60,8 +62,8 @@ class BaseDocumentCloudClient(object):
         if self.username and self.password:
             credentials = '%s:%s' % (self.username, self.password)
             encoded_credentials = base64.encodestring(
-                credentials
-            ).replace("\n", "")
+                credentials.encode("utf-8")
+            ).decode("utf-8").replace("\n", "")
             header = 'Basic %s' % encoded_credentials
             request.add_header('Authorization', header)
         # If the request provides a custom opener, like the upload request,
@@ -124,10 +126,11 @@ requires proper credentials.")
         else:
             # Otherwise, we can just use the vanilla urllib prep method
             params = urllib.parse.urlencode(params, doseq=True)
+
         # Make the request
         self._make_request(
             self.BASE_URI + method,
-            params,
+            params.encode("utf-8"),
         )
 
     def fetch(self, method, params=None):
@@ -136,13 +139,13 @@ requires proper credentials.")
         """
         # Encode params if they exist
         if params:
-            params = urllib.parse.urlencode(params, doseq=True)
+            params = urllib.parse.urlencode(params, doseq=True).encode("utf-8")
         content = self._make_request(
             self.BASE_URI + method,
             params,
         )
         # Convert its JSON to a Python dictionary and return
-        return json.loads(content)
+        return json.loads(content.decode("utf-8"))
 
 
 class DocumentCloud(BaseDocumentCloudClient):
@@ -286,7 +289,7 @@ class DocumentClient(BaseDocumentCloudClient):
             params,
             MultipartPostHandler
         )
-        return self.get(json.loads(response)['id'])
+        return self.get(json.loads(response.decode("utf-8"))['id'])
 
     @credentials_required
     def upload_directory(
@@ -441,8 +444,11 @@ class ProjectClient(BaseDocumentCloudClient):
             params += "".join([
                 '&document_ids[]=%s' % id for id in document_ids
             ])
-        response = self._make_request(self.BASE_URI + "projects.json", params)
-        new_id = json.loads(response)['project']['id']
+        response = self._make_request(
+            self.BASE_URI + "projects.json",
+            params.encode("utf-8")
+        )
+        new_id = json.loads(response.decode("utf-8"))['project']['id']
         # If it doesn't exist, that suggests the project already exists
         if not new_id:
             raise DuplicateObjectError("The Project title you tried to create \

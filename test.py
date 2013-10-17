@@ -8,6 +8,7 @@ as global environment variables.
 """
 import os
 import sys
+import six
 import random
 import string
 import textwrap
@@ -32,7 +33,11 @@ def get_random_string(length=6):
     """
     Generate a random string of letters and numbers
     """
-    return unicode(''.join(random.choice(string.letters + string.digits) for i in xrange(length)))
+    return six.u(''.join(
+        random.choice(string.ascii_letters + string.digits)
+            for i in range(length)
+    ))
+
 
 PANGRAMS = {
     'en': 'The quick brown fox jumps over the lazy dog.',
@@ -80,7 +85,7 @@ class BaseTest(unittest.TestCase):
             "2.5": "351008-lbex-docid-3383445",
             "2.6": "15144-mitchrpt",
             "2.7": "351151-lbex-docid-130036",
-            "3.3": "50986-lbhi_sec07940_755445",
+            "3.3": "351029-lbex-docid-149714",
         }
         return version2slug[str(version)]
 
@@ -283,14 +288,14 @@ class DocumentTest(BaseTest):
         source = get_random_string()
         description = get_random_string()
         data = {get_random_string(): get_random_string()}
-        if obj.resources.related_article == u'http://documents.latimes.com':
-            related_article = u'http://documentcloud.org'
+        if obj.resources.related_article == 'http://documents.latimes.com':
+            related_article = 'http://documentcloud.org'
         else:
-            related_article = u'http://documents.latimes.com'
-        if obj.resources.published_url == u'http://documents.latimes.com':
-            published_url = u'http://documentcloud.org'
+            related_article = 'http://documents.latimes.com'
+        if obj.resources.published_url == 'http://documents.latimes.com':
+            published_url = 'http://documentcloud.org'
         else:
-            published_url = u'http://documents.latimes.com'
+            published_url = 'http://documents.latimes.com'
         # Set the random strings our local object's attributes
         obj.title = title
         obj.source = source
@@ -438,7 +443,10 @@ class DocumentTest(BaseTest):
         """
         path = os.path.join(os.path.dirname(__file__), "español.pdf")
         real_file = open(path, 'rb')
-        virtual_file = io.StringIO(real_file.read())
+        if six.PY3:
+            virtual_file = io.BytesIO(real_file.read())
+        else:
+            virtual_file = io.StringIO(real_file.read())
         obj = self.private_client.documents.upload(virtual_file, title='Espanola!')
         self.assertEqual(type(obj), Document)
         # Delete it
@@ -535,7 +543,7 @@ class ProjectTest(BaseTest):
         Verify that a project can pull a particular document by id
         """
         obj = self.private_client.projects.get('934')
-        doc = obj.get_document(u'25798-pr-01092011-loughner')
+        doc = obj.get_document('25798-pr-01092011-loughner')
         self.assertEqual(type(doc), Document)
 
     def test_put(self):
@@ -545,8 +553,8 @@ class ProjectTest(BaseTest):
         # Pull the object we'll deface
         obj = self.private_client.projects.get(self.editable_project)
         # Create random strings we will save to the editable attributes
-        title = u'The Klee Report (%s)' % get_random_string()
-        description = textwrap.dedent(u"""
+        title = 'The Klee Report (%s)' % get_random_string()
+        description = textwrap.dedent("""
         An independent probe into Sam Zell\'s purchase of Tribune Company by 
         investigator Kenneth Klee. Released at the end of July 2010. (%s)
         """)
@@ -565,8 +573,8 @@ class ProjectTest(BaseTest):
         self.assertEqual(len(obj.document_list), 0)
         # Now add all the documents back in
         proj_ids = [
-            u'12667-the-klee-report-volume-2',
-            u'12666-the-klee-report-volume-1'
+            '12667-the-klee-report-volume-2',
+            '12666-the-klee-report-volume-1'
         ]
         for id in proj_ids:
             doc = self.private_client.documents.get(id)
@@ -660,7 +668,7 @@ class ErrorTest(BaseTest):
         Make sure DuplicateObjectError works.
         """
         obj = self.private_client.projects.get("703")
-        doc = self.private_client.documents.get(u'12666-the-klee-report-volume-1')
+        doc = self.private_client.documents.get('12666-the-klee-report-volume-1')
         self.assertRaises(DuplicateObjectError, obj.document_list.append, doc)
 
 

@@ -59,7 +59,7 @@ DocumentCloud client to attempt this type of request.")
     return wraps(method_func)(_checkcredentials)
 
 
-def retry(ExceptionToCheck, tries=4, delay=3, backoff=2):
+def retry(ExceptionToCheck, tries=3, delay=2, backoff=2):
     """
     Retry decorator published by Saltry Crane.
 

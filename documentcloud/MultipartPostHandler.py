@@ -47,16 +47,13 @@ import mimetypes
 from os import SEEK_END
 if six.PY3:
     import io
-    import urllib
+    import urllib.parse
+    import urllib.request
     from email.generator import _make_boundary as choose_boundary
 else:
     import cStringIO as io
     from six.moves import urllib
     from mimetools import choose_boundary
-
-class Callable:
-    def __init__(self, anycallable):
-        self.__call__ = anycallable
 
 # Controls how sequences are uncoded. If true, elements
 # may be given multiple values byassigning a sequence.
@@ -101,36 +98,79 @@ class MultipartPostHandler(urllib.request.BaseHandler):
 
         return request
 
-    def multipart_encode(vars, files, boundary=None, buf=None):
-        if boundary is None:
-            boundary = choose_boundary()
-        if buf is None:
-            buf = io.StringIO()
-        for(key, value) in vars:
-            buf.write('--%s\r\n' % boundary)
-            buf.write('Content-Disposition: form-data; name="%s"' % key)
-            buf.write('\r\n\r\n' + value + '\r\n')
-        for(key, fd) in files:
-            try:
-                filename = fd.name.split('/')[-1]
-            except AttributeError:
-                # Spoof a file name if the object doesn't have one.
-                # This is designed to catch when the user submits
-                # a StringIO object
-                filename = 'temp.pdf'
-            contenttype = mimetypes.guess_type(filename)[0] or \
-                'application/octet-stream'
-            buf.write('--%s\r\n' % boundary)
-            buf.write('Content-Disposition: form-data; \
-name="%s"; filename="%s"\r\n' % (key, filename))
-            buf.write('Content-Type: %s\r\n' % contenttype)
-            # buffer += 'Content-Length: %s\r\n' % file_size
-            fd.seek(0)
-            buf.write('\r\n' + fd.read() + '\r\n')
-        buf.write('--' + boundary + '--\r\n\r\n')
-        buf = buf.getvalue()
-        return boundary, buf
-    multipart_encode = Callable(multipart_encode)
+    def multipart_encode(self, v_vars, files, boundary=None, buf=None):
+        if six.PY3:
+            if boundary is None:
+                boundary = choose_boundary()
+            if buf is None:
+                buf = io.BytesIO()
+            for(key, value) in v_vars:
+                buf.write(b'--' + boundary.encode("utf-8") + b'\r\n')
+                buf.write(
+                    b'Content-Disposition: form-data; name="' +
+                    key.encode("utf-8") +
+                    b'"'
+                )
+                buf.write(b'\r\n\r\n' + value.encode("utf-8") + b'\r\n')
+            for(key, fd) in files:
+                try:
+                    filename = fd.name.split('/')[-1]
+                except AttributeError:
+                    # Spoof a file name if the object doesn't have one.
+                    # This is designed to catch when the user submits
+                    # a StringIO object
+                    filename = 'temp.pdf'
+                contenttype = mimetypes.guess_type(filename)[0] or \
+                    b'application/octet-stream'
+                buf.write(b'--' + boundary.encode("utf-8") + b'\r\n')
+                buf.write(
+                    b'Content-Disposition: form-data; ' +
+                    b'name="' + key.encode("utf-8") + b'"; ' +
+                    b'filename="' + filename.encode("utf-8") + b'"\r\n'
+                )
+                buf.write(
+                    b'Content-Type: ' +
+                    contenttype.encode("utf-8") +
+                    b'\r\n'
+                )
+                fd.seek(0)
+                buf.write(
+                    b'\r\n' + fd.read() + b'\r\n'
+                )
+            buf.write(b'--')
+            buf.write(boundary.encode("utf-8"))
+            buf.write(b'--\r\n\r\n')
+            buf = buf.getvalue()
+            return boundary, buf
+        else:
+            if boundary is None:
+                boundary = choose_boundary()
+            if buf is None:
+                buf = io.StringIO()
+            for(key, value) in v_vars:
+                buf.write('--%s\r\n' % boundary)
+                buf.write('Content-Disposition: form-data; name="%s"' % key)
+                buf.write('\r\n\r\n' + value + '\r\n')
+            for(key, fd) in files:
+                try:
+                    filename = fd.name.split('/')[-1]
+                except AttributeError:
+                    # Spoof a file name if the object doesn't have one.
+                    # This is designed to catch when the user submits
+                    # a StringIO object
+                    filename = 'temp.pdf'
+                contenttype = mimetypes.guess_type(filename)[0] or \
+                    'application/octet-stream'
+                buf.write('--%s\r\n' % boundary)
+                buf.write('Content-Disposition: form-data; \
+    name="%s"; filename="%s"\r\n' % (key, filename))
+                buf.write('Content-Type: %s\r\n' % contenttype)
+                # buffer += 'Content-Length: %s\r\n' % file_size
+                fd.seek(0)
+                buf.write('\r\n' + fd.read() + '\r\n')
+            buf.write('--' + boundary + '--\r\n\r\n')
+            buf = buf.getvalue()
+            return boundary, buf
     https_request = http_request
 
 
