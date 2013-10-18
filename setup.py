@@ -74,6 +74,16 @@ if len(sys.argv) > 1 and sys.argv[1] == 'bdist_wininst':
     for file_info in data_files:
         file_info[0] = '\\PURELIB\\%s' % file_info[0]
 
+dependencies = [
+    ,
+    'simplejson==3.3.1',
+    'six==1.4.1',
+]
+if sys.version_info < (2, 6):
+    dependencies.append("python-dateutil==1.5")
+else:
+    dependencies.append("python-dateutil==2.1")
+
 setup(
       name='python-documentcloud',
       version='0.162',
@@ -85,10 +95,6 @@ setup(
       cmdclass = cmdclasses,
       data_files=data_files,
       include_package_data=True,
-      install_requires=[
-        'python-dateutil==2.1',
-        'simplejson==3.3.1',
-        'six==1.4.1',
-      ],
+      install_requires=dependencies,
 )
 
