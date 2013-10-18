@@ -82,8 +82,8 @@ dependencies = [
 
 setup(
       name='python-documentcloud',
-      version='0.162',
-      description='A simple python wrapper for the DocumentCloud API.',
+      version='0.20',
+      description='A simple Python wrapper for the DocumentCloud API.',
       author='Ben Welsh',
       author_email='ben.welsh@gmail.com',
       url='http://datadesk.github.com/python-documentcloud/',
