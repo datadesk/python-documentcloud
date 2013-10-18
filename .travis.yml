@@ -1,8 +1,11 @@
 language: python
 python:
- - '2.5'
+- '2.6'
+- '2.7'
+- '3.2'
+- '3.3'
 install:
- - ./install_requirements.sh
+- pip install -r requirements.txt --use-mirrors
 script:
  - pep8 documentcloud
  - pyflakes documentcloud
