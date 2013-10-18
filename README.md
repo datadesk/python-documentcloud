@@ -6,6 +6,8 @@
 
 A simple python wrapper for the DocumentCloud API.
 
+Supports Python 2.6, 2.7, 3.2 and 3.3.
+
 [![Build Status](https://travis-ci.org/datadesk/python-documentcloud.png?branch=master)](https://travis-ci.org/datadesk/python-documentcloud)
 
 Features
