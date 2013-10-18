@@ -82,7 +82,7 @@ dependencies = [
 
 setup(
       name='python-documentcloud',
-      version='0.20',
+      version='0.200',
       description='A simple Python wrapper for the DocumentCloud API.',
       author='Ben Welsh',
       author_email='ben.welsh@gmail.com',
