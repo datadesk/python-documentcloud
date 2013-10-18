@@ -20,7 +20,7 @@ Getting started
 
 Documentation is available at [http://datadesk.github.io/python-documentcloud/](http://datadesk.github.io/python-documentcloud/)
 
-Getting started is as easy as...
+Installation is as easy as...
 
 ```bash
 $ pip install python-documentcloud
