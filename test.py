@@ -125,9 +125,9 @@ class BaseTest(unittest.TestCase):
         self.editable_project = self.get_editable_project(self.version)
 
 
-class DocumentTest(BaseTest):
+class SearchTest(BaseTest):
     """"
-    Document object related tests.
+    Search related tests.
     """
     def test_search(self):
         """
@@ -159,6 +159,8 @@ class DocumentTest(BaseTest):
             'updated_at',
             'data',
         ]
+        obj.__str__()
+        obj.__unicode__()
         for attr in attr_list:
             self.assertTrue(hasattr(obj, attr))
 
@@ -166,23 +168,47 @@ class DocumentTest(BaseTest):
         """
         Test whether annotations exist.
         """
-        obj = self.public_client.documents.search(self.test_search)[0]
-        self.assertEqual(type(obj.annotations[0]), Annotation)
+        doc = self.public_client.documents.search(self.test_search)[0]
+        obj = doc.annotations[0]
+        self.assertEqual(type(obj), Annotation)
+        obj.__str__()
+        obj.__unicode__()
 
     def test_search_sections(self):
         """
         Test whether sections exist.
         """
-        obj = self.public_client.documents.get(self.test_id)
-        self.assertEqual(type(obj.sections[0]), Section)
+        doc = self.public_client.documents.get(self.test_id)
+        obj = doc.sections[0]
+        self.assertEqual(type(obj), Section)
+        obj.__str__()
+        obj.__unicode__()
 
     def test_search_entities(self):
         """
         Test whether entities exist.
         """
-        obj = self.public_client.documents.get(self.test_id)
-        self.assertEqual(type(obj.entities[0]), Entity)
+        doc = self.public_client.documents.search(self.test_search)[0]
+        obj = doc.entities[0]
+        self.assertEqual(type(obj), Entity)
+        obj.__str__()
+        obj.__unicode__()
 
+    def test_get_mentions(self):
+        """
+        Test whether mentions exist.
+        """
+        doc = self.public_client.documents.search(self.test_search)[0]
+        obj = doc.mentions[0]
+        self.assertEqual(type(obj), Mention)
+        obj.__str__()
+        obj.__unicode__()
+
+
+class DocumentTest(BaseTest):
+    """"
+    Document object related tests.
+    """
     def test_get(self):
         """
         Test a get request for a particular document.
@@ -213,6 +239,8 @@ class DocumentTest(BaseTest):
             'data',
         ]
         [self.assertTrue(hasattr(obj, attr)) for attr in attr_list]
+        obj.__str__()
+        obj.__unicode__()
 
     def test_get_pdf(self):
         """
@@ -245,29 +273,31 @@ class DocumentTest(BaseTest):
         """
         Test whether annotations exist.
         """
-        obj = self.public_client.documents.get(self.test_id)
-        self.assertEqual(type(obj.annotations[0]), Annotation)
+        doc = self.public_client.documents.get(self.test_id)
+        obj = doc.annotations[0]
+        self.assertEqual(type(obj), Annotation)
+        obj.__str__()
+        obj.__unicode__()
 
     def test_get_sections(self):
         """
         Test whether sections exist.
         """
-        obj = self.public_client.documents.get(self.test_id)
-        self.assertEqual(type(obj.sections[0]), Section)
+        doc = self.public_client.documents.get(self.test_id)
+        obj = doc.sections[0]
+        self.assertEqual(type(obj), Section)
+        obj.__str__()
+        obj.__unicode__()
 
     def test_get_entities(self):
         """
         Test whether entities exist.
         """
-        obj = self.public_client.documents.get(self.test_id)
-        self.assertEqual(type(obj.entities[0]), Entity)
-
-    def test_get_mentions(self):
-        """
-        Test whether mentions exist.
-        """
-        obj = self.public_client.documents.search(self.test_search)[0]
-        self.assertEqual(type(obj.mentions[0]), Mention)
+        doc = self.public_client.documents.get(self.test_id)
+        obj = doc.entities[0]
+        self.assertEqual(type(obj), Entity)
+        obj.__str__()
+        obj.__unicode__()
 
     def test_set_data_type_restrictions(self):
         """
@@ -531,6 +561,8 @@ class ProjectTest(BaseTest):
         self.assertEqual(obj.id, obj2.id)
         obj3 = self.private_client.projects.get_by_title(obj2.title)
         self.assertEqual(obj2.id, obj3.id)
+        obj.__str__()
+        obj.__unicode__()
 
     def test_document_list(self):
         """

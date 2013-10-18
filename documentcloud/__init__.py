@@ -502,7 +502,7 @@ class BaseAPIObject(object):
         return self.__unicode__().encode("utf-8")
 
     def __unicode__(self):
-        return six.u(self.title)
+        return six.text_type(self.title)
 
 
 class Annotation(BaseAPIObject):
@@ -519,7 +519,7 @@ class Annotation(BaseAPIObject):
         return self.__unicode__().encode("utf-8")
 
     def __unicode__(self):
-        return six.u('')
+        return six.text_type('')
 
     def get_location(self):
         """
@@ -944,7 +944,7 @@ class Entity(BaseAPIObject):
     Keywords and such extracted from the document by OpenCalais.
     """
     def __unicode__(self):
-        return six.u(self.value)
+        return six.text_type(self.value)
 
 
 class Location(object):
@@ -958,7 +958,7 @@ class Location(object):
         return self.__unicode__().encode("utf-8")
 
     def __unicode__(self):
-        return six.u('')
+        return six.text_type('')
 
     def __init__(self, top, right, bottom, left):
         self.top = top
@@ -972,7 +972,7 @@ class Mention(BaseAPIObject):
     A mention of a search found in the document.
     """
     def __unicode__(self):
-        return six.u("Page %s" % (self.page))
+        return six.text_type("Page %s" % (self.page))
 
 
 class Project(BaseAPIObject):
@@ -1071,7 +1071,7 @@ class Resource(BaseAPIObject):
         return self.__unicode__().encode("utf-8")
 
     def __unicode__(self):
-        return six.u('')
+        return six.text_type('')
 
     def __getattr__(self, name):
         # When these attrs don't exist in the DocumentCloud db,
