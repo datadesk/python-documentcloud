@@ -12,4 +12,3 @@ simplejson==3.3.1
 six==1.4.1
 tox==1.6.1
 virtualenv==1.11
-wsgiref==0.1.2
