@@ -4,11 +4,17 @@
  | |_| | (_) | (__| |_| | | | | | |  __/ | | | |_| |___| | (_) | |_| | (_| |
  |____/ \___/ \___|\__,_|_| |_| |_|\___|_| |_|\__|\____|_|\___/ \__,_|\__,_|/  </code></pre>
 
-A simple python wrapper for the DocumentCloud API.
-
-Supports Python 2.6, 2.7, 3.2 and 3.3.
+A simple python wrapper for the DocumentCloud API
 
 [![Build Status](https://travis-ci.org/datadesk/python-documentcloud.png?branch=master)](https://travis-ci.org/datadesk/python-documentcloud)
+[![PyPI version](https://badge.fury.io/py/python-documentcloud.png)](http://badge.fury.io/py/python-documentcloud)
+[![Coverage Status](https://coveralls.io/repos/datadesk/python-documentcloud/badge.png?branch=master)](https://coveralls.io/r/datadesk/python-documentcloud?branch=master)
+
+* Documentation: [http://datadesk.github.io/python-documentcloud/](http://datadesk.github.io/python-documentcloud/)
+* Issues: [https://github.com/datadesk/python-documentcloud/issues](https://github.com/datadesk/python-documentcloud/issues)
+* Packaging: [https://pypi.python.org/pypi/python-documentcloud](https://pypi.python.org/pypi/python-documentcloud)
+* Testing: [https://travis-ci.org/datadesk/python-documentcloud](https://travis-ci.org/datadesk/python-documentcloud)
+* Coverage: [https://coveralls.io/r/datadesk/python-documentcloud](https://coveralls.io/r/datadesk/python-documentcloud)
 
 Features
 --------

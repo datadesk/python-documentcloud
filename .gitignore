@@ -3,10 +3,10 @@ scratch.py
 _sources/*
 sphinx/*
 doctrees/*
-groucho_marx/*
 examples.py
 build/*
 *.egg-info/*
 dist/*
 *.pyc
 private_settings.py
+.coverage
