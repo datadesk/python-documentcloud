@@ -46,7 +46,8 @@ class BaseDocumentCloudClient(object):
     """
     BASE_URI = 'https://www.documentcloud.org/api/'
 
-    def __init__(self, username, password):
+    def __init__(self, username, password, base_uri=None):
+        self.BASE_URI = base_uri or BaseDocumentCloudClient.BASE_URI
         self.username = username
         self.password = password
 
@@ -152,19 +153,18 @@ class DocumentCloud(BaseDocumentCloudClient):
     """
     The public interface for the DocumentCloud API
     """
-    def __init__(self, username=None, password=None):
-        super(DocumentCloud, self).__init__(username, password)
-        self.documents = DocumentClient(self.username, self.password, self)
-        self.projects = ProjectClient(self.username, self.password, self)
+    def __init__(self, username=None, password=None, base_uri=None):
+        super(DocumentCloud, self).__init__(username, password, base_uri)
+        self.documents = DocumentClient(self.username, self.password, self, base_uri)
+        self.projects = ProjectClient(self.username, self.password, self, base_uri)
 
 
 class DocumentClient(BaseDocumentCloudClient):
     """
     Methods for collecting documents
     """
-    def __init__(self, username, password, connection):
-        self.username = username
-        self.password = password
+    def __init__(self, username, password, connection, base_uri=None):
+        super(DocumentClient, self).__init__(username, password, base_uri)
         # We want to have the connection around on all Document objects
         # this client creates in case the instance needs to hit the API
         # later. Storing it will preserve the credentials.
@@ -343,9 +343,8 @@ class ProjectClient(BaseDocumentCloudClient):
     """
     Methods for collecting projects
     """
-    def __init__(self, username, password, connection):
-        self.username = username
-        self.password = password
+    def __init__(self, username, password, connection, base_uri=None):
+        super(ProjectClient, self).__init__(username, password, base_uri)
         # We want to have the connection around on all Document objects
         # this client creates in case the instance needs to hit the API
         # later. Storing it will preserve the credentials.
