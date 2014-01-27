@@ -155,8 +155,16 @@ class DocumentCloud(BaseDocumentCloudClient):
     """
     def __init__(self, username=None, password=None, base_uri=None):
         super(DocumentCloud, self).__init__(username, password, base_uri)
-        self.documents = DocumentClient(self.username, self.password, self, base_uri)
-        self.projects = ProjectClient(self.username, self.password, self, base_uri)
+        self.documents = DocumentClient(
+            self.username,
+            self.password, self, base_uri
+        )
+        self.projects = ProjectClient(
+            self.username,
+            self.password,
+            self,
+            base_uri
+        )
 
 
 class DocumentClient(BaseDocumentCloudClient):
