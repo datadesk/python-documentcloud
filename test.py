@@ -11,6 +11,7 @@ import sys
 import six
 import random
 import string
+import hashlib
 import textwrap
 import unittest
 try:
@@ -237,6 +238,7 @@ class DocumentTest(BaseTest):
             'title',
             'updated_at',
             'data',
+            'file_hash',
         ]
         [self.assertTrue(hasattr(obj, attr)) for attr in attr_list]
         obj.__str__()
@@ -247,7 +249,9 @@ class DocumentTest(BaseTest):
         Test if you can pull the PDF
         """
         obj = self.public_client.documents.get(self.test_id)
-        self.assertTrue(len(obj.pdf) > 0, True)
+        pdf = obj.pdf
+        self.assertTrue(len(pdf) > 0, True)
+        self.assertEqual(hashlib.sha1(pdf).hexdigest(), obj.file_hash)
 
 #    def test_get_full_text(self):
 #        """
