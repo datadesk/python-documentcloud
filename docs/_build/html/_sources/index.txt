@@ -619,6 +619,14 @@ Sections of the documents earmarked by users.
 Changelog
 =========
 
+0.2
+---
+
+- Python 3 support
+- PEP8 and PyFlakes compliance
+- Coverage reports on testing via coveralls.io
+
+
 0.16
 ----
 
