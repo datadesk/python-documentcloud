@@ -10,7 +10,7 @@ A simple python wrapper for the DocumentCloud API
 [![PyPI version](https://badge.fury.io/py/python-documentcloud.png)](http://badge.fury.io/py/python-documentcloud)
 [![Coverage Status](https://coveralls.io/repos/datadesk/python-documentcloud/badge.png?branch=master)](https://coveralls.io/r/datadesk/python-documentcloud?branch=master)
 
-* Documentation: [http://datadesk.github.io/python-documentcloud/](http://datadesk.github.io/python-documentcloud/)
+* Documentation: [http://python-documentcloud.rtfd.org/](http://python-documentcloud.rtfd.org/)
 * Issues: [https://github.com/datadesk/python-documentcloud/issues](https://github.com/datadesk/python-documentcloud/issues)
 * Packaging: [https://pypi.python.org/pypi/python-documentcloud](https://pypi.python.org/pypi/python-documentcloud)
 * Testing: [https://travis-ci.org/datadesk/python-documentcloud](https://travis-ci.org/datadesk/python-documentcloud)
@@ -26,7 +26,7 @@ Features
 Getting started
 ---------------
 
-Documentation is available at [http://datadesk.github.io/python-documentcloud/](http://datadesk.github.io/python-documentcloud/)
+Documentation is available at [http://python-documentcloud.rtfd.org/](http://python-documentcloud.rtfd.org/)
 
 Installation is as easy as...
 
