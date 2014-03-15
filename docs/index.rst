@@ -518,7 +518,7 @@ Other types of data provided by the DocumentCloud system.
 Annotations
 -----------
 
-Notes left in :doc:`documents </documents>`.
+Notes left in documents.
 
 .. attribute:: annotation_obj.access
 
@@ -549,7 +549,7 @@ Notes left in :doc:`documents </documents>`.
 Entities
 --------
 
-Keywords extracted from :doc:`documents </documents>` with OpenCalais.
+Keywords extracted from documents with OpenCalais.
 
 .. attribute:: location_obj.revelance
 
@@ -591,7 +591,7 @@ The location where :ref:`annotations` are placed within a document.
 Mentions
 --------
 
-Mentions of a search keyword found in one of the :doc:`documents </documents>`.
+Mentions of a search keyword found in one of the documents.
 
 .. attribute:: mention_obj.page
 
@@ -606,7 +606,7 @@ Mentions of a search keyword found in one of the :doc:`documents </documents>`.
 Sections
 --------
 
-Sections of the :doc:`documents </documents>` earmarked by users.
+Sections of the documents earmarked by users.
 
 .. attribute:: section_obj.title
 
