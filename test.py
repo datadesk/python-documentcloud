@@ -121,7 +121,6 @@ class BaseTest(unittest.TestCase):
         )
         self.fake_client = DocumentCloud("John Doe", "TK")
         self.version = self.get_version()
-#        self.editable_document = self.get_editable_document(self.version)
 #        self.editable_project = self.get_editable_project(self.version)
 
 
@@ -186,102 +185,71 @@ class SearchTest(BaseTest):
         obj.__unicode__()
 
 
-#class DocumentTest(BaseTest):
-#    """"
-#    Document object related tests.
-#    """
-#    def test_get(self):
-#        """
-#        Test a get request for a particular document.
-#        """
-#        obj = self.public_client.documents.get(self.test_id)
-#        self.assertEqual(type(obj), Document)
+class DocumentTest(BaseTest):
+    """"
+    Document object related tests.
+    """
+    def test_public_actions(self):
+        """
+        Test all the tricks available without authentication.
+        """
+        # Pull a document
+        self.obj = self.public_client.documents.get(self.test_id)
 
-#    def test_get_attrs(self):
-#        """
-#        Verify that all the Document attributes exist.
-#        """
-#        obj = self.public_client.documents.get(self.test_id)
-#        attr_list = [
-#            'access',
-#            'annotations',
-#            'canonical_url',
-#            'contributor',
-#            'contributor_organization',
-#            'created_at',
-#            'description',
-#            'id',
-#            'pages',
-#            'resources',
-#            'sections',
-#            'source',
-#            'title',
-#            'updated_at',
-#            'data',
-#            'file_hash',
-#        ]
-#        [self.assertTrue(hasattr(obj, attr)) for attr in attr_list]
-#        obj.__str__()
-#        obj.__unicode__()
+        # Test its attributions
+        self.assertTrue(isinstance(self.obj, Document))
+        obj = self.public_client.documents.get(self.test_id)
+        attr_list = [
+            'access',
+            'annotations',
+            'canonical_url',
+            'contributor',
+            'contributor_organization',
+            'created_at',
+            'description',
+            'id',
+            'pages',
+            'resources',
+            'sections',
+            'source',
+            'title',
+            'updated_at',
+            'data',
+            'file_hash',
+        ]
+        [self.assertTrue(hasattr(obj, attr)) for attr in attr_list]
+        obj.__str__()
+        obj.__unicode__()
 
-#    def test_get_pdf(self):
-#        """
-#        Test if you can pull the PDF
-#        """
-#        obj = self.public_client.documents.get(self.test_id)
-#        pdf = obj.pdf
-#        self.assertTrue(len(pdf) > 0, True)
-#        self.assertEqual(hashlib.sha1(pdf).hexdigest(), obj.file_hash)
+        # Raw PDF
+        self.assertTrue(len(obj.pdf) > 0)
+        # Turning this test off until @knowtheory gets all the value filled
+        # for all the old documents in the database.
+        #self.assertEqual(hashlib.sha1(pdf).hexdigest(), obj.file_hash)
 
-##    def test_get_full_text(self):
-##        """
-##        Test if you can pull the full text
-##        """
-##        obj = self.public_client.documents.get(self.test_id)
-##        try:
-##            self.assertTrue(len(obj.full_text) > 0, True)
-##        except:
-##            self.assertRaises(obj.full_text, NotImplementedError)
+        # Images
+        self.assertTrue(len(obj.small_image) > 0)
+        self.assertTrue(len(obj.thumbnail_image) > 0)
+        self.assertTrue(len(obj.normal_image) > 0)
+        self.assertTrue(len(obj.large_image) > 0)
 
-#    def test_get_images(self):
-#        """
-#        Test if you can pull the images
-#        """
-#        obj = self.public_client.documents.get(self.test_id)
-#        self.assertTrue(len(obj.small_image) > 0, True)
-#        self.assertTrue(len(obj.thumbnail_image) > 0, True)
-#        self.assertTrue(len(obj.normal_image) > 0, True)
-#        self.assertTrue(len(obj.large_image) > 0, True)
+        # Annotations
+        ann = obj.annotations[0]
+        self.assertTrue(isinstance(ann, Annotation))
+        ann.__str__()
+        ann.__unicode__()
 
-#    def test_get_annotations(self):
-#        """
-#        Test whether annotations exist.
-#        """
-#        doc = self.public_client.documents.get(self.test_id)
-#        obj = doc.annotations[0]
-#        self.assertEqual(type(obj), Annotation)
-#        obj.__str__()
-#        obj.__unicode__()
+        # Sections
+        sec = obj.sections[0]
+        self.assertTrue(isinstance(sec, Section))
+        sec.__str__()
+        sec.__unicode__()
 
-#    def test_get_sections(self):
-#        """
-#        Test whether sections exist.
-#        """
-#        doc = self.public_client.documents.get(self.test_id)
-#        obj = doc.sections[0]
-#        self.assertEqual(type(obj), Section)
-#        obj.__str__()
-#        obj.__unicode__()
-
-#    def test_get_entities(self):
-#        """
-#        Test whether entities exist.
-#        """
-#        doc = self.public_client.documents.get(self.test_id)
-#        obj = doc.entities[0]
-#        self.assertEqual(type(obj), Entity)
-#        obj.__str__()
-#        obj.__unicode__()
+        # Entities
+        ent = obj.entities[0]
+        self.assertTrue(isinstance(ent, Entity))
+        ent.__str__()
+        ent.__unicode__()
 
 #    def test_set_data_type_restrictions(self):
 #        """
