@@ -1,7 +1,7 @@
 Getting started
 ===============
 
-This tutorial will walk you through the process of installing python-documentment and making your first requests.
+This tutorial will walk you through the process of installing python-documentcloud and making your first requests.
 
 Installation
 ------------
