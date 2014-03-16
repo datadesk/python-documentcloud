@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Getting started &mdash; python-documentcloud 0.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="python-documentcloud 0.2 documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="index.html">python-documentcloud 0.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="getting-started">
+<h1>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<p>This tutorial will walk you through the process of installing python-documentment and making your first requests.</p>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>Provided that you have <a class="reference external" href="http://pypi.python.org/pypi/pip">pip</a> installed, you can install the library like so:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ pip install python-documentcloud
+</pre></div>
+</div>
+</div>
+<div class="section" id="creating-a-client">
+<h2>Creating a client<a class="headerlink" href="#creating-a-client" title="Permalink to this headline">¶</a></h2>
+<p>Before you can interact with DocumentCloud, you first must import the library and initialize a client to talk with the site on your behalf.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">documentcloud</span> <span class="kn">import</span> <span class="n">DocumentCloud</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">DocumentCloud</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Since we didn&#8217;t provide any log-in credentials, the client above will only be able to access published documents. If have an account at DocumentCloud and want to use that, you can provide the crendentials to the client.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">DocumentCloud</span><span class="p">(</span><span class="n">USERNAME</span><span class="p">,</span> <span class="n">PASSWORD</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="searching-for-documents">
+<h2>Searching for documents<a class="headerlink" href="#searching-for-documents" title="Permalink to this headline">¶</a></h2>
+<p>You can now you use client to interact with DocumentCloud. A search for documents about <a class="reference external" href="http://en.wikipedia.org/wiki/Rub%C3%A9n_Salazar">journalist Ruben Salazar</a> would look like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">obj_list</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">&quot;Ruben Salazar&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Let&#39;s grab the first one and look at it</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">obj_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span>
+<span class="go">&lt;Document: Final OIR Report&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="interacting-with-a-document">
+<h2>Interacting with a document<a class="headerlink" href="#interacting-with-a-document" title="Permalink to this headline">¶</a></h2>
+<p>Once you have you hands on a document object, you can interact with the metadata stored at documentcloud.org. Here&#8217;s a sample:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">obj</span><span class="o">.</span><span class="n">title</span>
+<span class="go">Final OIR Report</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">obj</span><span class="o">.</span><span class="n">id</span>
+<span class="go">71072-oir-final-report</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">obj</span><span class="o">.</span><span class="n">contributor_organization</span>
+<span class="go">Los Angeles Times</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">obj</span><span class="o">.</span><span class="n">canonical_url</span>
+<span class="go">http://www.documentcloud.org/documents/71072-oir-final-report.html</span>
+</pre></div>
+</div>
+<p>You can even download the PDF, page images and full text.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">large_image_url</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">large_image</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">full_text</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">pdf</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="uploading-a-document">
+<h2>Uploading a document<a class="headerlink" href="#uploading-a-document" title="Permalink to this headline">¶</a></h2>
+<p>You can upload a PDF document from your local machine to documentcloud.org. Here&#8217;s how:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">documentcloud</span> <span class="kn">import</span> <span class="n">DocumentCloud</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">DocumentCloud</span><span class="p">(</span><span class="n">DOCUMENTCLOUD_USERNAME</span><span class="p">,</span> <span class="n">DOCUMENTCLOUD_PASSWORD</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="s">&quot;/home/ben/pdfs/myfile.pdf&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And you don&#8217;t have to provide a path, you can also upload a file object.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">documentcloud</span> <span class="kn">import</span> <span class="n">DocumentCloud</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">DocumentCloud</span><span class="p">(</span><span class="n">DOCUMENTCLOUD_USERNAME</span><span class="p">,</span> <span class="n">DOCUMENTCLOUD_PASSWORD</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pdf_</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&quot;/home/ben/pdfs/myfile.pdf&quot;</span><span class="p">,</span> <span class="s">&quot;rb&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="n">pdf</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="uploading-a-directory-of-documents-as-a-project">
+<h2>Uploading a directory of documents as a project<a class="headerlink" href="#uploading-a-directory-of-documents-as-a-project" title="Permalink to this headline">¶</a></h2>
+<p>Here&#8217;s how to upload a directory full of documents and add them all to a new project. Be warned, this will upload any documents in directories inside the path you specify.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># Connect to documentcloud</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">documentcloud</span> <span class="kn">import</span> <span class="n">DocumentCloud</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">DocumentCloud</span><span class="p">(</span><span class="n">DOCUMENTCLOUD_USERNAME</span><span class="p">,</span> <span class="n">DOCUMENTCLOUD_PASSWORD</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Create the project</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span><span class="p">,</span> <span class="n">created</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">projects</span><span class="o">.</span><span class="n">get_or_create_by_title</span><span class="p">(</span><span class="s">&quot;Groucho Marx&#39;s FBI file&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Upload all the pdfs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj_list</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">upload_directory</span><span class="p">(</span><span class="s">&#39;/home/ben/pdfs/groucho_marx/&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Add the newly created documents to the project</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span><span class="o">.</span><span class="n">document_list</span> <span class="o">=</span> <span class="n">obj_list</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Save the changes to the project</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span><span class="o">.</span><span class="n">put</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="securely-uploading-a-document">
+<h2>Securely uploading a document<a class="headerlink" href="#securely-uploading-a-document" title="Permalink to this headline">¶</a></h2>
+<p>How to upload a document, but prevent it from being sent to DocumentCloud&#8217;s third-party services like OpenCalais.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">documentcloud</span> <span class="kn">import</span> <span class="n">DocumentCloud</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">DocumentCloud</span><span class="p">(</span><span class="n">DOCUMENTCLOUD_USERNAME</span><span class="p">,</span> <span class="n">DOCUMENTCLOUD_PASSWORD</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="s">&quot;/home/ben/pdfs/myfile.pdf&quot;</span><span class="p">,</span> <span class="n">secure</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="uploading-a-pdf-from-a-url">
+<h2>Uploading a PDF from a URL<a class="headerlink" href="#uploading-a-pdf-from-a-url" title="Permalink to this headline">¶</a></h2>
+<p>How to read a PDF document from a URL on the World Wide Web and upload it to DocumentCloud without saving it to your local hard drive.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">documentcloud</span> <span class="kn">import</span> <span class="n">DocumentCloud</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">urllib</span><span class="o">,</span> <span class="nn">cStringIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Download the URL with urllib</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">url</span> <span class="o">=</span> <span class="s">&quot;http://myhost.org/interesting-doc.pdf&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Stuff it in a file object with cStringIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">file_obj</span> <span class="o">=</span> <span class="n">cStringIO</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Upload that to DocumentCloud</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">DocumentCloud</span><span class="p">(</span><span class="n">DOCUMENTCLOUD_USERNAME</span><span class="p">,</span> <span class="n">DOCUMENTCLOUD_PASSWORD</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="n">file_obj</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Getting started</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#creating-a-client">Creating a client</a></li>
+<li><a class="reference internal" href="#searching-for-documents">Searching for documents</a></li>
+<li><a class="reference internal" href="#interacting-with-a-document">Interacting with a document</a></li>
+<li><a class="reference internal" href="#uploading-a-document">Uploading a document</a></li>
+<li><a class="reference internal" href="#uploading-a-directory-of-documents-as-a-project">Uploading a directory of documents as a project</a></li>
+<li><a class="reference internal" href="#securely-uploading-a-document">Securely uploading a document</a></li>
+<li><a class="reference internal" href="#uploading-a-pdf-from-a-url">Uploading a PDF from a URL</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/gettingstarted.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="index.html">python-documentcloud 0.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Los Angeles Times Data Desk.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
