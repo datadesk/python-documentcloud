@@ -28,6 +28,6 @@ Contributing
 
 * Code repository: `https://github.com/datadesk/python-documentcloud <https://github.com/datadesk/python-documentcloud>`_
 * Issues: `https://github.com/datadesk/python-documentcloud/issues <https://github.com/datadesk/python-documentcloud/issues>`_
-* Packaging: `[https://pypi.python.org/pypi/python-documentcloud <[https://pypi.python.org/pypi/python-documentcloud>`_
+* Packaging: `https://pypi.python.org/pypi/python-documentcloud <https://pypi.python.org/pypi/python-documentcloud>`_
 * Testing: `https://travis-ci.org/datadesk/python-documentcloud <https://travis-ci.org/datadesk/python-documentcloud>`_
 * Coverage: `https://coveralls.io/r/datadesk/python-documentcloud <https://coveralls.io/r/datadesk/python-documentcloud>`_
