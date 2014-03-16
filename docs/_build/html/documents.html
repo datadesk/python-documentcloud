@@ -23,7 +23,9 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="python-documentcloud 0.2 documentation" href="index.html" /> 
+    <link rel="top" title="python-documentcloud 0.2 documentation" href="index.html" />
+    <link rel="next" title="Projects" href="projects.html" />
+    <link rel="prev" title="Getting started" href="gettingstarted.html" /> 
   </head>
   <body>
     <div class="related">
@@ -32,6 +34,12 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="projects.html" title="Projects"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="gettingstarted.html" title="Getting started"
+             accesskey="P">previous</a> |</li>
         <li><a href="index.html">python-documentcloud 0.2 documentation</a> &raquo;</li> 
       </ul>
     </div>  
@@ -205,6 +213,23 @@
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;83251-fbi-file-on-christopher-biggie-smalls-wallace&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">entities</span>
 <span class="go">[&lt;Entity: Angeles&gt;, &lt;Entity: FD&gt;, &lt;Entity: OO&gt;, &lt;Entity: Los Angeles&gt;, ...</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="document_obj.file_hash">
+<tt class="descclassname">document_obj.</tt><tt class="descname">file_hash</tt><a class="headerlink" href="#document_obj.file_hash" title="Permalink to this definition">¶</a></dt>
+<dd><p>A hash representation of the raw PDF data as a hexadecimal string.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;1021571-lafd-2013-hiring-statistics&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">file_hash</span>
+<span class="go">&#39;872b9b858f5f3e6bb6086fec7f05dd464b60eb26&#39;</span>
+</pre></div>
+</div>
+<p>You could recreate this hexadecimal hash yourself using the <a class="reference external" href="https://en.wikipedia.org/wiki/SHA-1">SHA-1 algorithm</a>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hashlib</span><span class="o">.</span><span class="n">sha1</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">pdf</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+<span class="go">&#39;872b9b858f5f3e6bb6086fec7f05dd464b60eb26&#39;</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -395,6 +420,12 @@
 </li>
 </ul>
 
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="gettingstarted.html"
+                        title="previous chapter">Getting started</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="projects.html"
+                        title="next chapter">Projects</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/documents.txt"
@@ -423,6 +454,12 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="projects.html" title="Projects"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="gettingstarted.html" title="Getting started"
+             >previous</a> |</li>
         <li><a href="index.html">python-documentcloud 0.2 documentation</a> &raquo;</li> 
       </ul>
     </div>

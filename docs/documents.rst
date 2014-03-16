@@ -130,6 +130,20 @@ Metadata
         >>> obj.entities
         [<Entity: Angeles>, <Entity: FD>, <Entity: OO>, <Entity: Los Angeles>, ...
 
+.. attribute:: document_obj.file_hash
+
+    A hash representation of the raw PDF data as a hexadecimal string.
+
+        >>> obj = client.documents.get('1021571-lafd-2013-hiring-statistics')
+        >>> obj.file_hash
+        '872b9b858f5f3e6bb6086fec7f05dd464b60eb26'
+
+    You could recreate this hexadecimal hash yourself using the `SHA-1 algorithm <https://en.wikipedia.org/wiki/SHA-1>`_. 
+
+        >>> import hashlib
+        >>> hashlib.sha1(obj.pdf).hexdigest()
+        '872b9b858f5f3e6bb6086fec7f05dd464b60eb26'
+
 .. attribute:: document_obj.full_text
 
     Returns the full text of the document, as extracted from the original PDF by DocumentCloud. Results may vary, but this will give you what they got. Currently, DocumentCloud only makes this available for public documents.
