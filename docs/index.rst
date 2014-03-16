@@ -20,16 +20,8 @@ User Documentation
    documents
    projects
    otherobjects
-
-Changelog
----------
-
-.. include:: changelog.rst
-
-Credits
----------
-
-.. include:: credits.rst
+   changelog
+   credits
 
 Contributing
 ------------

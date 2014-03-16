@@ -1,3 +1,6 @@
+Credits
+-------
+
 The lead developer of this project is `Ben Welsh <http://palewi.re/who-is-ben-welsh/>`_.
 
 But it would not be possible without:

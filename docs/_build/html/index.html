@@ -93,81 +93,19 @@
 <li class="toctree-l2"><a class="reference internal" href="otherobjects.html#sections">Sections</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id1">0.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id2">0.16</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id3">0.15</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id4">0.14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id5">0.13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id6">0.12</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id7">0.11</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="credits.html">Credits</a></li>
 </ul>
 </div>
-</div>
-<div class="section" id="changelog">
-<h2>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id1">
-<h3>0.2<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li>Python 3 support</li>
-<li>PEP8 and PyFlakes compliance</li>
-<li>Coverage reports on testing via coveralls.io</li>
-</ul>
-</div>
-<div class="section" id="id2">
-<h3>0.16<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li>Continuous integration testing with TravisCI</li>
-<li>Fixed bug with empty strings in Document descriptions</li>
-<li>Raise errors when a user tries to save a data keyword reserved by DocumentCloud</li>
-<li>Allow all-caps file extensions</li>
-<li>Retry requests that fail with an increasing backoff delay</li>
-<li>Fixed a bug in how titles are assigned to a file object</li>
-<li>Added access checks when retrieving txt, pdf, img about a document</li>
-</ul>
-</div>
-<div class="section" id="id3">
-<h3>0.15<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li>File objects can now be submitted for uploading</li>
-<li>Added more support for unicode data thanks to contributions by <a class="reference external" href="https://twitter.com/#!/shaneshifflett">Shane Shifflet</a>.</li>
-<li>Smarter lazy loading of Document attributes missing from a search</li>
-</ul>
-</div>
-<div class="section" id="id4">
-<h3>0.14<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li>Added <tt class="docutils literal"><span class="pre">data</span></tt> attribute on Document for storing dictionaries of arbitrary metadata</li>
-<li>Added <tt class="docutils literal"><span class="pre">secure</span></tt> option for Document uploads to prevent data from being sent to OpenCalais</li>
-<li>Added <tt class="docutils literal"><span class="pre">save</span></tt> alias on Document and Project objects that uses the pre-existing <tt class="docutils literal"><span class="pre">put</span></tt> command</li>
-<li>Fixed to url encoding to makes the system more unicode friendly</li>
-<li>Added all Document upload arguments to <tt class="docutils literal"><span class="pre">upload_directory</span></tt> method</li>
-</ul>
-</div>
-<div class="section" id="id5">
-<h3>0.13<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><tt class="docutils literal"><span class="pre">upload_directory</span></tt> method for documents</li>
-</ul>
-</div>
-<div class="section" id="id6">
-<h3>0.12<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><tt class="docutils literal"><span class="pre">get_or_create_by_title</span></tt> method for projects</li>
-<li>Document and project creation methods now return an object, not the new id.</li>
-<li>Projects can pulled by id or by title</li>
-</ul>
-</div>
-<div class="section" id="id7">
-<h3>0.11<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li>Document search now returns <tt class="docutils literal"><span class="pre">mentions</span></tt> of the keyword in the documents</li>
-<li><tt class="docutils literal"><span class="pre">related_url</span></tt> and <tt class="docutils literal"><span class="pre">published_url</span></tt> attributes now more easily accessible</li>
-<li><tt class="docutils literal"><span class="pre">normal</span></tt> sized images now available</li>
-</ul>
-</div>
-</div>
-<div class="section" id="credits">
-<h2>Credits<a class="headerlink" href="#credits" title="Permalink to this headline">¶</a></h2>
-<p>The lead developer of this project is <a class="reference external" href="http://palewi.re/who-is-ben-welsh/">Ben Welsh</a>.</p>
-<p>But it would not be possible without:</p>
-<ul class="simple">
-<li><a class="reference external" href="https://www.documentcloud.org/about">The DocumentCloud team</a>.</li>
-<li><a class="reference external" href="https://github.com/eyeseast">Chris Amico</a>, <a class="reference external" href="https://github.com/onyxfish/">Christopher Groskopf</a> and <a class="reference external" href="http://www.muckrock.com/blog/using-the-documentcloud-api/">Mitchell Kotler</a>, who broke ground with code that I&#8217;ve adapted.</li>
-<li>Fixes from friendly people like <a class="reference external" href="https://github.com/JoeGermuska">Joe Germuska</a> and <a class="reference external" href="https://twitter.com/#!/shaneshifflett">Shane Shifflet</a>.</li>
-</ul>
 </div>
 <div class="section" id="contributing">
 <h2>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h2>
@@ -192,17 +130,6 @@
 <li><a class="reference internal" href="#">python-documentcloud</a><ul>
 <li><a class="reference internal" href="#features">Features</a></li>
 <li><a class="reference internal" href="#user-documentation">User Documentation</a></li>
-<li><a class="reference internal" href="#changelog">Changelog</a><ul>
-<li><a class="reference internal" href="#id1">0.2</a></li>
-<li><a class="reference internal" href="#id2">0.16</a></li>
-<li><a class="reference internal" href="#id3">0.15</a></li>
-<li><a class="reference internal" href="#id4">0.14</a></li>
-<li><a class="reference internal" href="#id5">0.13</a></li>
-<li><a class="reference internal" href="#id6">0.12</a></li>
-<li><a class="reference internal" href="#id7">0.11</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#credits">Credits</a></li>
 <li><a class="reference internal" href="#contributing">Contributing</a></li>
 </ul>
 </li>
