@@ -251,245 +251,176 @@ class DocumentTest(BaseTest):
         ent.__str__()
         ent.__unicode__()
 
-#    def test_set_data_type_restrictions(self):
-#        """
-#        Make sure `data` attribute will only accept a dictionary.
-#        """
-#        obj = self.private_client.documents.get(self.test_id)
-#        obj.data = dict(foo='bar')
-#        self.assertRaises(TypeError, obj.set_data, "string")
-#        self.assertRaises(TypeError, obj.set_data, 666)
-#        self.assertRaises(TypeError, obj.set_data, obj)
+    def test_private_actions(self):
+        """
+        Test all the stuff that requires a login.
+        """
+        # Get an editable document
+        obj_id = self.get_editable_document(self.version)
+        obj = self.private_client.documents.get(obj_id)
 
-#    def test_get_put(self):
-#        """
-#        Test whether we can put random noise to all the editable fields.
-#        """
-#        # Pull the object we'll deface
-#        obj = self.private_client.documents.get(self.editable_document)
-#        # Create random strings we will save to the editable attributes
-#        title = get_random_string()
-#        source = get_random_string()
-#        description = get_random_string()
-#        data = {get_random_string(): get_random_string()}
-#        if obj.resources.related_article == 'http://documents.latimes.com':
-#            related_article = 'http://documentcloud.org'
-#        else:
-#            related_article = 'http://documents.latimes.com'
-#        if obj.resources.published_url == 'http://documents.latimes.com':
-#            published_url = 'http://documentcloud.org'
-#        else:
-#            published_url = 'http://documents.latimes.com'
-#        # Set the random strings our local object's attributes
-#        obj.title = title
-#        obj.source = source
-#        obj.description = description
-#        obj.data = data
-#        obj.resources.related_article = related_article
-#        obj.resources.published_url = published_url
-#        # Save the changes up to DocumentCloud
-#        obj.put()
-#        # Pull the object again and verify the changes stuck
-#        obj = self.private_client.documents.get(self.editable_document)
-#        self.assertEqual(obj.title, title)
-#        self.assertEqual(obj.source, source)
-#        self.assertEqual(obj.description, description)
-#        self.assertEqual(obj.data, data)
-#        self.assertEqual(obj.resources.related_article, related_article)
-#        self.assertEqual(obj.resources.published_url, published_url)
+        # Make sure `data` attribute will only accept a dictionary.
+        obj.data = dict(foo='bar')
+        self.assertRaises(TypeError, obj.set_data, "string")
+        self.assertRaises(TypeError, obj.set_data, 666)
+        self.assertRaises(TypeError, obj.set_data, obj)
 
-#    def test_reserved_data_namespace(self):
-#        """
-#        Make sure the wrapper doesn't let you try to save
-#        reserved data namespaces.
-#        """
-#        # Pull the object we'll deface
-#        obj = self.private_client.documents.get(self.editable_document)
-#        black_list = [
-#            'person', 'organization', 'place', 'term', 'email', 'phone',
-#            'city', 'state', 'country', 'title', 'description', 'source',
-#            'account', 'group', 'project', 'projectid', 'document', 'access',
-#            'filter',
-#        ]
-#        for key in black_list:
-#            self.assertRaises(ValueError, setattr, obj, "data", {key: 'foo'})
-#        obj.data = dict(boom='bap')
+        # Test whether we can put random noise to all the editable fields.
+        title = get_random_string()
+        source = get_random_string()
+        description = get_random_string()
+        data = {get_random_string(): get_random_string()}
+        if obj.resources.related_article == 'http://documents.latimes.com':
+            related_article = 'http://documentcloud.org'
+        else:
+            related_article = 'http://documents.latimes.com'
+        if obj.resources.published_url == 'http://documents.latimes.com':
+            published_url = 'http://documentcloud.org'
+        else:
+            published_url = 'http://documents.latimes.com'
+        obj.title = title
+        obj.source = source
+        obj.description = description
+        obj.data = data
+        obj.resources.related_article = related_article
+        obj.resources.published_url = published_url
 
-#    def test_save(self):
-#        """
-#        Test whether the save method properly aliases `put`.
-#        """
-#        # Pull the object we'll deface
-#        obj = self.private_client.documents.get(self.editable_document)
-#        # Create random strings we will save to the editable attributes
-#        title = get_random_string()
-#        obj.title = title
-#        # Save the changes up to DocumentCloud with the alias
-#        obj.save()
-#        # Pull the object again and verify the changes stuck
-#        obj = self.private_client.documents.get(self.editable_document)
-#        self.assertEqual(obj.title, title)
+        # Save the changes up to DocumentCloud
+        obj.put()
 
-#    def test_put_with_weird_encoding(self):
-#        """
-#        Test whether you can save an attribute with some weird encoding
-#        in the title.
-#        """
-#        # Pull the object we'll deface
-#        obj = self.private_client.documents.get(self.editable_document)
-#        before_title = copy(obj.title)
-#        before_description = copy(obj.description)
-#        # Add something weird to the title and save it
-#        after_title = copy(PANGRAMS['iw'])
-#        after_description = copy(PANGRAMS['jp'])
-#        obj.title =  after_title
-#        obj.description = after_description
-#        obj.put()
-#        self.assertEqual(obj.title, after_title)
-#        self.assertEqual(obj.description, after_description)
-#        # Switch it back
-#        obj.title = before_title
-#        obj.description = before_description
-#        obj.put()
-#        self.assertEqual(obj.title, before_title)
-#        self.assertEqual(obj.description, before_description)
+        # Pull the object again and verify the changes stuck
+        obj = self.private_client.documents.get(obj_id)
+        self.assertEqual(obj.title, title)
+        self.assertEqual(obj.source, source)
+        self.assertEqual(obj.description, description)
+        self.assertEqual(obj.data, data)
+        self.assertEqual(obj.resources.related_article, related_article)
+        self.assertEqual(obj.resources.published_url, published_url)
 
-#    def test_upload_and_delete(self):
-#        """
-#        Makes sure you can create and delete a document.
-#        """
-#        # Create it
-#        title = get_random_string()
-#        obj = self.private_client.documents.upload(
-#            os.path.join(os.path.dirname(__file__), "test.pdf"),
-#            title,
-#            description='Blah blah',
-#            related_article='http://www.latimes.com',
-#            data=dict(like='this', boom='bap'),
-#        )
-#        self.assertEqual(type(obj), Document)
-#        self.assertEqual(obj.description, 'Blah blah')
-#        self.assertEqual(obj.related_article, 'http://www.latimes.com')
-#        self.assertEqual(obj.data, {'like': 'this', 'boom': 'bap'})
-#        # Delete it
-#        obj.delete()
-#        self.assertRaises(DoesNotExistError, self.private_client.documents.get, obj.id)
+        # Test reserved namespaces to make sure they're protected
+        black_list = [
+            'person', 'organization', 'place', 'term', 'email', 'phone',
+            'city', 'state', 'country', 'title', 'description', 'source',
+            'account', 'group', 'project', 'projectid', 'document', 'access',
+            'filter',
+        ]
+        for key in black_list:
+            self.assertRaises(ValueError, setattr, obj, "data", {key: 'foo'})
+        obj.data = dict(boom='bap')
 
-#    def test_upload_with_bad_data_keyword(self):
-#        """
-#        Test to make sure an error is thrown if someone tries to upload 
-#        a document with a reserved keyword in the 'data' attribute.
-#        """
-#        title = '001 - Test upload (%s)' % get_random_string()
-#        self.assertRaises(ValueError, self.private_client.documents.upload,
-#            os.path.join(os.path.dirname(__file__), "test.pdf"),
-#            title,
-#            description='Blah blah',
-#            related_article='http://www.latimes.com',
-#            # Access is an reserved keyword
-#            data=dict(access='this', boom='bap'),
-#        )
+        # Resources
+        self.assertEqual(obj.published_url, obj.resources.published_url)
+        self.assertEqual(obj.related_article, obj.resources.related_article)
 
-#    def test_file_obj_upload_and_delete(self):
-#        """
-#        Test that uploading works when you provide a file object instead of a 
-#        path.
-#        """
-#        # Create it
-#        title = get_random_string()
-#        obj = self.private_client.documents.upload(
-#            open(os.path.join(os.path.dirname(__file__), "test.pdf"), "rb"),
-#            title,
-#        )
-#        self.assertEqual(type(obj), Document)
-#        self.assertEqual(obj.title, title)
-#        # Delete it
-#        obj.delete()
-#        self.assertRaises(DoesNotExistError, self.private_client.documents.get, obj.id)
+        # And their shortcuts
+        obj.published_url = 'http://latimes.com'
+        obj.related_article = 'http://palewi.re'
+        self.assertEqual(obj.published_url, obj.resources.published_url)
+        self.assertEqual(obj.related_article, obj.resources.related_article)
 
-#    def test_unicode_upload_and_delete(self):
-#        """
-#        Ensure that documents with non-english characters can be uploaded
-#        """
-#        pdf = os.path.join(os.path.dirname(__file__), "español.pdf")
-#        obj = self.private_client.documents.upload(open(pdf, 'rb'))
-#        self.assertEqual(type(obj), Document)
-#        # Delete it
-#        obj.delete()
-#        self.assertRaises(DoesNotExistError, self.private_client.documents.get, obj.id)
+        # Test whether the save method properly aliases `put`.
+        title = get_random_string()
+        obj.title = title
+        obj.save()
+        obj = self.private_client.documents.get(obj_id)
+        self.assertEqual(obj.title, title)
 
-#    def test_virtual_file_upload_and_delete(self):
-#        """
-#        Proxy test case for files stored in memory, for instance, django-storages
-#        these tests are difficult to create as the class used to represent a file
-#        object is determined at runtime by the DEFAULT_FILE_STORAGE var (django)
-#        anyway, the main point is to show the MultipartPostHandler can handle unicode
-#        """
-#        path = os.path.join(os.path.dirname(__file__), "español.pdf")
-#        real_file = open(path, 'rb')
-#        if six.PY3:
-#            virtual_file = io.BytesIO(real_file.read())
-#        else:
-#            virtual_file = io.StringIO(real_file.read())
-#        obj = self.private_client.documents.upload(virtual_file, title='Espanola!')
-#        self.assertEqual(type(obj), Document)
-#        # Delete it
-#        obj.delete()
-#        self.assertRaises(DoesNotExistError, self.private_client.documents.get, obj.id)
+        # Test whether you can save an attribute with some weird encoding
+        before_title = copy(obj.title)
+        before_description = copy(obj.description)
+        obj.title =  random.choice(PANGRAMS.keys())
+        obj.description = random.choice(PANGRAMS.keys())
+        obj.put()
+        obj.title = before_title
+        obj.description = before_description
+        obj.put()
 
-#    def test_secure_upload_and_delete(self):
-#        """
-#        Make sure you can create and delete a document using the secure
-#        parameter that hides your data from OpenCalais.
-#        
-#        Currently I don't know a way to test whether the parameter is properly
-#        applied. It seems to work in the UI, but, as far as I know, the API
-#        doesn't return an indicator that I have figured out how to test.
-#        """
-#        # Create it
-#        title = get_random_string()
-#        obj = self.private_client.documents.upload(
-#            os.path.join(os.path.dirname(__file__), "test.pdf"),
-#            title,
-#            secure=True,
-#        )
-#        self.assertEqual(type(obj), Document)
-#        # Delete it
-#        obj.delete()
-#        self.assertRaises(DoesNotExistError, self.private_client.documents.get, obj.id)
+        # Upload
+        title = get_random_string()
+        obj = self.private_client.documents.upload(
+            os.path.join(os.path.dirname(__file__), "test.pdf"),
+            title,
+            description='Blah blah',
+            related_article='http://www.latimes.com',
+            data=dict(like='this', boom='bap'),
+        )
+        self.assertTrue(isinstance(obj, Document))
+        self.assertEqual(obj.title, title)
+        self.assertEqual(obj.description, 'Blah blah')
+        self.assertEqual(obj.related_article, 'http://www.latimes.com')
+        self.assertEqual(obj.data, {'like': 'this', 'boom': 'bap'})
 
-#    def test_upload_directory(self):
-#        """
-#        Makes sure you can upload all the pdfs in a directory.
-#        """
-#        # Upload everything in this directory.
-#        obj_list = self.private_client.documents.upload_directory('./',
-#            source='Los Angeles Times',
-#            published_url='http://www.latimes.com',
-#        )
-#        # Which should only be one document
-#        self.assertEqual(len(obj_list), 2)
-#        self.assertEqual(type(obj_list[0]), Document)
-#        self.assertEqual(obj_list[0].source, 'Los Angeles Times')
-#        self.assertEqual(obj_list[0].published_url, 'http://www.latimes.com')
-#        # And which we should be able to delete
-#        [i.delete() for i in obj_list]
-#        [self.assertRaises(DoesNotExistError, self.private_client.documents.get, obj.id)
-#            for obj in obj_list]
+        # Delete
+        obj.delete()
+        self.assertRaises(
+            DoesNotExistError,
+            self.private_client.documents.get,
+            obj.id
+        )
 
-#    def test_resources(self):
-#        """
-#        Makes sure the canonical url is a top-level attribute on the Document.
-#        """
-#        obj = self.public_client.documents.get(self.test_id)
-#        # Test that they come out the same
-#        self.assertEqual(obj.published_url, obj.resources.published_url)
-#        self.assertEqual(obj.related_article, obj.resources.related_article)
-#        # Then test that they setattr the same
-#        obj.published_url = 'http://latimes.com'
-#        obj.related_article = 'http://palewire.com'
-#        self.assertEqual(obj.published_url, obj.resources.published_url)
-#        self.assertEqual(obj.related_article, obj.resources.related_article)
+        # Test upload with bad keyword
+        title = '001 - Test upload (%s)' % get_random_string()
+        self.assertRaises(
+            ValueError,
+            self.private_client.documents.upload,
+            os.path.join(os.path.dirname(__file__), "test.pdf"),
+            title,
+            description='Blah blah',
+            related_article='http://www.latimes.com',
+            # Access is an reserved keyword so this should fail
+            data=dict(access='this', boom='bap'),
+        )
+
+        # Upload with a file object, not a path
+        title = get_random_string()
+        obj = self.private_client.documents.upload(
+            open(os.path.join(os.path.dirname(__file__), "test.pdf"), "rb"),
+            title,
+        )
+        self.assertTrue(isinstance(obj, Document))
+        self.assertEqual(obj.title, title)
+        obj.delete()
+
+        # Ensure that documents with non-english characters can be uploaded
+        pdf = os.path.join(os.path.dirname(__file__), "español.pdf")
+        obj = self.private_client.documents.upload(open(pdf, 'rb'))
+        self.assertTrue(isinstance(obj, Document))
+        obj.delete()
+
+        # Test virtual file upload and delete
+        path = os.path.join(os.path.dirname(__file__), "español.pdf")
+        real_file = open(path, 'rb')
+        if six.PY3:
+            virtual_file = io.BytesIO(real_file.read())
+        else:
+            virtual_file = io.StringIO(real_file.read())
+        obj = self.private_client.documents.upload(
+            virtual_file,
+            title='Espanola!'
+        )
+        self.assertTrue(isinstance(obj, Document))
+        obj.delete()
+
+        # Test secure upload
+        title = get_random_string()
+        obj = self.private_client.documents.upload(
+            os.path.join(os.path.dirname(__file__), "test.pdf"),
+            title,
+            secure=True,
+        )
+        self.assertTrue(isinstance(obj, Document))
+        obj.delete()
+
+        # Upload everything in this directory.
+        obj_list = self.private_client.documents.upload_directory('./',
+            source='Los Angeles Times',
+            published_url='http://www.latimes.com',
+        )
+        self.assertEqual(len(obj_list), 2)
+        self.assertTrue(isinstance(obj_list[0], Document))
+        self.assertEqual(obj_list[0].source, 'Los Angeles Times')
+        self.assertEqual(obj_list[0].published_url, 'http://www.latimes.com')
+        [i.delete() for i in obj_list]
 
 
 #class ProjectTest(BaseTest):
