@@ -121,7 +121,6 @@ class BaseTest(unittest.TestCase):
         )
         self.fake_client = DocumentCloud("John Doe", "TK")
         self.version = self.get_version()
-#        self.editable_project = self.get_editable_project(self.version)
 
 
 class SearchTest(BaseTest):
@@ -186,7 +185,7 @@ class SearchTest(BaseTest):
 
 
 class DocumentTest(BaseTest):
-    """"
+    """
     Document object related tests.
     """
     def test_public_actions(self):
@@ -328,8 +327,8 @@ class DocumentTest(BaseTest):
         # Test whether you can save an attribute with some weird encoding
         before_title = copy(obj.title)
         before_description = copy(obj.description)
-        obj.title =  random.choice(PANGRAMS.keys())
-        obj.description = random.choice(PANGRAMS.keys())
+        obj.title =  random.choice(list(PANGRAMS.keys()))
+        obj.description = random.choice(list(PANGRAMS.keys()))
         obj.put()
         obj.title = before_title
         obj.description = before_description
@@ -423,170 +422,181 @@ class DocumentTest(BaseTest):
         [i.delete() for i in obj_list]
 
 
-#class ProjectTest(BaseTest):
+class ProjectTest(BaseTest):
+    """
+    Project object related tests.
+    """
+    def test_all(self):
+        """
+        Test an `all` request for a list of all projects belong to an 
+        authorized user.
+        """
+        obj_list = self.private_client.projects.all()
+        self.assertEqual(type(obj_list), type([]))
+        self.assertEqual(type(obj_list[0]), Project)
 
-#    def test_all(self):
-#        """
-#        Test an `all` request for a list of all projects belong to an 
-#        authorized user.
-#        """
-#        obj_list = self.private_client.projects.all()
-#        self.assertEqual(type(obj_list), type([]))
-#        self.assertEqual(type(obj_list[0]), Project)
+    def test_get(self):
+        """
+        Test ability to get a project and look at it.
+        """
+        # Make sure all the different pull commands return the same thing
+        obj = self.private_client.projects.get('934')
+        self.assertTrue(isinstance(obj, Project))
 
-#    def test_get(self):
-#        """
-#        Test a `get` methods for a particular project
-#        """
-#        obj = self.private_client.projects.get('934')
-#        self.assertEqual(type(obj), Project)
-#        obj2 = self.private_client.projects.get_by_id('934')
-#        self.assertEqual(obj.id, obj2.id)
-#        obj3 = self.private_client.projects.get_by_title(obj2.title)
-#        self.assertEqual(obj2.id, obj3.id)
-#        obj.__str__()
-#        obj.__unicode__()
+        obj2 = self.private_client.projects.get_by_id('934')
+        self.assertEqual(obj.id, obj2.id)
 
-#    def test_document_list(self):
-#        """
-#        Verify that a project can pull back all if its associated documents.
-#        """
-#        obj = self.private_client.projects.get('934')
-#        doc_list = obj.document_list
-#        self.assertEqual(type(doc_list[0]), Document)
+        obj3 = self.private_client.projects.get_by_title(obj2.title)
+        self.assertEqual(obj2.id, obj3.id)
 
-#    def test_get_document(self):
-#        """
-#        Verify that a project can pull a particular document by id
-#        """
-#        obj = self.private_client.projects.get('934')
-#        doc = obj.get_document('25798-pr-01092011-loughner')
-#        self.assertEqual(type(doc), Document)
+        # Test other attributes
+        obj.__str__()
+        obj.__unicode__()
 
-#    def test_put(self):
-#        """
-#        Test whether we can put random noise to all the editable fields.
-#        """
-#        # Pull the object we'll deface
-#        obj = self.private_client.projects.get(self.editable_project)
-#        # Create random strings we will save to the editable attributes
-#        title = 'The Klee Report (%s)' % get_random_string()
-#        description = textwrap.dedent("""
-#        An independent probe into Sam Zell\'s purchase of Tribune Company by 
-#        investigator Kenneth Klee. Released at the end of July 2010. (%s)
-#        """)
-#        description = description % get_random_string()
-#        # Set the random strings our local object's attributes
-#        # and zero out the document list.
-#        obj.title = title
-#        obj.description = description
-#        obj.document_list = []
-#        # Save the changes up to DocumentCloud
-#        obj.put()
-#        # Pull the object again and verify the changes stuck
-#        obj = self.private_client.projects.get(self.editable_project)
-#        self.assertEqual(obj.title, title)
-#        self.assertEqual(obj.description, description)
-#        self.assertEqual(len(obj.document_list), 0)
-#        # Now add all the documents back in
-#        proj_ids = [
-#            '12667-the-klee-report-volume-2',
-#            '12666-the-klee-report-volume-1'
-#        ]
-#        for id in proj_ids:
-#            doc = self.private_client.documents.get(id)
-#            obj.document_list.append(doc)
-#        obj.put()
-#        obj = self.private_client.projects.get(self.editable_project)
-#        self.assertEqual(len(obj.document_list), len(proj_ids))
+        # Document list
+        doc_list = obj.document_list
+        self.assertTrue(isinstance(doc_list[0], Document))
 
-#    def test_save(self):
-#        """
-#        Test whether the save method properly aliases `put`.
-#        """
-#        # Pull the object we'll deface
-#        obj = self.private_client.projects.get(self.editable_project)
-#        # Create random strings we will save to the editable attributes
-#        title = get_random_string()
-#        # Save the changes up to DocumentCloud with the alias
-#        obj.title = title
-#        obj.save()
-#        # Pull the object again and verify the changes stuck
-#        obj = self.private_client.projects.get(self.editable_project)
-#        self.assertEqual(obj.title, title)
+        # Pull a document
+        doc = obj.get_document('25798-pr-01092011-loughner')
+        self.assertTrue(isinstance(doc, Document))
 
-#    def test_document_list_type_restrictions(self):
-#        """
-#        Make sure document_lists will only accept Document objects
-#        """
-#        obj = self.private_client.projects.get(self.editable_project)
-#        self.assertRaises(TypeError, obj.document_list.append, "The letter C")
+    def test_put(self):
+        """
+        Test whether we can put random noise to all the editable fields.
+        """
+        # Pull the project
+        self.editable_project = self.get_editable_project(self.version)
+        obj = self.private_client.projects.get(self.editable_project)
 
-#    def test_create_and_delete(self):
-#        """
-#        Test whether you can create a new project.
-#        """
-#        # Create it
-#        title = get_random_string()
-#        doc = self.private_client.documents.get(self.editable_document)
-#        proj = self.private_client.projects.create(
-#            title,
-#            description='Blah blah',
-#            document_ids=[doc.id]
-#        )
-#        self.assertEqual(type(proj), Project)
-#        self.assertEqual(proj.title, title)
-#        self.assertEqual(proj.description, 'Blah blah')
-#        self.assertEqual(proj.document_list[0].id, doc.id)
-#        # Delete it
-#        proj.delete()
-#        self.assertRaises(DoesNotExistError, self.private_client.projects.get, proj.id)
+        # Create random strings we will save to the editable attributes
+        title = 'The Klee Report (%s)' % get_random_string()
+        description = textwrap.dedent("""
+        An independent probe into Sam Zell\'s purchase of Tribune Company by 
+        investigator Kenneth Klee. Released at the end of July 2010. (%s)
+        """)
+        description = description % get_random_string()
+        # Set the random strings our local object's attributes
+        # and zero out the document list.
+        obj.title = title
+        obj.description = description
+        obj.document_list = []
+        # Save the changes up to DocumentCloud
+        obj.put()
 
-#    def test_get_or_create(self):
-#        """
-#        Test whether get_or_create methods are working.
-#        """
-#        # Create it
-#        title = get_random_string()
-#        proj, c = self.private_client.projects.get_or_create_by_title(title)
-#        self.assertEqual(type(proj), Project)
-#        self.assertEqual(c, True)
-#        # Get it
-#        proj, c = self.private_client.projects.get_or_create_by_title(title)
-#        self.assertEqual(type(proj), Project)
-#        self.assertEqual(c, False)
-#        # Delete it
-#        proj.delete()
-#        self.assertRaises(DoesNotExistError, self.private_client.projects.get, proj.id)
+        # Pull the object again and verify the changes stuck
+        obj = self.private_client.projects.get(self.editable_project)
+        self.assertEqual(obj.title, title)
+        self.assertEqual(obj.description, description)
+        self.assertEqual(len(obj.document_list), 0)
+        # Now add all the documents back in
+        proj_ids = [
+            '12667-the-klee-report-volume-2',
+            '12666-the-klee-report-volume-1'
+        ]
+        for id in proj_ids:
+            doc = self.private_client.documents.get(id)
+            obj.document_list.append(doc)
+        obj.put()
+        obj = self.private_client.projects.get(self.editable_project)
+        self.assertEqual(len(obj.document_list), len(proj_ids))
+
+        # Verify that the save alias to put works
+        title = get_random_string()
+        obj.title = title
+        obj.save()
+        obj = self.private_client.projects.get(self.editable_project)
+        self.assertEqual(obj.title, title)
+
+        # Make sure document_lists will only accept Document objects
+        obj = self.private_client.projects.get(self.editable_project)
+        self.assertRaises(TypeError, obj.document_list.append, "The letter C")
+
+    def test_create_and_delete(self):
+        """
+        Test whether you can create a new project.
+        """
+        # Create it
+        title = get_random_string()
+        doc_id = self.get_editable_document(self.version)
+        doc = self.private_client.documents.get(doc_id)
+        proj = self.private_client.projects.create(
+            title,
+            description='Blah blah',
+            document_ids=[doc.id]
+        )
+        self.assertTrue(isinstance(proj, Project))
+        self.assertEqual(proj.title, title)
+        self.assertEqual(proj.description, 'Blah blah')
+        self.assertEqual(proj.document_list[0].id, doc.id)
+
+        # Delete it
+        proj.delete()
+        self.assertRaises(
+            DoesNotExistError,
+            self.private_client.projects.get,\
+             proj.id
+        )
+
+    def test_get_or_create(self):
+        """
+        Test whether get_or_create methods are working.
+        """
+        # Create it
+        title = get_random_string()
+        proj, c = self.private_client.projects.get_or_create_by_title(title)
+        self.assertTrue(isinstance(proj, Project))
+        self.assertTrue(c)
+        # Get it
+        proj, c = self.private_client.projects.get_or_create_by_title(title)
+        self.assertTrue(isinstance(proj, Project))
+        self.assertFalse(c)
+        # Delete it
+        proj.delete()
 
 
-#class ErrorTest(BaseTest):
+class ErrorTest(BaseTest):
+    """
+    Test a lot of the errors.
+    """
+    def test_missing_credentials(self):
+        """
+        Make sure CredentialsMissingError works.
+        """
+        self.assertRaises(
+            CredentialsMissingError,
+            self.public_client.projects.all
+        )
 
-#    def test_missing_credentials(self):
-#        """
-#        Make sure CredentialsMissingError works.
-#        """
-#        self.assertRaises(CredentialsMissingError, self.public_client.projects.all)
+    def test_failed_credentials(self):
+        """
+        Make sure CredentialsFailedError works.
+        """
+        self.assertRaises(
+            CredentialsFailedError,
+            self.public_client.fetch,
+            "projects.json"
+        )
 
-#    def test_failed_credentials(self):
-#        """
-#        Make sure CredentialsFailedError works.
-#        """
-#        self.assertRaises(CredentialsFailedError, self.public_client.fetch, "projects.json")
+    def test_does_not_exist(self):
+        """
+        Make sure DoesNotExistError works.
+        """
+        self.assertRaises(
+            DoesNotExistError,
+            self.public_client.documents.get,
+            'TK'
+        )
 
-#    def test_does_not_exist(self):
-#        """
-#        Make sure DoesNotExistError works.
-#        """
-#        self.assertRaises(DoesNotExistError, self.public_client.documents.get, 'TK')
-
-#    def test_duplicate_object(self):
-#        """
-#        Make sure DuplicateObjectError works.
-#        """
-#        obj = self.private_client.projects.get("703")
-#        doc = self.private_client.documents.get('12666-the-klee-report-volume-1')
-#        self.assertRaises(DuplicateObjectError, obj.document_list.append, doc)
+    def test_duplicate_object(self):
+        """
+        Make sure DuplicateObjectError works.
+        """
+        obj = self.private_client.projects.get("703")
+        doc = self.private_client.documents.get(
+            '12666-the-klee-report-volume-1'
+        )
+        self.assertRaises(DuplicateObjectError, obj.document_list.append, doc)
 
 
 if __name__ == '__main__':
