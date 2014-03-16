@@ -24,30 +24,40 @@ from documentcloud.toolbox import DoesNotExistError
 from documentcloud.toolbox import DuplicateObjectError
 from documentcloud.toolbox import CredentialsFailedError
 from documentcloud.toolbox import CredentialsMissingError
-from documentcloud import Annotation, Document, Project, Section, Entity, Mention
+from documentcloud import Annotation, Document, Project
+from documentcloud import Section, Entity, Mention
 
 #
 # Odds and ends
 #
+
 
 def get_random_string(length=6):
     """
     Generate a random string of letters and numbers
     """
     return six.u(''.join(
-        random.choice(string.ascii_letters + string.digits)
-            for i in range(length)
+        random.choice(
+            string.ascii_letters + string.digits
+        ) for i in range(length)
     ))
 
 
 PANGRAMS = {
     'en': 'The quick brown fox jumps over the lazy dog.',
-    'da': 'Quizdeltagerne spiste jordbær med fløde, mens cirkusklovnen Wolther spillede på xylofon.',
+    'da': 'Quizdeltagerne spiste jordbær med fløde, mens cirkusklovnen \
+Wolther spillede på xylofon.',
     'de': 'Falsches Üben von Xylophonmusik quält jeden größeren Zwerg.',
     'el': 'Γαζέες καὶ μυρτιὲς δὲν θὰ βρῶ πιὰ στὸ χρυσαφὶ ξέφωτο.',
-    'es': 'El pingüino Wenceslao hizo kilómetros bajo exhaustiva lluvia y frío, añoraba a su querido cachorro.',
-    'fr': "Portez ce vieux whisky au juge blond qui fume sur son île intérieure, à côté de l'alcôve ovoïde, où les bûches se consument dans l'âtre, ce qui lui permet de penser à la cænogenèse de l'être dont il est question dans la cause ambiguë entendue à Moÿ, dans un capharnaüm qui, pense-t-il, diminue çà et là la qualité de son œuvre.",
-    'ga': "D'fhuascail Íosa, Úrmhac na hÓighe Beannaithe, pór Éava agus Ádhaimh.",
+    'es': 'El pingüino Wenceslao hizo kilómetros bajo exhaustiva lluvia y \
+frío, añoraba a su querido cachorro.',
+    'fr': "Portez ce vieux whisky au juge blond qui fume sur son île \
+intérieure, à côté de l'alcôve ovoïde, où les bûches se consument dans \
+l'âtre, ce qui lui permet de penser à la cænogenèse de l'être dont il est \
+question dans la cause ambiguë entendue à Moÿ, dans un capharnaüm qui, pense-\
+t-il, diminue çà et là la qualité de son œuvre.",
+    'ga': "D'fhuascail Íosa, Úrmhac na hÓighe Beannaithe, pór Éava \
+agus Ádhaimh.",
     'hu': 'Árvíztűrő tükörfúrógép.',
     'is': 'Kæmi ný öxi hér ykist þjófum nú bæði víl og ádrepa.',
     'jp': """'いろはにほへとちりぬるを
@@ -63,6 +73,7 @@ PANGRAMS = {
 # Tests
 #
 
+
 class BaseTest(unittest.TestCase):
     """
     A base class for all of our tests.
@@ -76,7 +87,7 @@ class BaseTest(unittest.TestCase):
     def get_editable_document(self, version):
         """
         Return the slug of the Document set aside for testing
-        this version of Python against. 
+        this version of Python against.
 
         We have to set aside a different document for each version
         because Travis CI tests run concurrently and we don't want
@@ -94,7 +105,7 @@ class BaseTest(unittest.TestCase):
     def get_editable_project(self, version):
         """
         Return the id of the Project set aside for testing
-        this version of Python against. 
+        this version of Python against.
 
         We have to set aside a different project for each version
         because Travis CI tests run concurrently and we don't want
@@ -116,7 +127,7 @@ class BaseTest(unittest.TestCase):
         self.test_id = '74103-report-of-the-calpers-special-review'
         self.public_client = DocumentCloud()
         self.private_client = DocumentCloud(
-            os.environ['DOCUMENTCLOUD_TEST_USERNAME'], 
+            os.environ['DOCUMENTCLOUD_TEST_USERNAME'],
             os.environ['DOCUMENTCLOUD_TEST_PASSWORD']
         )
         self.fake_client = DocumentCloud("John Doe", "TK")
@@ -327,7 +338,7 @@ class DocumentTest(BaseTest):
         # Test whether you can save an attribute with some weird encoding
         before_title = copy(obj.title)
         before_description = copy(obj.description)
-        obj.title =  random.choice(list(PANGRAMS.keys()))
+        obj.title = random.choice(list(PANGRAMS.keys()))
         obj.description = random.choice(list(PANGRAMS.keys()))
         obj.put()
         obj.title = before_title
@@ -411,7 +422,8 @@ class DocumentTest(BaseTest):
         obj.delete()
 
         # Upload everything in this directory.
-        obj_list = self.private_client.documents.upload_directory('./',
+        obj_list = self.private_client.documents.upload_directory(
+            './',
             source='Los Angeles Times',
             published_url='http://www.latimes.com',
         )
@@ -428,7 +440,7 @@ class ProjectTest(BaseTest):
     """
     def test_all(self):
         """
-        Test an `all` request for a list of all projects belong to an 
+        Test an `all` request for a list of all projects belong to an
         authorized user.
         """
         obj_list = self.private_client.projects.all()
@@ -472,7 +484,7 @@ class ProjectTest(BaseTest):
         # Create random strings we will save to the editable attributes
         title = 'The Klee Report (%s)' % get_random_string()
         description = textwrap.dedent("""
-        An independent probe into Sam Zell\'s purchase of Tribune Company by 
+        An independent probe into Sam Zell's purchase of Tribune Company by
         investigator Kenneth Klee. Released at the end of July 2010. (%s)
         """)
         description = description % get_random_string()
@@ -534,8 +546,8 @@ class ProjectTest(BaseTest):
         proj.delete()
         self.assertRaises(
             DoesNotExistError,
-            self.private_client.projects.get,\
-             proj.id
+            self.private_client.projects.get,
+            proj.id
         )
 
     def test_get_or_create(self):
