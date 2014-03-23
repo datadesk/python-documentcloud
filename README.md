@@ -26,8 +26,6 @@ Features
 Getting started
 ---------------
 
-Documentation is available at [http://python-documentcloud.rtfd.org/](http://python-documentcloud.rtfd.org/)
-
 Installation is as easy as...
 
 ```bash
