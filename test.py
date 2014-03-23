@@ -237,6 +237,17 @@ class DocumentTest(BaseTest):
         # for all the old documents in the database.
         #self.assertEqual(hashlib.sha1(pdf).hexdigest(), obj.file_hash)
 
+        # Text
+        self.assertEqual(
+            obj.get_page_text_url(1),
+            'https://www.documentcloud.org/documents/74103/pages/\
+report-of-the-calpers-special-review-p1.txt'
+        )
+        self.assertEqual(
+            document.get_page_text(1).split("\n")[0].strip(), 
+            "Report of the CalPERS Special Review"
+        )
+
         # Images
         self.assertTrue(len(obj.small_image) > 0)
         self.assertTrue(len(obj.thumbnail_image) > 0)

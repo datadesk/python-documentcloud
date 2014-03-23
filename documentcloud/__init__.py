@@ -745,7 +745,7 @@ resource on public documents."
         """
         template = self.resources.page.get('text')
         url = template.replace("{page}", str(page))
-        return self._get_url(url)
+        return url
 
     def get_page_text(self, page):
         """
