@@ -156,6 +156,16 @@ Metadata
 
     Returns the URL that contains the full text of the document, as extracted from the original PDF by DocumentCloud. 
 
+.. method:: document_obj.get_page_text(page)
+
+    Submit a page number and receive the raw text extracted from it by DocumentCloud.
+
+    >>> obj = client.documents.get('1088501-adventuretime-alta')
+    >>> txt = obj.get_page_text(1)
+    # Let's print just the first line
+    >>> print txt.decode().split("\n")[0]
+    STATE OF CALIFORNIA- HEALTH AND HUMAN SERVICES AGENCY
+
 .. attribute:: document_obj.id
 
     The unique identifer of the document in DocumentCloud's system. Typically this is a string that begins with a number, like ``83251-fbi-file-on-christopher-biggie-s.malls-wallace``

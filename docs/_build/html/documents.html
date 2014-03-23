@@ -251,6 +251,19 @@
 <dd><p>Returns the URL that contains the full text of the document, as extracted from the original PDF by DocumentCloud.</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="document_obj.get_page_text">
+<tt class="descclassname">document_obj.</tt><tt class="descname">get_page_text</tt><big>(</big><em>page</em><big>)</big><a class="headerlink" href="#document_obj.get_page_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Submit a page number and receive the raw text extracted from it by DocumentCloud.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">documents</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;1088501-adventuretime-alta&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">txt</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_page_text</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go"># Let&#39;s print just the first line</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">txt</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">STATE OF CALIFORNIA- HEALTH AND HUMAN SERVICES AGENCY</span>
+</pre></div>
+</div>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="document_obj.id">
 <tt class="descclassname">document_obj.</tt><tt class="descname">id</tt><a class="headerlink" href="#document_obj.id" title="Permalink to this definition">¶</a></dt>
