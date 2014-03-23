@@ -244,7 +244,7 @@ class DocumentTest(BaseTest):
 report-of-the-calpers-special-review-p1.txt'
         )
         self.assertEqual(
-            document.get_page_text(1).split("\n")[0].strip(), 
+            obj.get_page_text(1).split("\n")[0].strip(), 
             "Report of the CalPERS Special Review"
         )
 
