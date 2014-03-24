@@ -1,6 +1,15 @@
 Changelog
 ---------
 
+1.0.0
+~~~~~
+
+* Adopted `semantic versioning <http://semver.org/>`_ without breaking existing packages on PyPI
+* Fixed bugs with ``get_page_text``
+* Added keyword argument during initialization that allows you to override the ``BASE_URI`` and connect with independent clones of DocumentCloud. Contributed by `Adi Eyal <https://github.com/adieyal>`_.
+* Refactored unit tests to run more quickly and require fewer web requests
+* Documentation moved from the gh-pages branch to master and refactored to be published via `ReadTheDocs <http://readthedocs.org>`_.
+
 0.2
 ~~~
 
