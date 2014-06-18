@@ -8,7 +8,7 @@ coverage==3.7.1
 docutils==0.11
 pep8==1.4.6
 py==1.4.19
-pyflakes==0.7.3
+pyflakes
 python-coveralls==2.4.2
 python-dateutil==2.1
 requests==2.1.0
