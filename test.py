@@ -99,6 +99,7 @@ class BaseTest(unittest.TestCase):
             "2.7": "351151-lbex-docid-130036",
             "3.2": "350987-lbex-docid-131059",
             "3.3": "351029-lbex-docid-149714",
+            "3.4": "351291-lbex-docid-037292",
         }
         return version2slug[str(version)]
 
@@ -244,7 +245,7 @@ class DocumentTest(BaseTest):
 report-of-the-calpers-special-review-p1.txt'
         )
         self.assertEqual(
-            obj.get_page_text(1).decode().split("\n")[0], 
+            obj.get_page_text(1).decode().split("\n")[0],
             "Report of the CalPERS Special Review"
         )
 
