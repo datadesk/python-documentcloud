@@ -75,9 +75,9 @@ if len(sys.argv) > 1 and sys.argv[1] == 'bdist_wininst':
         file_info[0] = '\\PURELIB\\%s' % file_info[0]
 
 dependencies = [
-    'python-dateutil==2.1',
-    'simplejson==3.3.1',
-    'six==1.4.1',
+    'python-dateutil>=2.1',
+    'simplejson>=3.3.1',
+    'six>=1.4.1',
 ]
 
 setup(

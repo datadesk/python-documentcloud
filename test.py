@@ -118,6 +118,7 @@ class BaseTest(unittest.TestCase):
             "2.7": 11047,
             "3.2": 11134,
             "3.3": 11070,
+            "3.4": 16842,
         }
         return version2slug[str(version)]
 

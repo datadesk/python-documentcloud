@@ -10,10 +10,10 @@ pep8==1.4.6
 py==1.4.19
 pyflakes
 python-coveralls==2.4.2
-python-dateutil==2.1
+python-dateutil>=2.1
 requests==2.1.0
 sh==1.09
-simplejson==3.3.1
-six==1.4.1
+simplejson>=3.3.1
+six>=1.4.1
 tox==1.6.1
 virtualenv==1.11
