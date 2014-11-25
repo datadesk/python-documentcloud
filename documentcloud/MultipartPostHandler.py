@@ -97,7 +97,10 @@ class MultipartPostHandler(urllib.request.BaseHandler):
                         )
                     )
                 request.add_unredirected_header('Content-Type', contenttype)
-            request.add_data(data)
+            try:
+                request.add_data(data)
+            except AttributeError:
+                request.data.update(data)
 
         return request
 
