@@ -100,7 +100,8 @@ class MultipartPostHandler(urllib.request.BaseHandler):
             try:
                 request.add_data(data)
             except AttributeError:
-                request.data.update(data)
+                for k, v in data.items():
+                    request.data[k] = v
 
         return request
 
