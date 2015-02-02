@@ -261,7 +261,10 @@ class DocumentClient(BaseDocumentCloudClient):
         """
         # Required parameters
         if hasattr(pdf, 'read'):
-            size = os.fstat(pdf.fileno()).st_size
+            try:
+                size = os.fstat(pdf.fileno()).st_size
+            except:
+                size = None
             params = {'file': pdf}
         else:
             size = os.path.getsize(pdf)
@@ -269,7 +272,7 @@ class DocumentClient(BaseDocumentCloudClient):
         # Enforce file size limit of the DocumentCloud API
         if size >= 399999999:
             raise ValueError("The pdf you have submited if over the \
-DocumentCloud API's 400MB file size limit. Split it into smaller pieces\
+DocumentCloud API's 400MB file size limit. Split it into smaller pieces \
 and try again.")
         # Optional parameters
         if title:
