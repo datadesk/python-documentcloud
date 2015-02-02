@@ -264,7 +264,7 @@ class DocumentClient(BaseDocumentCloudClient):
             try:
                 size = os.fstat(pdf.fileno()).st_size
             except:
-                size = None
+                size = 0
             params = {'file': pdf}
         else:
             size = os.path.getsize(pdf)

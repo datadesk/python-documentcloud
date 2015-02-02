@@ -1,6 +1,12 @@
 Changelog
 ---------
 
+1.0.1
+-----
+
+* Python 3.4 testing
+* 400MB upload limit to match DocumentCloud's API restrictions
+
 1.0.0
 ~~~~~
 
