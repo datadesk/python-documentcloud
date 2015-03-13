@@ -41,7 +41,7 @@ Entities
 
 Keywords extracted from documents with OpenCalais.
 
-.. attribute:: location_obj.revelance
+.. attribute:: location_obj.relevance
 
     The weighting associated with this connection by OpenCalais. Higher numbers are supposed to be more relevant.
 
