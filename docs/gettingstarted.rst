@@ -71,7 +71,7 @@ And you don't have to provide a path, you can also upload a file object. ::
 
     >>> from documentcloud import DocumentCloud
     >>> client = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
-    >>> pdf_ = open("/home/ben/pdfs/myfile.pdf", "rb")
+    >>> pdf = open("/home/ben/pdfs/myfile.pdf", "rb")
     >>> obj = client.documents.upload(pdf)
 
 Uploading a directory of documents as a project
