@@ -186,7 +186,7 @@ class DocumentClient(BaseDocumentCloudClient):
         try:
             urlparse(string, rule="IRI")
             return True
-        except ValueError:
+        except:
             return False
 
     def _get_search_page(self, query, page, per_page):

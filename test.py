@@ -446,6 +446,11 @@ report-of-the-calpers-special-review-p1.txt'
         self.assertEqual(obj_list[0].published_url, 'http://www.latimes.com')
         [i.delete() for i in obj_list]
 
+        # Test URL upload
+        url = 'http://ord.legistar.com/Chicago/attachments/e3a0cbcb-044d-4ec3-9848-23c5692b1943.pdf'
+        obj = self.private_client.documents.upload(url)
+        obj.delete()
+
 
 class ProjectTest(BaseTest):
     """
