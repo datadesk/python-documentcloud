@@ -18,6 +18,7 @@ import six
 import copy
 import base64
 from .toolbox import retry
+from rfc3987 import parse as urlparse
 from .toolbox import DoesNotExistError
 from .toolbox import DuplicateObjectError
 from .toolbox import credentials_required
@@ -178,6 +179,16 @@ class DocumentClient(BaseDocumentCloudClient):
         # later. Storing it will preserve the credentials.
         self._connection = connection
 
+    def is_url(self, string):
+        """
+        Test if a pdf being submitted is a valid URL
+        """
+        try:
+            urlparse(string, rule="IRI")
+            return True
+        except ValueError:
+            return False
+
     def _get_search_page(self, query, page, per_page):
         """
         Retrieve one page of search results from the DocumentCloud API.
@@ -259,13 +270,16 @@ class DocumentClient(BaseDocumentCloudClient):
         Based on code developed by Mitchell Kotler and
         refined by Christopher Groskopf.
         """
-        # Required parameters
+        # Required pdf parameter
         if hasattr(pdf, 'read'):
             try:
                 size = os.fstat(pdf.fileno()).st_size
             except:
                 size = 0
             params = {'file': pdf}
+        elif self.is_url(pdf):
+            params = {'file': pdf}
+            size = None
         else:
             size = os.path.getsize(pdf)
             params = {'file': open(pdf, 'rb')}
