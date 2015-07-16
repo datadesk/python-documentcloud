@@ -278,8 +278,8 @@ class DocumentClient(BaseDocumentCloudClient):
                 size = 0
             params = {'file': pdf}
         elif self.is_url(pdf):
-            params = {'file': pdf}
             size = 0
+            params = {'file': pdf.encode("utf-8")}
         else:
             size = os.path.getsize(pdf)
             params = {'file': open(pdf, 'rb')}
