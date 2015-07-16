@@ -279,7 +279,7 @@ class DocumentClient(BaseDocumentCloudClient):
             params = {'file': pdf}
         elif self.is_url(pdf):
             params = {'file': pdf}
-            size = None
+            size = 0
         else:
             size = os.path.getsize(pdf)
             params = {'file': open(pdf, 'rb')}
