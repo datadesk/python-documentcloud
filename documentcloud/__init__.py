@@ -285,7 +285,7 @@ class DocumentClient(BaseDocumentCloudClient):
             params = {'file': open(pdf, 'rb')}
         # Enforce file size limit of the DocumentCloud API
         if size >= 399999999:
-            raise ValueError("The pdf you have submitted if over the \
+            raise ValueError("The pdf you have submitted is over the \
 DocumentCloud API's 400MB file size limit. Split it into smaller pieces \
 and try again.")
         # Optional parameters
