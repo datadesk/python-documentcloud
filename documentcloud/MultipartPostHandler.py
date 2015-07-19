@@ -60,6 +60,24 @@ else:
 doseq = 1
 
 
+class PostHandler(urllib.request.BaseHandler):
+    handler_order = urllib.request.HTTPHandler.handler_order - 10
+
+    def http_request(self, request):
+        try:
+            data = request.get_data()
+        except AttributeError:
+            data = request.data
+        if data is not None and type(data) != str:
+            data = urllib.parse.urlencode(data, doseq)
+            try:
+                request.add_data(data)
+            except AttributeError:
+                request.data = data
+        return request
+    https_request = http_request
+
+
 class MultipartPostHandler(urllib.request.BaseHandler):
     # needs to run first
     handler_order = urllib.request.HTTPHandler.handler_order - 10

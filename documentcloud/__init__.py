@@ -24,7 +24,7 @@ from .toolbox import DuplicateObjectError
 from .toolbox import credentials_required
 from .toolbox import CredentialsFailedError
 from dateutil.parser import parse as dateparser
-from .MultipartPostHandler import MultipartPostHandler
+from .MultipartPostHandler import MultipartPostHandler, PostHandler
 if six.PY3:
     import urllib.parse
     import urllib.error
@@ -52,7 +52,7 @@ class BaseDocumentCloudClient(object):
         self.username = username
         self.password = password
 
-    @retry(Exception, tries=3)
+    #@retry(Exception, tries=3)
     def _make_request(self, url, params=None, opener=None):
         """
         Configure a HTTP request, fire it off and return the response.
@@ -281,7 +281,7 @@ class DocumentClient(BaseDocumentCloudClient):
         elif self.is_url(pdf):
             size = 0
             params = {'file': pdf}
-            opener = None  # URL uploads are lightweight, don't need MultiPart
+            opener = PostHandler  # URL uploads don't need MultiPart
         else:
             size = os.path.getsize(pdf)
             params = {'file': open(pdf, 'rb')}
