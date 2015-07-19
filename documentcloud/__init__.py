@@ -277,12 +277,15 @@ class DocumentClient(BaseDocumentCloudClient):
             except:
                 size = 0
             params = {'file': pdf}
+            opener = MultipartPostHandler
         elif self.is_url(pdf):
             size = 0
-            params = {'file': pdf.encode("utf-8")}
+            params = {'file': pdf}
+            opener = None  # URL uploads are lightweight, don't need MultiPart
         else:
             size = os.path.getsize(pdf)
             params = {'file': open(pdf, 'rb')}
+            opener = MultipartPostHandler
         # Enforce file size limit of the DocumentCloud API
         if size >= 399999999:
             raise ValueError("The pdf you have submitted is over the \
@@ -319,7 +322,7 @@ and try again.")
         response = self._make_request(
             self.BASE_URI + 'upload.json',
             params,
-            MultipartPostHandler
+            opener=opener
         )
         return self.get(json.loads(response.decode("utf-8"))['id'])
 
