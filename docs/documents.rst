@@ -69,6 +69,10 @@ Uploading
         >>> client.documents.get(new_id)
         <Document: Test PDF>
 
+    You can also URLs link to PDFs, if that's the kind of thing you want to do.
+
+        >>> client.documents.upload("http://ord.legistar.com/Chicago/attachments/e3a0cbcb-044d-4ec3-9848-23c5692b1943.pdf")
+
 .. function:: client.documents.upload_directory(pdf, source=None, description=None, related_article=None, published_url=None, access='private', project=None, data=None, secure=False)
 
    Searches through the provided path and attempts to upload all the PDFs it can find. Metadata provided to the other keyword arguments will be recorded for all uploads. Returns a list of document objects that are created. Be warned, this will upload any documents in directories inside the path you specify.
@@ -138,7 +142,7 @@ Metadata
         >>> obj.file_hash
         '872b9b858f5f3e6bb6086fec7f05dd464b60eb26'
 
-    You could recreate this hexadecimal hash yourself using the `SHA-1 algorithm <https://en.wikipedia.org/wiki/SHA-1>`_. 
+    You could recreate this hexadecimal hash yourself using the `SHA-1 algorithm <https://en.wikipedia.org/wiki/SHA-1>`_.
 
         >>> import hashlib
         >>> hashlib.sha1(obj.pdf).hexdigest()
@@ -154,7 +158,7 @@ Metadata
 
 .. attribute:: document_obj.full_text_url
 
-    Returns the URL that contains the full text of the document, as extracted from the original PDF by DocumentCloud. 
+    Returns the URL that contains the full text of the document, as extracted from the original PDF by DocumentCloud.
 
 .. method:: document_obj.get_page_text(page)
 
@@ -266,4 +270,3 @@ Metadata
 .. attribute:: document_obj.updated_at
 
     The date and time that the document was last updated, in Python's datetime format.
-

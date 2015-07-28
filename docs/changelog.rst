@@ -1,6 +1,12 @@
 Changelog
 ---------
 
+1.0.2
+-----
+
+* URLs to PDFs can now be submitted for upload
+* Refactored setup.py and tests to be less complex
+
 1.0.1
 ~~~~~
 
@@ -19,21 +25,21 @@ Changelog
 0.2
 ~~~
 
-- Python 3 support
-- PEP8 and PyFlakes compliance
-- Coverage reports on testing via coveralls.io
+* Python 3 support
+* PEP8 and PyFlakes compliance
+* Coverage reports on testing via coveralls.io
 
 
 0.16
 ~~~~
 
-- Continuous integration testing with TravisCI
-- Fixed bug with empty strings in Document descriptions
-- Raise errors when a user tries to save a data keyword reserved by DocumentCloud
-- Allow all-caps file extensions
-- Retry requests that fail with an increasing backoff delay
-- Fixed a bug in how titles are assigned to a file object
-- Added access checks when retrieving txt, pdf, img about a document
+* Continuous integration testing with TravisCI
+* Fixed bug with empty strings in Document descriptions
+* Raise errors when a user tries to save a data keyword reserved by DocumentCloud
+* Allow all-caps file extensions
+* Retry requests that fail with an increasing backoff delay
+* Fixed a bug in how titles are assigned to a file object
+* Added access checks when retrieving txt, pdf, img about a document
 
 0.15
 ~~~~
