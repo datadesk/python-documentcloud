@@ -2,7 +2,7 @@ Changelog
 ---------
 
 1.0.2
------
+~~~~~
 
 * URLs to PDFs can now be submitted for upload
 * Refactored setup.py and tests to be less complex
