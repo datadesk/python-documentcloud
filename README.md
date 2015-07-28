@@ -9,7 +9,7 @@ A simple python wrapper for the DocumentCloud API
 [![Build Status](https://travis-ci.org/datadesk/python-documentcloud.png?branch=master)](https://travis-ci.org/datadesk/python-documentcloud)
 [![PyPI version](https://badge.fury.io/py/python-documentcloud.png)](http://badge.fury.io/py/python-documentcloud)
 [![Coverage Status](https://coveralls.io/repos/datadesk/python-documentcloud/badge.png?branch=master)](https://coveralls.io/r/datadesk/python-documentcloud?branch=master)
-[![Documentation Status](https://readthedocs.org/projects/python-documentcloud/badge/?version=latest)](https://readthedocs.org/projects/python-documentcloud/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/python-documentcloud/badge/?version=latest)](https://python-documentcloud,readthedocs.org/)
 
 * Documentation: [http://python-documentcloud.rtfd.org/](http://python-documentcloud.rtfd.org/)
 * Issues: [https://github.com/datadesk/python-documentcloud/issues](https://github.com/datadesk/python-documentcloud/issues)
