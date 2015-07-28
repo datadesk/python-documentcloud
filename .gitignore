@@ -1,5 +1,5 @@
 .tox/
-scratch.py
+tests/scratch.py
 _sources/*
 sphinx/*
 doctrees/*
