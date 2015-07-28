@@ -8,7 +8,7 @@ install:
 script:
  - pep8 documentcloud
  - pyflakes documentcloud
- - coverage run setup test
+ - coverage run setup.py test
 after_success:
   - coveralls
 env:
