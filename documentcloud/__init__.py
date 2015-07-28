@@ -15,6 +15,7 @@ from __future__ import absolute_import
 import os
 import sys
 import six
+import json
 import copy
 import base64
 from .toolbox import retry
@@ -31,10 +32,6 @@ if six.PY3:
     import urllib.request
 else:
     from six.moves import urllib
-try:
-    import json
-except ImportError:
-    import simplejson as json
 
 
 #

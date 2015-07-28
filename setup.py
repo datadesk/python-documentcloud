@@ -14,7 +14,6 @@ setup(
     include_package_data=True,
     install_requires=(
         'python-dateutil>=2.1',
-        'simplejson>=3.3.1',
         'six>=1.4.1',
         'rfc3987',
     ),

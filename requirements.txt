@@ -1,20 +1,12 @@
-Jinja2==2.7.2
-MarkupSafe==0.19
-PyYAML==3.10
-Pygments==1.6
-Sphinx==1.2.2
+# Required for development
+Sphinx
 argparse
-coverage==3.7.1
-docutils==0.11
-pep8==1.4.6
-py==1.4.19
+coverage
+pep8
 pyflakes
-python-coveralls==2.4.2
+python-coveralls
+tox
+# Required for the app
+six
 python-dateutil>=2.1
-requests==2.1.0
-sh==1.09
-simplejson>=3.3.1
-six>=1.4.1
-tox==1.6.1
-virtualenv==1.11
 rfc3987
