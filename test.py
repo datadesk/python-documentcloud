@@ -11,7 +11,6 @@ import sys
 import six
 import random
 import string
-import hashlib
 import textwrap
 import unittest
 try:

@@ -69,7 +69,7 @@ class PostHandler(urllib.request.BaseHandler):
         except AttributeError:
             data = request.data
         if data is not None and type(data) != str:
-            data = urllib.parse.urlencode(data, doseq)
+            data = urllib.parse.urlencode(data, doseq).encode("utf-8")
             try:
                 request.add_data(data)
             except AttributeError:
