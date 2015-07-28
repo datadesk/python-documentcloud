@@ -10,7 +10,7 @@ setup(
     url='http://datadesk.github.com/python-documentcloud/',
     license="MIT",
     packages=("documentcloud",),
-    test_suite = "tests.test_all",
+    test_suite="tests.test_all",
     include_package_data=True,
     install_requires=(
         'python-dateutil>=2.1',
