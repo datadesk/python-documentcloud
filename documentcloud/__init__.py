@@ -120,8 +120,8 @@ requires proper credentials.")
             # ?data['foo']=bar&data['tit']=tat
             params += "".join([
                 '&data[%s]=%s' % (
-                    urllib.parse.quote_plus(key),
-                    urllib.parse.quote_plus(value)
+                    urllib.parse.quote_plus(key.encode("utf-8")),
+                    urllib.parse.quote_plus(value.encode("utf-8"))
                 ) for key, value in
                 list(data.items())
             ])
