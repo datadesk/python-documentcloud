@@ -1,6 +1,12 @@
 Changelog
 ---------
 
+1.0.3
+~~~~~
+
+* Encoding bug fix for metadata associated with documents via API
+
+
 1.0.2
 ~~~~~
 
