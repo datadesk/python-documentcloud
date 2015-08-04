@@ -364,13 +364,16 @@ report-of-the-calpers-special-review-p1.txt'
             title,
             description='Blah blah',
             related_article='http://www.latimes.com',
-            data=dict(like_this='like+this', boom='bap'),
+            data=dict(like_this='like+that', boom='bap'),
         )
         self.assertTrue(isinstance(obj, Document))
         self.assertEqual(obj.title, title)
         self.assertEqual(obj.description, 'Blah blah')
         self.assertEqual(obj.related_article, 'http://www.latimes.com')
-        self.assertEqual(obj.data, {'like_this': 'like+that', 'boom': 'bap'})
+        self.assertEqual(
+            obj.data,
+            {u'like_this': u'like+that', u'boom': u'bap'}
+        )
 
         # Delete
         obj.delete()
