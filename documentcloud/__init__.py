@@ -119,7 +119,10 @@ requires proper credentials.")
             # Format them in the style documentcloud expects
             # ?data['foo']=bar&data['tit']=tat
             params += "".join([
-                '&data[%s]=%s' % (key, value) for key, value in
+                '&data[%s]=%s' % (
+                    urllib.parse.urlencode(key),
+                    urllib.parse.urlencode(value)
+                ) for key, value in
                 list(data.items())
             ])
         else:
