@@ -712,6 +712,12 @@ class Document(BaseAPIObject):
         # Validate keywords
         for keyword in list(data.keys()):
             is_valid_data_keyword(keyword)
+        # Validate keys and values to verify they are all strings
+        for key, value in data.items():
+            if not isinstance(key, six.string_types):
+                raise TypeError("data attribute keys must be strings")
+            if not isinstance(value, six.string_types):
+                raise TypeError("data attribute values must be strings")
         # Set the attribute
         self.__dict__['data'] = data
 
