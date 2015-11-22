@@ -165,6 +165,9 @@ class SearchTest(BaseTest):
         for attr in attr_list:
             self.assertTrue(hasattr(self.obj, attr))
 
+        # Full text
+        self.assertTrue(len(obj.full_text) > 0)
+
         # Check on the annotations
         obj = self.obj.annotations[0]
         self.assertTrue(isinstance(obj, Annotation))
@@ -210,9 +213,6 @@ class SearchTest(BaseTest):
                 per_page=1,
                 mentions=11,
             )
-
-        # Full text
-        self.assertTrue(len(obj.full_text) > 0)
 
 
 class DocumentTest(BaseTest):
