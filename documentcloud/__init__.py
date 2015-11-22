@@ -800,6 +800,7 @@ class Document(BaseAPIObject):
 
     def _get_url(self, url):
         if self.access == 'public':
+            url = url.replace("https://", "http://")
             req = urllib.request.Request(url)
             try:
                 return urllib.request.urlopen(req).read()
