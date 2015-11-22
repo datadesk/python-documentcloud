@@ -116,14 +116,6 @@ requires proper credentials.")
             data = params.get("data")
             del params['data']
             params = urllib.parse.urlencode(params, doseq=True)
-            # Convert all numeric keys and values into strings
-            string_data = {}
-            for key, value in data.items():
-                if not isinstance(key, six.string_types):
-                    key = str(key)
-                if not isinstance(value, six.string_types):
-                    value = str(value)
-                string_data[key] = value
             # Format them in the style documentcloud expects
             # ?data['foo']=bar&data['tit']=tat
             params += "".join([
@@ -605,6 +597,38 @@ class Annotation(BaseAPIObject):
     location = property(get_location)
 
 
+class DocumentDataDict(dict):
+    """
+    The key/value store DocumentCloud allows with each Document.
+
+    Functions the same as a standard Python dictionary, with two exception:
+    key names protected by DocumentCloud are restricted and only strings
+    are allowed.
+
+    If you try to set an integer or other type as a key or value it will
+    throw a TypeError.
+    """
+    def __init__(self, *args, **kwargs):
+        for d in args:
+            for key, value in d.items():
+                self.validate_key(key)
+                self.validate_value(value)
+        dict.__init__(self, *args, **kwargs)
+
+    def __setitem__(self, key, value):
+        self.validate_key(key)
+        self.validate_value(value)
+        dict.__setitem__(self, key, value)
+
+    def validate_key(self, key):
+        is_valid_data_keyword(key)
+        if not isinstance(key, six.string_types):
+            raise TypeError("data attribute keys must be strings")
+
+    def validate_value(self, value):
+        if not isinstance(value, six.string_types):
+            raise TypeError("data attribute values must be strings")
+
 class Document(BaseAPIObject):
     """
     A document returned by the API.
@@ -709,27 +733,18 @@ class Document(BaseAPIObject):
         # Make sure a dict got passed it
         if not isinstance(data, type({})):
             raise TypeError("This attribute must be a dictionary.")
-        # Validate keywords
-        for keyword in list(data.keys()):
-            is_valid_data_keyword(keyword)
-        # Validate keys and values to verify they are all strings
-        for key, value in data.items():
-            if not isinstance(key, six.string_types):
-                raise TypeError("data attribute keys must be strings")
-            if not isinstance(value, six.string_types):
-                raise TypeError("data attribute values must be strings")
         # Set the attribute
-        self.__dict__['data'] = data
+        self.__dict__['data'] = DocumentDataDict(data)
 
     def get_data(self):
         """
         Fetch the data field if it does not exist.
         """
         try:
-            return self.__dict__['data']
+            return DocumentDataDict(self.__dict__['data'])
         except KeyError:
             self._lazy_load()
-            return self.__dict__['data']
+            return DocumentDataDict(self.__dict__['data'])
     data = property(get_data, set_data)
 
     def get_annotations(self):
