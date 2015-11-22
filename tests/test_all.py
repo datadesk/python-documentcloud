@@ -289,6 +289,9 @@ report-of-the-calpers-special-review-p1.txt'
         ent.__str__()
         ent.__unicode__()
 
+        # Full text
+        self.assertTrue(len(obj.full_text) > 0)
+
     def test_private_actions(self):
         """
         Test all the stuff that requires a login.
