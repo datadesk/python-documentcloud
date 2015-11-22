@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='python-documentcloud',
-    version='1.0.3',
+    version='1.0.4',
     description='A simple Python wrapper for the DocumentCloud API',
     author='Ben Welsh',
     author_email='ben.welsh@gmail.com',
