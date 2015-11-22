@@ -109,12 +109,9 @@ class BaseTest(unittest.TestCase):
         different tests stepping on each other.
         """
         version2slug = {
-            "2.5": 11051,
-            "2.6": 11048,
             "2.7": 11047,
-            "3.2": 11134,
-            "3.3": 11070,
-            "3.4": 16842,
+            "3.4": 11070,
+            "3.5": 16842,
         }
         return version2slug[str(version)]
 
