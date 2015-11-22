@@ -46,7 +46,7 @@ Retrieval
 
     To have them included, switch the following keyword argument.
 
-        >> client.documents.search('Ruben Salazar', data=True)
+        >>> client.documents.search('Ruben Salazar', data=True)
 
 Editing
 -------
