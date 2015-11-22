@@ -195,7 +195,7 @@ class SearchTest(BaseTest):
         )
         self.assertEqual(len(one_page), 1)
 
-        data = one_page = self.public_client.documents.search(
+        data = self.public_client.documents.search(
             self.test_search,
             page=1,
             per_page=1,
@@ -210,6 +210,9 @@ class SearchTest(BaseTest):
                 per_page=1,
                 mentions=11,
             )
+
+        # Full text
+        self.assertTrue(len(obj.full_text) > 0)
 
 
 class DocumentTest(BaseTest):
@@ -288,9 +291,6 @@ report-of-the-calpers-special-review-p1.txt'
         self.assertTrue(isinstance(ent, Entity))
         ent.__str__()
         ent.__unicode__()
-
-        # Full text
-        self.assertTrue(len(obj.full_text) > 0)
 
     def test_private_actions(self):
         """
