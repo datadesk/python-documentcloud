@@ -346,6 +346,17 @@ report-of-the-calpers-special-review-p1.txt'
             self.assertRaises(ValueError, setattr, obj, "data", {key: 'foo'})
         obj.data = dict(boom='bap')
 
+        # Test to make sure non-strings can't get into the data dictionary
+        with self.assertRaises(TypeError):
+            obj.data = dict(a=1)
+
+        with self.assertRaises(TypeError):
+            obj.data = {1: 'a'}
+
+        obj.data = dict(boom='bap')
+        with self.assertRaises(TypeError):
+            obj.data[1] = 2
+
         # Resources
         self.assertEqual(obj.published_url, obj.resources.published_url)
         self.assertEqual(obj.related_article, obj.resources.related_article)

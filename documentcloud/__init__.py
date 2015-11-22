@@ -123,7 +123,7 @@ requires proper credentials.")
                     urllib.parse.quote_plus(key.encode("utf-8")),
                     urllib.parse.quote_plus(value.encode("utf-8"))
                 ) for key, value in
-                string_data.items()
+                data.items()
             ])
         else:
             # Otherwise, we can just use the vanilla urllib prep method
@@ -628,6 +628,7 @@ class DocumentDataDict(dict):
     def validate_value(self, value):
         if not isinstance(value, six.string_types):
             raise TypeError("data attribute values must be strings")
+
 
 class Document(BaseAPIObject):
     """
