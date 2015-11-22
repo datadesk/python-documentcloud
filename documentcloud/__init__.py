@@ -207,12 +207,13 @@ class DocumentClient(BaseDocumentCloudClient):
             'page': page,
             'per_page': per_page,
             'mentions': mentions,
-            'data': data,
         }
-        data = self.fetch('search.json', params)
-        return data.get("documents")
+        if data:
+            params['data'] = 'true'
+        response = self.fetch('search.json', params)
+        return response.get("documents")
 
-    def search(self, query, page=None, per_page=1000):
+    def search(self, query, page=None, per_page=1000, mentions=3, data=False):
         """
         Retrieve all objects that make a search query.
 
@@ -228,7 +229,9 @@ class DocumentClient(BaseDocumentCloudClient):
             document_list = self._get_search_page(
                 query,
                 page=page,
-                per_page=per_page
+                per_page=per_page,
+                mentions=mentions,
+                data=data,
             )
         # If the user doesn't provide a page keep looping until you have
         # everything
@@ -240,7 +243,9 @@ class DocumentClient(BaseDocumentCloudClient):
                 results = self._get_search_page(
                     query,
                     page=page,
-                    per_page=per_page
+                    per_page=per_page,
+                    mentions=mentions,
+                    data=data,
                 )
                 if results:
                     document_list += results

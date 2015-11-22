@@ -201,7 +201,7 @@ class SearchTest(BaseTest):
             per_page=1,
             data=True,
         )
-        data[0].data
+        data[0].__dict__['data']
 
         with self.assertRaises(ValueError):
             self.public_client.documents.search(

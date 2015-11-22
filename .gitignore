@@ -10,3 +10,4 @@ dist/*
 *.pyc
 private_settings.py
 .coverage
+scratch.py
