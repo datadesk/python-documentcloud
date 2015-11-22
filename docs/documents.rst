@@ -29,7 +29,7 @@ Retrieval
     DocumentCloud paginates search results. By default the search methods returns
     from all pages. If you want to restrict the number of pages that are searched
     or retrieve a specific page you should provide some combination of the following
-    keyword arguments.
+    keyword arguments. ::
 
         >>> obj_list = client.documents.search('Ruben Salazar', page=1, per_page=10)
         # You can guess that will do.
@@ -37,12 +37,12 @@ Retrieval
         >>> True
 
     By default, the search returns three mentions of the result in each document.
-    You can increase that number up to 10 by modifying the keyword argument.
+    You can increase that number up to 10 by modifying the keyword argument. ::
 
         >>> client.documents.search('Ruben Salazar', mentions=10)
 
     Unlike when you get a document directly via id, the key/value dictionaries
-    they can be assigned are not provided by default in search results.
+    they can be assigned are not provided by default in search results. ::
 
     To have them included, switch the following keyword argument.
 
