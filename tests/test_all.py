@@ -198,6 +198,22 @@ class SearchTest(BaseTest):
         )
         self.assertEqual(len(one_page), 1)
 
+        data = one_page = self.public_client.documents.search(
+            self.test_search,
+            page=1,
+            per_page=1,
+            data=True,
+        )
+        data[0].data
+
+        with self.assertRaises(ValueError):
+            self.public_client.documents.search(
+                self.test_search,
+                page=1,
+                per_page=1,
+                mentions=11,
+            )
+
 
 class DocumentTest(BaseTest):
     """

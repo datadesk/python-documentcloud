@@ -189,15 +189,25 @@ class DocumentClient(BaseDocumentCloudClient):
         except:
             return False
 
-    def _get_search_page(self, query, page, per_page):
+    def _get_search_page(
+        self,
+        query,
+        page,
+        per_page=1000,
+        mentions=3,
+        data=False,
+    ):
         """
         Retrieve one page of search results from the DocumentCloud API.
         """
+        if mentions > 10:
+            raise ValueError("You cannot search for more than 10 mentions")
         params = {
             'q': query,
             'page': page,
             'per_page': per_page,
-            'mentions': 3,
+            'mentions': mentions,
+            'data': data,
         }
         data = self.fetch('search.json', params)
         return data.get("documents")
