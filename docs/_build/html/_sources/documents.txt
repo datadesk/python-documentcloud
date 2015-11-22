@@ -16,15 +16,38 @@ Retrieval
         <Document: Final OIR Report>
 
 
-.. function:: client.documents.search(keyword)
+.. function:: client.documents.search(keyword, page=None, per_page=1000, mentions=3, data=False)
 
-   Return a list of documents that match the provided keyword. ::
+    Return a list of documents that match the provided keyword. ::
 
-        >>> from documentcloud import DocumentCloud
-        >>> client = DocumentCloud()
-        >>> obj_list = client.documents.search('Ruben Salazar')
-        >>> obj_list[0]
-        <Document: Final OIR Report>
+            >>> from documentcloud import DocumentCloud
+            >>> client = DocumentCloud()
+            >>> obj_list = client.documents.search('Ruben Salazar')
+            >>> obj_list[0]
+            <Document: Final OIR Report>
+
+    DocumentCloud paginates search results. By default the search methods returns
+    from all pages. If you want to restrict the number of pages that are searched
+    or retrieve a specific page you should provide some combination of the following
+    keyword arguments. ::
+
+            >>> obj_list = client.documents.search('Ruben Salazar', page=1, per_page=10)
+            >>> # You can guess that will do.
+            >>> len(obj_list) == 10
+            >>> True
+
+    By default, the search returns three mentions of the result in each document.
+    You can increase that number up to 10 by modifying the keyword argument. ::
+
+            >>> client.documents.search('Ruben Salazar', mentions=10)
+
+    Unlike when you get a document directly via id, the key/value dictionaries
+    they can be assigned are not provided by default in search results. ::
+
+    To have them included, switch the following keyword argument.
+
+            >>> client.documents.search('Ruben Salazar', data=True)
+
 
 Editing
 -------
@@ -68,6 +91,10 @@ Uploading
         >>> # Now fetch it
         >>> client.documents.get(new_id)
         <Document: Test PDF>
+
+    You can also URLs link to PDFs, if that's the kind of thing you want to do.
+
+        >>> client.documents.upload("http://ord.legistar.com/Chicago/attachments/e3a0cbcb-044d-4ec3-9848-23c5692b1943.pdf")
 
 .. function:: client.documents.upload_directory(pdf, source=None, description=None, related_article=None, published_url=None, access='private', project=None, data=None, secure=False)
 
@@ -138,7 +165,7 @@ Metadata
         >>> obj.file_hash
         '872b9b858f5f3e6bb6086fec7f05dd464b60eb26'
 
-    You could recreate this hexadecimal hash yourself using the `SHA-1 algorithm <https://en.wikipedia.org/wiki/SHA-1>`_. 
+    You could recreate this hexadecimal hash yourself using the `SHA-1 algorithm <https://en.wikipedia.org/wiki/SHA-1>`_.
 
         >>> import hashlib
         >>> hashlib.sha1(obj.pdf).hexdigest()
@@ -154,7 +181,7 @@ Metadata
 
 .. attribute:: document_obj.full_text_url
 
-    Returns the URL that contains the full text of the document, as extracted from the original PDF by DocumentCloud. 
+    Returns the URL that contains the full text of the document, as extracted from the original PDF by DocumentCloud.
 
 .. method:: document_obj.get_page_text(page)
 
@@ -266,4 +293,3 @@ Metadata
 .. attribute:: document_obj.updated_at
 
     The date and time that the document was last updated, in Python's datetime format.
-
