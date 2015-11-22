@@ -145,6 +145,11 @@ Metadata
         >>> obj.data
         {'category': 'hip-hop', 'byline': 'Ben Welsh', 'pub_date': datetime.date(2011, 3, 1)}
 
+    Keys and values also must be strings. No integers or other numbers.
+
+        >>> obj.data = dict(number=1)
+        TypeError: data attribute values must be strings
+
 .. attribute:: document_obj.description
 
     A summary of the document. Can be edited and saved with a put command.
