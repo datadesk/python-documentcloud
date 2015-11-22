@@ -6,7 +6,7 @@ Changelog
 
 * Throw an error when integers or other non-strings are included in Document metadata dictionaries
 * Added a number of keyword arguments to documents searches to pull a single page, change page size and request document metadata in result
-* Temporarily removed SSL from image and text URLs to workaround bugs underlying dependencies
+* Temporarily removed SSL from image and text URLs to workaround bugs in underlying dependencies
 
 1.0.3
 ~~~~~
