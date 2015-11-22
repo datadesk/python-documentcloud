@@ -93,12 +93,9 @@ class BaseTest(unittest.TestCase):
         different tests stepping on each other.
         """
         version2slug = {
-            "2.5": "351008-lbex-docid-3383445",
-            "2.6": "15144-mitchrpt",
             "2.7": "351151-lbex-docid-130036",
-            "3.2": "350987-lbex-docid-131059",
-            "3.3": "351029-lbex-docid-149714",
-            "3.4": "351291-lbex-docid-037292",
+            "3.4": "351029-lbex-docid-149714",
+            "3.5": "351291-lbex-docid-037292",
         }
         return version2slug[str(version)]
 
