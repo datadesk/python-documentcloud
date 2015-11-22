@@ -16,7 +16,7 @@ Retrieval
         <Document: Final OIR Report>
 
 
-.. function:: client.documents.search(keyword)
+.. function:: client.documents.search(keyword, page=None, per_page=1000, mentions=3, data=False)
 
    Return a list of documents that match the provided keyword. ::
 
@@ -25,6 +25,28 @@ Retrieval
         >>> obj_list = client.documents.search('Ruben Salazar')
         >>> obj_list[0]
         <Document: Final OIR Report>
+
+    DocumentCloud paginates search results. By default the search methods returns
+    from all pages. If you want to restrict the number of pages that are searched
+    or retrieve a specific page you should provide some combination of the following
+    keyword arguments.
+
+        >>> obj_list = client.documents.search('Ruben Salazar', page=1, per_page=10)
+        # You can guess that will do.
+        >>> len(obj_list) == 10
+        >>> True
+
+    By default, the search returns three mentions of the result in each document.
+    You can increase that number up to 10 by modifying the keyword argument.
+
+        >>> client.documents.search('Ruben Salazar', mentions=10)
+
+    Unlike when you get a document directly via id, the key/value dictionaries
+    they can be assigned are not provided by default in search results.
+
+    To have them included, switch the following keyword argument.
+
+        >> client.documents.search('Ruben Salazar', data=True)
 
 Editing
 -------
