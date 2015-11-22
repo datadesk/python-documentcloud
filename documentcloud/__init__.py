@@ -202,31 +202,48 @@ class DocumentClient(BaseDocumentCloudClient):
         data = self.fetch('search.json', params)
         return data.get("documents")
 
-    def search(self, query):
+    def search(self, query, page=None, per_page=1000):
         """
         Retrieve all objects that make a search query.
+
+        Will loop through all pages that match unless you provide
+        the number of pages you'd like to restrict the search to.
 
         Example usage:
 
             >> documentcloud.documents.search('salazar')
-
-        Based on code by Chris Amico
         """
-        page = 1
-        document_list = []
-        # Loop through all the search pages and fetch everything
-        while True:
-            results = self._get_search_page(query, page=page, per_page=1000)
-            if results:
-                document_list += results
-                page += 1
-            else:
-                break
+        # If the user provides a page, search it and stop there
+        if page:
+            document_list = self._get_search_page(
+                query,
+                page=page,
+                per_page=per_page
+            )
+        # If the user doesn't provide a page keep looping until you have
+        # everything
+        else:
+            page = 1
+            document_list = []
+            # Loop through all the search pages and fetch everything
+            while True:
+                results = self._get_search_page(
+                    query,
+                    page=page,
+                    per_page=per_page
+                )
+                if results:
+                    document_list += results
+                    page += 1
+                else:
+                    break
+        # Convert the JSON objects from the API into Python objects
         obj_list = []
         for doc in document_list:
             doc['_connection'] = self._connection
             obj = Document(doc)
             obj_list.append(obj)
+        # Pass it back out
         return obj_list
 
     def get(self, id):

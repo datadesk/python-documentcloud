@@ -195,6 +195,12 @@ class SearchTest(BaseTest):
         obj.__str__()
         obj.__unicode__()
 
+        # Verify the kwargs on the search work
+        one_page = self.public_client.documents.search(
+            self.test_search, page=1, per_page=1
+        )
+        self.assertEqual(len(one_page), 1)
+
 
 class DocumentTest(BaseTest):
     """
