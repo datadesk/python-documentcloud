@@ -116,6 +116,14 @@ requires proper credentials.")
             data = params.get("data")
             del params['data']
             params = urllib.parse.urlencode(params, doseq=True)
+            # Convert all numeric keys and values into strings
+            string_data = {}
+            for key, value in data.items():
+                if not isinstance(key, six.string_types):
+                    key = str(key)
+                if not isinstance(value, six.string_types):
+                    value = str(value)
+                string_data[key] = value
             # Format them in the style documentcloud expects
             # ?data['foo']=bar&data['tit']=tat
             params += "".join([
@@ -123,7 +131,7 @@ requires proper credentials.")
                     urllib.parse.quote_plus(key.encode("utf-8")),
                     urllib.parse.quote_plus(value.encode("utf-8"))
                 ) for key, value in
-                list(data.items())
+                string_data.items()
             ])
         else:
             # Otherwise, we can just use the vanilla urllib prep method
