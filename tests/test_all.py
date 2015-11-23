@@ -165,9 +165,6 @@ class SearchTest(BaseTest):
         for attr in attr_list:
             self.assertTrue(hasattr(self.obj, attr))
 
-        # Full text
-        self.assertTrue(len(self.obj.full_text) > 0)
-
         # Check on the annotations
         obj = self.obj.annotations[0]
         self.assertTrue(isinstance(obj, Annotation))
@@ -267,6 +264,7 @@ report-of-the-calpers-special-review-p1.txt'
             obj.get_page_text(1).decode().split("\n")[0],
             "Report of the CalPERS Special Review"
         )
+        self.assertTrue(len(obj.full_text) > 0)
 
         # Images
         self.assertTrue(len(obj.small_image) > 0)
