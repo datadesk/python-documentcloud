@@ -166,7 +166,7 @@ class SearchTest(BaseTest):
             self.assertTrue(hasattr(self.obj, attr))
 
         # Full text
-        self.assertTrue(len(obj.full_text) > 0)
+        self.assertTrue(len(self.obj.full_text) > 0)
 
         # Check on the annotations
         obj = self.obj.annotations[0]
