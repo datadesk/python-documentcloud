@@ -119,7 +119,7 @@ class BaseTest(unittest.TestCase):
         """
         Initialize a bunch of variables we'll use across tests.
         """
-        self.test_id = '74103-report-of-the-calpers-special-review'
+        self.test_id = '2511322-lafd-recruitment-report'
         self.public_client = DocumentCloud()
         self.private_client = DocumentCloud(
             os.environ['DOCUMENTCLOUD_TEST_USERNAME'],
