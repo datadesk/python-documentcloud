@@ -262,7 +262,7 @@ lafd-recruitment-report-p1.txt'
         )
         self.assertEqual(
             obj.get_page_text(1).decode().split("\n")[0],
-            "New LAFD minority recruitment plan"
+            "NOVEMBER 17, 2015"
         )
         self.assertTrue(len(obj.full_text) > 0)
 
