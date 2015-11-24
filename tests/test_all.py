@@ -257,12 +257,12 @@ class DocumentTest(BaseTest):
         # Text
         self.assertEqual(
             obj.get_page_text_url(1),
-            'https://www.documentcloud.org/documents/74103/pages/\
-report-of-the-calpers-special-review-p1.txt'
+            'https://www.documentcloud.org/documents/2511322/pages/\
+lafd-recruitment-report-p1.txt'
         )
         self.assertEqual(
             obj.get_page_text(1).decode().split("\n")[0],
-            "Report of the CalPERS Special Review"
+            "New LAFD minority recruitment plan"
         )
         self.assertTrue(len(obj.full_text) > 0)
 
