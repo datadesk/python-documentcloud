@@ -81,7 +81,7 @@ Editing
 Uploading
 ---------
 
-.. function:: client.documents.upload(pdf, title=None, source=None, description=None, related_article=None, published_url=None, access='private', project=None, data=None, secure=False)
+.. function:: client.documents.upload(pdf, title=None, source=None, description=None, related_article=None, published_url=None, access='private', project=None, data=None, secure=False, force_ocr=False)
 
    Upload a PDF to DocumentCloud. You must be authorized to do this. Returns the object representing the new record you've created. You can submit either a file path or a file object.
 
@@ -96,7 +96,7 @@ Uploading
 
         >>> client.documents.upload("http://ord.legistar.com/Chicago/attachments/e3a0cbcb-044d-4ec3-9848-23c5692b1943.pdf")
 
-.. function:: client.documents.upload_directory(pdf, source=None, description=None, related_article=None, published_url=None, access='private', project=None, data=None, secure=False)
+.. function:: client.documents.upload_directory(pdf, source=None, description=None, related_article=None, published_url=None, access='private', project=None, data=None, secure=False, force_ocr=False)
 
    Searches through the provided path and attempts to upload all the PDFs it can find. Metadata provided to the other keyword arguments will be recorded for all uploads. Returns a list of document objects that are created. Be warned, this will upload any documents in directories inside the path you specify.
 
