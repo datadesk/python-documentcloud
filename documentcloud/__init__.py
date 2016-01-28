@@ -277,7 +277,7 @@ class DocumentClient(BaseDocumentCloudClient):
     def upload(
         self, pdf, title=None, source=None, description=None,
         related_article=None, published_url=None, access='private',
-        project=None, data=None, secure=False
+        project=None, data=None, secure=False, force_ocr=False
     ):
         """
         Upload a PDF or other image file to DocumentCloud.
@@ -350,6 +350,8 @@ and try again.")
                 params['data[%s]' % key] = value
         if secure:
             params['secure'] = 'true'
+        if force_ocr:
+            params['force_ocr'] = 'true'
         # Make the request
         response = self._make_request(
             self.BASE_URI + 'upload.json',
@@ -362,7 +364,7 @@ and try again.")
     def upload_directory(
         self, path, source=None, description=None,
         related_article=None, published_url=None, access='private',
-        project=None, data=None, secure=False
+        project=None, data=None, secure=False, force_ocr=False
     ):
         """
         Uploads all the PDFs in the provided directory.
@@ -389,7 +391,8 @@ and try again.")
             obj = self.upload(
                 pdf_path, source=source, description=description,
                 related_article=related_article, published_url=published_url,
-                access=access, project=project, data=data, secure=secure
+                access=access, project=project, data=data, secure=secure,
+                force_ocr=force_ocr
             )
             obj_list.append(obj)
         # Pass back the list of documents
