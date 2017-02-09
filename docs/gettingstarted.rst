@@ -22,6 +22,10 @@ Since we didn't provide any log-in credentials, the client above will only be ab
 
     >>> client = DocumentCloud(USERNAME, PASSWORD)
 
+You can also specify a custom uri if you have installed your own version of DocumentCloud ::
+
+    >>> client = DocumentCloud(USERNAME, PASSWORD, base_uri="https://your.documentcloud.domain/api/")
+
 Searching for documents
 -----------------------
 
