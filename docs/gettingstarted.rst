@@ -78,6 +78,23 @@ You can also URLs link to PDFs, if that's the kind of thing you want to do. ::
 
     >>> client.documents.upload("http://ord.legistar.com/Chicago/attachments/e3a0cbcb-044d-4ec3-9848-23c5692b1943.pdf")
 
+Interacting with a newly uploaded public document
+-------------------------------------------------
+
+When you first upload a document, your local document object will not reflect some of the metadata and processing that happens in the first few seconds it is on the server. Documents set to public will be shown as private during that short interval. To interact with a document as soon as it is available, you can write a short loop to check whether it is ready.
+
+First upload the document as normal. ::
+
+    >>> import time
+    >>> from documentcloud import DocumentCloud
+    >>> obj = client.documents.upload("/home/ben/pdfs/myfile.pdf", access='public')
+    
+Then refresh your local document object from the server. If it is does not show up as public, then it is still processing, and you'll have to check again. ::
+
+    >>> obj = client.documents.get(obj.id)
+    >>> while obj.access != 'public':
+    >>>     time.sleep(5)
+    >>>     obj = client.documents.get(obj.id)
 
 Uploading a directory of documents as a project
 -----------------------------------------------
