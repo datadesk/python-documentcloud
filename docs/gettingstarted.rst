@@ -91,6 +91,7 @@ First upload the document as normal. ::
 
     >>> import time
     >>> from documentcloud import DocumentCloud
+    >>> client = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
     >>> obj = client.documents.upload("/home/ben/pdfs/myfile.pdf", access='public')
     
 Then refresh your local document object from the server. If it is does not show up as public, then it is still processing, and you'll have to check again. ::
