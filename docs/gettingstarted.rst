@@ -74,7 +74,7 @@ And you don't have to provide a path, you can also upload a file object. ::
     >>> pdf = open("/home/ben/pdfs/myfile.pdf", "rb")
     >>> obj = client.documents.upload(pdf)
 
-You can also URLs link to PDFs, if that's the kind of thing you want to do. ::
+You can also provide URLs that link to PDFs, if that's the kind of thing you're into. ::
 
     >>> client.documents.upload("http://ord.legistar.com/Chicago/attachments/e3a0cbcb-044d-4ec3-9848-23c5692b1943.pdf")
 
