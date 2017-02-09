@@ -93,7 +93,7 @@ Then refresh your local document object from the server. If it is does not show 
 
     >>> obj = client.documents.get(obj.id)
     >>> while obj.access != 'public':
-    >>>     time.sleep(1)
+    >>>     time.sleep(5)
     >>>     obj = client.documents.get(obj.id)
 
 Uploading a directory of documents as a project
