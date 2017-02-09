@@ -111,12 +111,7 @@ Uploading a PDF from a URL
 How to read a PDF document from a URL on the World Wide Web and upload it to DocumentCloud without saving it to your local hard drive.
 
     >>> from documentcloud import DocumentCloud
-    >>> import urllib, cStringIO
-    >>> # Download the URL with urllib
     >>> url = "http://myhost.org/interesting-doc.pdf"
-    >>> data = urllib.urlopen(url).read()
-    >>> # Stuff it in a file object with cStringIO
-    >>> file_obj = cStringIO.StringIO(data)
-    >>> # Upload that to DocumentCloud
     >>> client = DocumentCloud(DOCUMENTCLOUD_USERNAME, DOCUMENTCLOUD_PASSWORD)
-    >>> obj = client.documents.upload(file_obj)
+    >>> # Upload the specified URL to the given client
+    >>> obj = client.documents.upload(url)
