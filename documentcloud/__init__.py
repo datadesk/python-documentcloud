@@ -75,7 +75,7 @@ class BaseDocumentCloudClient(object):
         # Make the request
         try:
             response = request_method(request)
-        except:
+        except Exception:
             e = sys.exc_info()[1]
             if getattr(e, 'code', None) == 404:
                 raise DoesNotExistError("The resource you've requested does \
@@ -186,7 +186,7 @@ class DocumentClient(BaseDocumentCloudClient):
         try:
             urlparse(string, rule="IRI")
             return True
-        except:
+        except Exception:
             return False
 
     def _get_search_page(
@@ -306,7 +306,7 @@ class DocumentClient(BaseDocumentCloudClient):
         if hasattr(pdf, 'read'):
             try:
                 size = os.fstat(pdf.fileno()).st_size
-            except:
+            except Exception:
                 size = 0
             params = {'file': pdf}
             opener = MultipartPostHandler
@@ -555,6 +555,7 @@ class ProjectClient(BaseDocumentCloudClient):
 #
 # API objects
 #
+
 
 @six.python_2_unicode_compatible
 class BaseAPIObject(object):
