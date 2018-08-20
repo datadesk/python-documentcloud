@@ -96,6 +96,7 @@ class BaseTest(unittest.TestCase):
             "2.7": "351151-lbex-docid-130036",
             "3.4": "351029-lbex-docid-149714",
             "3.5": "351291-lbex-docid-037292",
+            "3.6": "2810272-LBEX-DOCID-224552",
         }
         return version2slug[str(version)]
 
@@ -112,6 +113,7 @@ class BaseTest(unittest.TestCase):
             "2.7": 11047,
             "3.4": 11070,
             "3.5": 16842,
+            "3.6": 40307
         }
         return version2slug[str(version)]
 
