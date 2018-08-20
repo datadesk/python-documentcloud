@@ -143,7 +143,8 @@ class SearchTest(BaseTest):
         self.assertTrue(isinstance(self.obj_list, list))
         self.assertTrue(isinstance(self.obj, Document))
         self.obj.__str__()
-        self.obj.__unicode__()
+        if six.PY2:
+            self.obj.__unicode__()
         attr_list = [
             'access',
             'annotations',
@@ -169,25 +170,29 @@ class SearchTest(BaseTest):
         obj = self.obj.annotations[0]
         self.assertTrue(isinstance(obj, Annotation))
         obj.__str__()
-        obj.__unicode__()
+        if six.PY2:
+            obj.__unicode__()
 
         # Check on the sections
         obj = self.obj.sections[0]
         self.assertTrue(isinstance(obj, Section))
         obj.__str__()
-        obj.__unicode__()
+        if six.PY2:
+            obj.__unicode__()
 
         # Check on the entities
         obj = self.obj.entities[0]
         self.assertTrue(isinstance(obj, Entity))
         obj.__str__()
-        obj.__unicode__()
+        if six.PY2:
+            obj.__unicode__()
 
         # Check on the mentions
         obj = self.obj.mentions[0]
         self.assertTrue(isinstance(obj, Mention))
         obj.__str__()
-        obj.__unicode__()
+        if six.PY2:
+            obj.__unicode__()
 
         # Verify the kwargs on the search work
         one_page = self.public_client.documents.search(
@@ -246,7 +251,8 @@ class DocumentTest(BaseTest):
         ]
         [self.assertTrue(hasattr(obj, attr)) for attr in attr_list]
         obj.__str__()
-        obj.__unicode__()
+        if six.PY2:
+            obj.__unicode__()
 
         # Raw PDF
         self.assertTrue(len(obj.pdf) > 0)
@@ -276,19 +282,22 @@ lafd-recruitment-report-p1.txt'
         ann = obj.annotations[0]
         self.assertTrue(isinstance(ann, Annotation))
         ann.__str__()
-        ann.__unicode__()
+        if six.PY2:
+            ann.__unicode__()
 
         # Sections
         sec = obj.sections[0]
         self.assertTrue(isinstance(sec, Section))
         sec.__str__()
-        sec.__unicode__()
+        if six.PY2:
+            sec.__unicode__()
 
         # Entities
         ent = obj.entities[0]
         self.assertTrue(isinstance(ent, Entity))
         ent.__str__()
-        ent.__unicode__()
+        if six.PY2:
+            ent.__unicode__()
 
     def test_private_actions(self):
         """
@@ -481,6 +490,35 @@ lafd-recruitment-report-p1.txt'
         obj = self.private_client.documents.upload(url)
         obj.delete()
 
+    def test_str(self):
+        """Test that the __str__ method returns the document title"""
+        d = {
+            'title': "Test Title",
+            'resources': {},
+            'created_at': '2018-08-19',
+            'updated_at': '2018-08-19',
+        }
+        obj = Document(d)
+
+        if six.PY3:
+            self.assertEqual(obj.__str__(), six.text_type(d['title']))
+
+        else:
+            self.assertEqual(obj.__str__(), six.binary_type(d['title']))
+
+    def test_unicode(self):
+        """Test that the __unicode__ method returns the document title"""
+        d = {
+            'title': "Test Title",
+            'resources': {},
+            'created_at': '2018-08-19',
+            'updated_at': '2018-08-19',
+        }
+        obj = Document(d)
+
+        if six.PY2:
+            self.assertEqual(obj.__unicode__(), six.text_type(d['title']))
+
 
 class ProjectTest(BaseTest):
     """
@@ -511,7 +549,8 @@ class ProjectTest(BaseTest):
 
         # Test other attributes
         obj.__str__()
-        obj.__unicode__()
+        if six.PY2:
+            obj.__unicode__()
 
         # Document list
         doc_list = obj.document_list
@@ -613,6 +652,35 @@ class ProjectTest(BaseTest):
         self.assertFalse(c)
         # Delete it
         proj.delete()
+
+    def test_str(self):
+        """Test that the __str__ method returns the document title"""
+        d = {
+            'title': "Test Title",
+            'resources': {},
+            'created_at': '2018-08-19',
+            'updated_at': '2018-08-19',
+        }
+        obj = Document(d)
+
+        if six.PY3:
+            self.assertEqual(obj.__str__(), six.text_type(d['title']))
+
+        else:
+            self.assertEqual(obj.__str__(), six.binary_type(d['title']))
+
+    def test_unicode(self):
+        """Test that the __unicode__ method returns the document title"""
+        d = {
+            'title': "Test Title",
+            'resources': {},
+            'created_at': '2018-08-19',
+            'updated_at': '2018-08-19',
+        }
+        obj = Document(d)
+
+        if six.PY2:
+            self.assertEqual(obj.__unicode__(), six.text_type(d['title']))
 
 
 class ErrorTest(BaseTest):
