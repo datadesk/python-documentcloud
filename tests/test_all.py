@@ -137,7 +137,7 @@ class SearchTest(BaseTest):
     """
     def test_search(self):
         # Make a couple requests for documents
-        self.test_search = 'Calpers special review'
+        self.test_search = 'Report of the CalPERS special review'
         self.obj_list = self.public_client.documents.search(self.test_search)
         self.obj = self.obj_list[0]
 
