@@ -1,12 +1,12 @@
-# Required for development
-Sphinx
-argparse
-coverage
-pep8
-pyflakes
-python-coveralls
-tox
 # Required for the app
 six
 python-dateutil>=2.1
 rfc3987
+
+# Required for development
+Sphinx
+argparse
+coverage
+flake8
+python-coveralls
+tox
