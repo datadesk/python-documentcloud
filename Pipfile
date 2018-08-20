@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+six = "*"
+python-dateutil = ">=2.1"
+"rfc3987" = "*"
+
+[dev-packages]
+Sphinx = "*"
+coverage = "*"
+flake8 = "*"
+python-coveralls = "*"
+tox = "*"
+
+[requires]
+python_version = "3.6"
