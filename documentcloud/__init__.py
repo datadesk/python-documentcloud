@@ -556,7 +556,7 @@ class ProjectClient(BaseDocumentCloudClient):
 # API objects
 #
 
-
+@six.python_2_unicode_compatible
 class BaseAPIObject(object):
     """
     An abstract version of the objects returned by the API.
@@ -568,9 +568,6 @@ class BaseAPIObject(object):
         return '<%s: %s>' % (self.__class__.__name__, self.__str__())
 
     def __str__(self):
-        return self.__unicode__().encode("utf-8")
-
-    def __unicode__(self):
         return six.text_type(self.title)
 
 
@@ -585,9 +582,6 @@ class Annotation(BaseAPIObject):
         return '<%s>' % self.__class__.__name__
 
     def __str__(self):
-        return self.__unicode__().encode("utf-8")
-
-    def __unicode__(self):
         return six.text_type('')
 
     def get_location(self):
@@ -1043,10 +1037,11 @@ class Entity(BaseAPIObject):
     """
     Keywords and such extracted from the document by OpenCalais.
     """
-    def __unicode__(self):
+    def __str__(self):
         return six.text_type(self.value)
 
 
+@six.python_2_unicode_compatible
 class Location(object):
     """
     The location of an Annotation.
@@ -1055,9 +1050,6 @@ class Location(object):
         return '<%s>' % self.__class__.__name__
 
     def __str__(self):
-        return self.__unicode__().encode("utf-8")
-
-    def __unicode__(self):
         return six.text_type('')
 
     def __init__(self, top, right, bottom, left):
@@ -1071,7 +1063,7 @@ class Mention(BaseAPIObject):
     """
     A mention of a search found in the document.
     """
-    def __unicode__(self):
+    def __str__(self):
         return six.text_type("Page %s" % (self.page))
 
 
@@ -1168,9 +1160,6 @@ class Resource(BaseAPIObject):
         return '<%ss>' % self.__class__.__name__
 
     def __str__(self):
-        return self.__unicode__().encode("utf-8")
-
-    def __unicode__(self):
         return six.text_type('')
 
     def __getattr__(self, name):
