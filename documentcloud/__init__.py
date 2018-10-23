@@ -1071,6 +1071,10 @@ class Mention(BaseAPIObject):
     """
     A mention of a search found in the document.
     """
+    @property
+    def title(self):
+        return self.page
+
     def __str__(self):
         return six.text_type("Page %s" % (self.page))
 
