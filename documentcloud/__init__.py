@@ -410,7 +410,7 @@ and try again.")
         Deletes a Document.
         """
         self.fetch(
-            'documents/%s.json' % id,
+            'documents/%s.json' % id.split("-")[0],
             {'_method': 'delete'},
         )
 
