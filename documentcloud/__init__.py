@@ -361,7 +361,10 @@ and try again.")
             params,
             opener=opener
         )
-        return self.get(json.loads(response.decode("utf-8"))['id'])
+        # Pull the id from the response
+        response_id = json.loads(response.decode("utf-8"))['id'].split("-")[0]
+        # Get the document and return it
+        return self.get(response_id)
 
     @credentials_required
     def upload_directory(
