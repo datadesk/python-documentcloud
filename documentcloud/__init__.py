@@ -13,13 +13,13 @@ Further documentation:
 """
 from __future__ import absolute_import
 import os
+import re
 import sys
 import six
 import json
 import copy
 import base64
 from .toolbox import retry
-from rfc3987 import parse as urlparse
 from .toolbox import DoesNotExistError
 from .toolbox import DuplicateObjectError
 from .toolbox import credentials_required
@@ -179,15 +179,18 @@ class DocumentClient(BaseDocumentCloudClient):
         # later. Storing it will preserve the credentials.
         self._connection = connection
 
-    def is_url(self, string):
+    def is_url(self, value):
         """
         Test if a pdf being submitted is a valid URL
         """
-        try:
-            urlparse(string, rule="IRI")
-            return True
-        except Exception:
-            return False
+        regex = re.compile(
+                r'^(?:http|ftp)s?://' # http:// or https://
+                r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|' #domain...
+                r'localhost|' #localhost...
+                r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})' # ...or ip
+                r'(?::\d+)?' # optional port
+                r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+        return re.match(regex, value) is not None
 
     def _get_search_page(
         self,

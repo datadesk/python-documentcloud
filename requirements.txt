@@ -1,7 +1,6 @@
 # Required for the app
 six
 python-dateutil>=2.1
-rfc3987
 
 # Required for development
 Sphinx
