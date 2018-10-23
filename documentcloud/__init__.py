@@ -1041,6 +1041,10 @@ class Entity(BaseAPIObject):
     """
     Keywords and such extracted from the document by OpenCalais.
     """
+    @property
+    def title(self):
+        return self.value
+
     def __str__(self):
         return six.text_type(self.value)
 
