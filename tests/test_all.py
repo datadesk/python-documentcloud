@@ -94,7 +94,7 @@ class BaseTest(unittest.TestCase):
         """
         version2slug = {
             "2.7": "351151-lbex-docid-130036",
-            "3.7": "2810272-LBEX-DOCID-224552",
+            "3.7": "351029-lbex-docid-149714",
         }
         return version2slug[str(version)]
 
