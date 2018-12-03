@@ -433,31 +433,30 @@ lafd-recruitment-report-p1.txt'
 
         # Upload with a file object, not a path
         title = get_random_string()
-        obj = self.private_client.documents.upload(
-            open(os.path.join(os.path.dirname(__file__), "test.pdf"), "rb"),
-            title,
-        )
+        with open(os.path.join(os.path.dirname(__file__), "test.pdf"), "rb") as fp:
+            obj = self.private_client.documents.upload(fp, title)
         self.assertTrue(isinstance(obj, Document))
         self.assertEqual(obj.title, title)
         obj.delete()
 
         # Ensure that documents with non-english characters can be uploaded
         pdf = os.path.join(os.path.dirname(__file__), "español.pdf")
-        obj = self.private_client.documents.upload(open(pdf, 'rb'))
+        with open(pdf, 'rb') as fp:
+            obj = self.private_client.documents.upload(fp)
         self.assertTrue(isinstance(obj, Document))
         obj.delete()
 
         # Test virtual file upload and delete
         path = os.path.join(os.path.dirname(__file__), "español.pdf")
-        real_file = open(path, 'rb')
-        if six.PY3:
-            virtual_file = io.BytesIO(real_file.read())
-        else:
-            virtual_file = io.StringIO(real_file.read())
-        obj = self.private_client.documents.upload(
-            virtual_file,
-            title='Espanola!'
-        )
+        with open(path, 'rb') as real_file:
+            if six.PY3:
+                virtual_file = io.BytesIO(real_file.read())
+            else:
+                virtual_file = io.StringIO(real_file.read())
+            obj = self.private_client.documents.upload(
+                virtual_file,
+                title='Espanola!'
+            )
         self.assertTrue(isinstance(obj, Document))
         obj.delete()
 
