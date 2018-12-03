@@ -4,8 +4,7 @@ python-dateutil>=2.1
 
 # Required for development
 Sphinx
-argparse
-coverage
 flake8
+coverage
 python-coveralls
-tox
+twine
