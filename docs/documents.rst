@@ -139,11 +139,11 @@ Metadata
 
     A dictionary containing supplementary data linked to the document. This can be any old thing. It's useful if you'd like to store additional metadata. Can be edited and saved with a put command.
 
-    Some keywords are reserved by DocumentCloud and you'll get an error if you try to submit them here. They are: person, organization, place, term, email, phone, city, state, country, title, description, source, account, group, project, projectid, document, access, filter.
-
         >>> obj = client.documents.get('83251-fbi-file-on-christopher-biggie-smalls-wallace')
         >>> obj.data
         {'category': 'hip-hop', 'byline': 'Ben Welsh', 'pub_date': datetime.date(2011, 3, 1)}
+
+    Some keywords are reserved by DocumentCloud and you'll get an error if you try to submit them here. They are: person, organization, place, term, email, phone, city, state, country, title, description, source, account, group, project, projectid, document, access, filter.
 
     Keys and values also must be strings. No integers or other numbers.
 
