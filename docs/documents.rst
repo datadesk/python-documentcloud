@@ -137,7 +137,7 @@ Metadata
 
 .. attribute:: document_obj.data
 
-    A dictionary containing supplementary data linked to the document. This can any old thing. It's useful if you'd like to store additional metadata. Can be edited and saved with a put command.
+    A dictionary containing supplementary data linked to the document. This can be any old thing. It's useful if you'd like to store additional metadata. Can be edited and saved with a put command.
 
     Some keywords are reserved by DocumentCloud and you'll get an error if you try to submit them here. They are: person, organization, place, term, email, phone, city, state, country, title, description, source, account, group, project, projectid, document, access, filter.
 
