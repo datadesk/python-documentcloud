@@ -804,15 +804,11 @@ class Document(BaseAPIObject):
 
     def _get_url(self, url):
         if self.access == 'public':
-            url = url.replace("https://", "http://")
-            req = urllib.request.Request(url)
-            try:
-                return urllib.request.urlopen(req).read()
-            except urllib.error.HTTPError:
-                raise NotImplementedError(
-                    "Currently, DocumentCloud only allows you to access this \
-resource on public documents."
-                )
+            req = urllib.request.Request(
+                url,
+                headers={'User-Agent' : "python-documentcloud"}
+            )
+            return urllib.request.urlopen(req).read()
         else:
             raise NotImplementedError(
                 "Currently, DocumentCloud only allows you to access this \
