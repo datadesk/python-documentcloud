@@ -806,7 +806,7 @@ class Document(BaseAPIObject):
         if self.access == 'public':
             req = urllib.request.Request(
                 url,
-                headers={'User-Agent' : "python-documentcloud"}
+                headers={'User-Agent': "python-documentcloud"}
             )
             return urllib.request.urlopen(req).read()
         else:
