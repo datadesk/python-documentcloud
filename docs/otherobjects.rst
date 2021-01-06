@@ -1,4 +1,3 @@
-.. meta::
-   :http-equiv=Refresh
-   :content=0; url='https://documentcloud.readthedocs.io/'
+.. raw:: html
 
+    <meta http-equiv="Refresh" content="0; url='https://documentcloud.readthedocs.io/'" />
